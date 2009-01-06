@@ -58,7 +58,7 @@ public class DBCache implements ApiCache {
     public void setCache(final String method, final Map<String, String> args,
             final String data, final long cacheUntil) {
         try {
-            if (getCacheStatus(method, args) == ApiCacheStatus.MISS) {
+            if (getCacheStatus(method, args) == CacheStatus.MISS) {
                 // The page has never been requested before.
                 
                 prepInsert.setString(1, method);
@@ -84,7 +84,7 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public ApiCacheStatus getCacheStatus(final String method, final Map<String, String> args) {
+    public CacheStatus getCacheStatus(final String method, final Map<String, String> args) {
         try {
             prepCheck.setString(1, method);
             prepCheck.setString(2, Downloader.encodeArguments(args));
@@ -94,19 +94,19 @@ public class DBCache implements ApiCache {
             if (rs.next()) {
                 return rs.getTimestamp("PC_CACHEDUNTIL")
                         .before(new Date(System.currentTimeMillis()))
-                        ? ApiCacheStatus.EXPIRED : ApiCacheStatus.CACHED;
+                        ? CacheStatus.EXPIRED : CacheStatus.HIT;
             } else {
-                return ApiCacheStatus.MISS;
+                return CacheStatus.MISS;
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error checking cache status", ex);
-            return ApiCacheStatus.MISS;
+            return CacheStatus.MISS;
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public String getCache(final String method, final Map<String, String> args) {
+    public CacheResult getCache(final String method, final Map<String, String> args) {
         try {
             prepRetrieve.setString(1, method);
             prepRetrieve.setString(2, Downloader.encodeArguments(args));
@@ -115,7 +115,9 @@ public class DBCache implements ApiCache {
 
             if (rs.next()) {
                 final Clob clob = rs.getClob("PC_DATA");
-                return clob.getSubString(1, (int) clob.length());
+                final long at = rs.getTimestamp("PC_CACHEDAT").getTime();
+                final long until = rs.getTimestamp("PC_CACHEDUNTIL").getTime();
+                return new CacheResult(clob.getSubString(1, (int) clob.length()), at, until);
             } else {
                 LOGGER.log(Level.WARNING, "No cache result for " + method);
                 return null;

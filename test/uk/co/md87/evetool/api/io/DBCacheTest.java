@@ -28,19 +28,19 @@ public class DBCacheTest {
     public void testBasicInsert() throws SQLException {
         final Map<String, String> args = new HashMap<String, String>();
         final Connection conn = DriverManager.getConnection(dbURL);
-        final EveApi api = new EveApi(conn); // To create tables
+        new EveApi(conn); // To create tables
         final DBCache cache = new DBCache(conn);
 
         args.put("foo", "bar");
         args.put("rand", String.valueOf(System.currentTimeMillis()));
 
-        assertEquals(ApiCache.ApiCacheStatus.MISS, cache.getCacheStatus("/unittest", args));
+        assertEquals(ApiCache.CacheStatus.MISS, cache.getCacheStatus("/unittest", args));
         cache.setCache("/unittest", args, "testing 123", System.currentTimeMillis() - 100000);
-        assertEquals(ApiCache.ApiCacheStatus.EXPIRED, cache.getCacheStatus("/unittest", args));
-        assertEquals("testing 123", cache.getCache("/unittest", args));
+        assertEquals(ApiCache.CacheStatus.EXPIRED, cache.getCacheStatus("/unittest", args));
+        assertEquals("testing 123", cache.getCache("/unittest", args).getData());
         cache.setCache("/unittest", args, "testing 456", System.currentTimeMillis() + 100000);
-        assertEquals(ApiCache.ApiCacheStatus.CACHED, cache.getCacheStatus("/unittest", args));
-        assertEquals("testing 456", cache.getCache("/unittest", args));
+        assertEquals(ApiCache.CacheStatus.HIT, cache.getCacheStatus("/unittest", args));
+        assertEquals("testing 456", cache.getCache("/unittest", args).getData());
         conn.close();
     }
 

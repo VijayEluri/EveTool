@@ -14,18 +14,43 @@ import java.util.Map;
  */
 public interface ApiCache {
 
-    public static enum ApiCacheStatus {
+    public static enum CacheStatus {
         MISS,
         EXPIRED,
-        CACHED;
+        HIT;
+    }
+
+    public static class CacheResult {
+
+        private final String data;
+        private final long cachedAt;
+        private final long cachedUntil;
+
+        public CacheResult(String data, long cachedAt, long cachedUntil) {
+            this.data = data;
+            this.cachedAt = cachedAt;
+            this.cachedUntil = cachedUntil;
+        }
+
+        public long getCachedAt() {
+            return cachedAt;
+        }
+
+        public long getCachedUntil() {
+            return cachedUntil;
+        }
+
+        public String getData() {
+            return data;
+        }
+        
     }
 
     void setCache(final String method, final Map<String, String> args,
             final String data, final long cacheUntil);
 
-    ApiCacheStatus getCacheStatus(final String method, final Map<String, String> args);
+    CacheStatus getCacheStatus(final String method, final Map<String, String> args);
 
-    // TODO: This should return meta-data too
-    String getCache(final String method, final Map<String, String> args);
+    CacheResult getCache(final String method, final Map<String, String> args);
 
 }

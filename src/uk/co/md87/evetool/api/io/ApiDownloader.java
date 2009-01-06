@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import uk.co.md87.evetool.api.io.ApiCache.ApiCacheStatus;
+import uk.co.md87.evetool.api.io.ApiCache.CacheStatus;
+import uk.co.md87.evetool.api.parser.ApiResult;
 
 /**
  *
@@ -46,25 +47,29 @@ public class ApiDownloader {
         this.charID = charID;
     }
 
-    public String getPage(final String method, final Map<String, String> args) {
-        final Map<String, String> ourArgs = new HashMap<String, String>(args);
-
-        // TODO: Abstract
+    protected void addArgs(final Map<String, String> args) {
         if (userID != null) {
-            ourArgs.put("userID", userID);
+            args.put("userID", userID);
         }
 
         if (apiKey != null) {
-            ourArgs.put("apiKey", apiKey);
+            args.put("apiKey", apiKey);
         }
 
         if (charID != null) {
-            ourArgs.put("characterID", charID);
+            args.put("characterID", charID);
         }
+    }
 
-        final ApiCacheStatus cacheStatus = cache.getCacheStatus(method, args);
+    public ApiCache.CacheResult getPage(final String method, final Map<String, String> args) {
+        final Map<String, String> ourArgs = new HashMap<String, String>(args);
+        addArgs(ourArgs);
 
-        if (cacheStatus == ApiCacheStatus.CACHED) {
+        // TODO: Refactor to avoid duplicate gets
+
+        final CacheStatus cacheStatus = cache.getCacheStatus(method, args);
+
+        if (cacheStatus == CacheStatus.HIT) {
             return cache.getCache(method, args);
         }
 
@@ -76,10 +81,10 @@ public class ApiDownloader {
 
             cache.setCache(method, args, builder.toString(),
                     System.currentTimeMillis() + 20000); // TODO: Proper time
-            return builder.toString();
+            return cache.getCache(method, args);
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "API request failed", ex);
-            if (cacheStatus == ApiCacheStatus.EXPIRED) {
+            if (cacheStatus == CacheStatus.EXPIRED) {
                 return cache.getCache(method, args);
             } else {
                 return null;
