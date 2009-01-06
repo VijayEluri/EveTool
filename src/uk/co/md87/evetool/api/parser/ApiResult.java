@@ -6,7 +6,6 @@
 package uk.co.md87.evetool.api.parser;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -14,8 +13,15 @@ import java.util.List;
  */
 public class ApiResult extends ApiElement {
 
-    private boolean cacheHit;
     private Date cachedSince;
     private Date cachedUntil;
+
+    public Date getCachedSince() {
+        return cachedSince;
+    }
+
+    public Date getCachedUntil() {
+        return cachedUntil;
+    }
 
 }

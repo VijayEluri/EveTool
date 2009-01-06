@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import uk.co.md87.evetool.api.io.ApiDownloader;
 import uk.co.md87.evetool.api.io.DBCache;
+import uk.co.md87.evetool.api.parser.ApiParser;
 
 /**
  *
@@ -39,7 +40,7 @@ public class EveApi {
         this.conn = sqlConnection;
         checkTables();
 
-        this.downloader = new ApiDownloader(new DBCache(conn));
+        this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
 
     public void setApiKey(String apiKey) {

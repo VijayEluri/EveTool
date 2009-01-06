@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jdom.JDOMException;
 import uk.co.md87.evetool.api.io.ApiCache.CacheStatus;
+import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
+import uk.co.md87.evetool.api.parser.ParserException;
 
 /**
  *
@@ -26,24 +29,27 @@ public class ApiDownloader {
     private static final String API_HOST = "http://api.eve-online.com";
 
     private final ApiCache cache;
+    private final ApiParser parser;
 
     private String userID = null;
     private String charID = null;
     private String apiKey = null;
 
-    public ApiDownloader(final ApiCache cache) {
+    public ApiDownloader(final ApiCache cache, final ApiParser parser) {
         this.cache = cache;
+        this.parser = parser;
     }
 
-    public ApiDownloader(final ApiCache cache, final String userID, final String apiKey) {
-        this(cache);
+    public ApiDownloader(final ApiCache cache, final ApiParser parser,
+            final String userID, final String apiKey) {
+        this(cache, parser);
         this.userID = userID;
         this.apiKey = apiKey;
     }
 
-    public ApiDownloader(final ApiCache cache, final String userID,
-            final String apiKey, final String charID) {
-        this(cache, userID, apiKey);
+    public ApiDownloader(final ApiCache cache, final ApiParser parser,
+            final String userID, final String apiKey, final String charID) {
+        this(cache, parser, userID, apiKey);
         this.charID = charID;
     }
 
@@ -61,24 +67,39 @@ public class ApiDownloader {
         }
     }
 
-    public ApiCache.CacheResult getPage(final String method, final Map<String, String> args) {
+    public ApiResult getPage(final String method, final Map<String, String> args) {
         final Map<String, String> ourArgs = new HashMap<String, String>(args);
         addArgs(ourArgs);
-
-        // TODO: Refactor to avoid duplicate gets
 
         final CacheStatus cacheStatus = cache.getCacheStatus(method, args);
 
         if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
             try {
-                cache.setCache(method, args, Downloader.getPage(getUrl(method), ourArgs),
-                        System.currentTimeMillis() + 20000); // TODO: Proper time
+                final String page = Downloader.getPage(getUrl(method), ourArgs);
+                final ApiResult res = parser.parseResult(page);
+                cache.setCache(method, args, page, res.getCachedUntil().getTime());
+
+                return res;
             } catch (IOException ex) {
                 LOGGER.log(Level.WARNING, "API request failed", ex);
+            } catch (JDOMException ex) {
+                LOGGER.log(Level.WARNING, "Error parsing API result", ex);
+            } catch (ParserException ex) {
+                LOGGER.log(Level.WARNING, "Error parsing API result", ex);
             }
         }
 
-        return cache.getCache(method, args);
+        try {
+            return parser.parseResult(cache.getCache(method, args).getData());
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error processing cached API result", ex);
+        } catch (JDOMException ex) {
+            LOGGER.log(Level.WARNING, "Error parsing cached API result", ex);
+        } catch (ParserException ex) {
+            LOGGER.log(Level.WARNING, "Error parsing cached API result", ex);
+        }
+
+        return null;
     }
 
     public void setApiKey(String apiKey) {
