@@ -8,6 +8,7 @@ package uk.co.md87.evetool;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.co.md87.evetool.api.EveApi;
 
 /**
  *
@@ -25,7 +26,10 @@ public class Main {
             handler.setLevel(Level.ALL);
         }
         
-        ApiFactory.getApi();
+        final EveApi api = ApiFactory.getApi();
+        api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
+        api.setUserID("403848");
+        System.out.println(api.getCharacterList());
     }
 
 }

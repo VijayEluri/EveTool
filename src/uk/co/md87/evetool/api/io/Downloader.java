@@ -60,7 +60,6 @@ public final class Downloader {
      */
     public static String getPage(final String url)
             throws MalformedURLException, IOException {
-        
         return getPage(url, "");
     }
 
@@ -76,7 +75,7 @@ public final class Downloader {
      */    
     public static String getPage(final String url, final String postData)
             throws MalformedURLException, IOException {
-        
+
         final StringBuilder res = new StringBuilder();
         
         final URLConnection urlConn = getConnection(url, postData);

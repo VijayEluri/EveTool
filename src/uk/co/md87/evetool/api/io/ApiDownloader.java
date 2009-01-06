@@ -68,16 +68,21 @@ public class ApiDownloader {
     }
 
     public ApiResult getPage(final String method, final Map<String, String> args) {
-        final Map<String, String> ourArgs = new HashMap<String, String>(args);
+        final Map<String, String> ourArgs = new HashMap<String, String>();
+
+        if (args != null) {
+            ourArgs.putAll(args);
+        }
+
         addArgs(ourArgs);
 
-        final CacheStatus cacheStatus = cache.getCacheStatus(method, args);
+        final CacheStatus cacheStatus = cache.getCacheStatus(method, ourArgs);
 
         if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
             try {
                 final String page = Downloader.getPage(getUrl(method), ourArgs);
                 final ApiResult res = parser.parseResult(page);
-                cache.setCache(method, args, page, res.getCachedUntil().getTime());
+                cache.setCache(method, ourArgs, page, res.getCachedUntil().getTime());
 
                 return res;
             } catch (IOException ex) {
@@ -90,7 +95,7 @@ public class ApiDownloader {
         }
 
         try {
-            return parser.parseResult(cache.getCache(method, args).getData());
+            return parser.parseResult(cache.getCache(method, ourArgs).getData());
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Error processing cached API result", ex);
         } catch (JDOMException ex) {

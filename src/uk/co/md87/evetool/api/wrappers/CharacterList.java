@@ -22,8 +22,7 @@ public class CharacterList extends ArrayList<BasicCharInfo> {
     public CharacterList(final ApiElement resultElement) {
         super();
 
-        for (ApiElement child : ((NamedApiElement) resultElement)
-                .getChild("rowset").getChildren()) {
+        for (ApiElement child : resultElement.getChild("rowset").getChildren()) {
             add(getCharInfo(child));
         }
     }

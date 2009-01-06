@@ -21,4 +21,9 @@ public class BasicCharInfo {
         this.corp = corp;
     }
 
+    @Override
+    public String toString() {
+        return "[" + name + " (" + id + ") in " + corp + "]";
+    }
+
 }

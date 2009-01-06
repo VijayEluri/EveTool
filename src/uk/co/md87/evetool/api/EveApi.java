@@ -18,7 +18,10 @@ import java.util.logging.Logger;
 
 import uk.co.md87.evetool.api.io.ApiDownloader;
 import uk.co.md87.evetool.api.io.DBCache;
+import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
+import uk.co.md87.evetool.api.parser.ApiResult;
+import uk.co.md87.evetool.api.wrappers.CharacterList;
 
 /**
  *
@@ -56,6 +59,29 @@ public class EveApi {
     public void setUserID(String userID) {
         this.userID = userID;
         downloader.setUserID(userID);
+    }
+
+    public ApiResponse<CharacterList> getCharacterList() {
+        return getResponse("/account/Characters.xml.aspx", CharacterList.class, true, false);
+    }
+
+    protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,
+            final boolean needKey, final boolean needChar) {
+        // TODO: Require userid + apikey
+        final ApiResult result = downloader.getPage(method, null);
+
+        if (result.wasSuccessful()) {
+            try {
+                return new ApiResponse<T>(type.getConstructor(ApiElement.class)
+                        .newInstance(result.getResultElement()), result);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, "Unable to create response object", ex);
+            }
+
+            return null;
+        } else {
+            return new ApiResponse<T>(result.getError(), result);
+        }
     }
 
     // TODO: Abstract db maintenance
