@@ -5,14 +5,17 @@
 
 package uk.co.md87.evetool.api.io;
 
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.rowset.serial.SerialClob;
 
 /**
  *
@@ -43,7 +46,7 @@ public class DBCache implements ApiCache {
             prepCheck = conn.prepareStatement("SELECT pc_cacheduntil FROM "
                     + "PageCache WHERE pc_method = ? AND pc_args = ?");
             prepRetrieve = conn.prepareStatement("SELECT pc_cachedat, "
-                    + "pc_cacheduntil, pc_data) FROM PageCache WHERE "
+                    + "pc_cacheduntil, pc_data FROM PageCache WHERE "
                     + "pc_method = ? AND pc_args = ?");
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error preparing statements", ex);
@@ -60,18 +63,18 @@ public class DBCache implements ApiCache {
                 
                 prepInsert.setString(1, method);
                 prepInsert.setString(2, Downloader.encodeArguments(args));
-                prepInsert.setDate(3, new Date(System.currentTimeMillis()));
-                prepInsert.setDate(4, new Date(cacheUntil));
-                prepInsert.setString(5, data);
+                prepInsert.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                prepInsert.setTimestamp(4, new Timestamp(cacheUntil));
+                prepInsert.setClob(5, new SerialClob(data.toCharArray()));
                 prepInsert.executeUpdate();
             } else {
                 // The page has been requested before, but has been updated.
 
                 prepUpdate.setString(4, method);
                 prepUpdate.setString(5, Downloader.encodeArguments(args));
-                prepUpdate.setDate(1, new Date(System.currentTimeMillis()));
-                prepUpdate.setDate(2, new Date(cacheUntil));
-                prepUpdate.setString(3, data);
+                prepUpdate.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                prepUpdate.setTimestamp(2, new Timestamp(cacheUntil));
+                prepUpdate.setClob(3, new SerialClob(data.toCharArray()));
                 prepUpdate.executeUpdate();
             }
         } catch (SQLException ex) {
@@ -89,11 +92,9 @@ public class DBCache implements ApiCache {
             final ResultSet rs = prepCheck.executeQuery();
 
             if (rs.next()) {
-                if (rs.getLong("PC_CACHEDUNTIL") < System.currentTimeMillis()) {
-                    return ApiCacheStatus.EXPIRED;
-                } else {
-                    return ApiCacheStatus.CACHED;
-                }
+                return rs.getTimestamp("PC_CACHEDUNTIL")
+                        .before(new Date(System.currentTimeMillis()))
+                        ? ApiCacheStatus.EXPIRED : ApiCacheStatus.CACHED;
             } else {
                 return ApiCacheStatus.MISS;
             }
@@ -110,10 +111,11 @@ public class DBCache implements ApiCache {
             prepRetrieve.setString(1, method);
             prepRetrieve.setString(2, Downloader.encodeArguments(args));
 
-            final ResultSet rs = prepCheck.executeQuery();
+            final ResultSet rs = prepRetrieve.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("PC_DATA");
+                final Clob clob = rs.getClob("PC_DATA");
+                return clob.getSubString(1, (int) clob.length());
             } else {
                 LOGGER.log(Level.WARNING, "No cache result for " + method);
                 return null;

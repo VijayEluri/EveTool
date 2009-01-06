@@ -40,6 +40,7 @@ public class EveApi {
     }
 
     // TODO: Abstract db maintenance
+    // TODO: Version tables somehow
     protected void createTable(final String table) {
         LOGGER.log(Level.FINE, "Creating table " + table);
         final StringBuilder sql = new StringBuilder();
