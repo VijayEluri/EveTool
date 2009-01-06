@@ -28,7 +28,7 @@ public class DBCache implements ApiCache {
     private PreparedStatement prepInsert = null;
     private PreparedStatement prepUpdate = null;
     private PreparedStatement prepCheck = null;
-    // TODO: Statement for retrieving cache
+    private PreparedStatement prepRetrieve = null;
 
     public DBCache(final Connection conn) {
         this.conn = conn;
@@ -42,6 +42,9 @@ public class DBCache implements ApiCache {
                     + "pc_method = ? AND pc_args = ?");
             prepCheck = conn.prepareStatement("SELECT pc_cacheduntil FROM "
                     + "PageCache WHERE pc_method = ? AND pc_args = ?");
+            prepRetrieve = conn.prepareStatement("SELECT pc_cachedat, "
+                    + "pc_cacheduntil, pc_data) FROM PageCache WHERE "
+                    + "pc_method = ? AND pc_args = ?");
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error preparing statements", ex);
         }
@@ -103,8 +106,22 @@ public class DBCache implements ApiCache {
     /** {@inheritDoc} */
     @Override
     public String getCache(final String method, final Map<String, String> args) {
-        // TODO: Implement getCache
-        return null;
+        try {
+            prepRetrieve.setString(1, method);
+            prepRetrieve.setString(2, Downloader.encodeArguments(args));
+
+            final ResultSet rs = prepCheck.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("PC_DATA");
+            } else {
+                LOGGER.log(Level.WARNING, "No cache result for " + method);
+                return null;
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error checking cache status", ex);
+            return null;
+        }
     }
 
 }

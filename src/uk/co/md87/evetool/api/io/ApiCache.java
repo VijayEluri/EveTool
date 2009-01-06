@@ -25,6 +25,7 @@ public interface ApiCache {
 
     ApiCacheStatus getCacheStatus(final String method, final Map<String, String> args);
 
+    // TODO: This should return meta-data too
     String getCache(final String method, final Map<String, String> args);
 
 }
