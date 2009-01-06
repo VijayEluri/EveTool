@@ -7,6 +7,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class BasicCorpInfo {

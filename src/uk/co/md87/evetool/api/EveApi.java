@@ -25,6 +25,7 @@ import uk.co.md87.evetool.api.wrappers.CharacterList;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class EveApi {
@@ -46,17 +47,17 @@ public class EveApi {
         this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
 
-    public void setApiKey(String apiKey) {
+    public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
         downloader.setApiKey(apiKey);
     }
 
-    public void setCharID(String charID) {
+    public void setCharID(final String charID) {
         this.charID = charID;
         downloader.setCharID(charID);
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(final String userID) {
         this.userID = userID;
         downloader.setUserID(userID);
     }

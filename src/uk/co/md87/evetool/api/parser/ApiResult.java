@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class ApiResult extends ApiElement {

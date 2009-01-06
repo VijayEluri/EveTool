@@ -9,6 +9,7 @@ import uk.co.md87.evetool.api.parser.ApiResult;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class ApiResponse<T> {

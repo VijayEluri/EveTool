@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
-import uk.co.md87.evetool.api.parser.NamedApiElement;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class CharacterList extends ArrayList<BasicCharInfo> {

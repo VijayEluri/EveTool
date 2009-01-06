@@ -7,6 +7,7 @@ package uk.co.md87.evetool.api.parser;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class NamedApiElement extends ApiElement {

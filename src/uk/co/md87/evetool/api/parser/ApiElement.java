@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class ApiElement {
