@@ -22,6 +22,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
+import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 
 /**
  *
@@ -33,6 +34,8 @@ public class EveApi {
     private static final String[] TABLES = {"PageCache"};
 
     private static final Logger LOGGER = Logger.getLogger(EveApi.class.getName());
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private final Connection conn;
     private final ApiDownloader downloader;
@@ -64,6 +67,10 @@ public class EveApi {
 
     public ApiResponse<CharacterList> getCharacterList() {
         return getResponse("/account/Characters.xml.aspx", CharacterList.class, true, false);
+    }
+
+    public ApiResponse<SkillInTraining> getSkillInTraining() {
+        return getResponse("/char/SkillInTraining.xml.aspx", SkillInTraining.class, true, true);
     }
 
     protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,

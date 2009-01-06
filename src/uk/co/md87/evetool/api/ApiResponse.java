@@ -49,7 +49,10 @@ public class ApiResponse<T> {
     @Override
     public String toString() {
         return "[ApiResponse - " + (wasSuccessful() ? "success" : "failure")
-                + " - " + (wasSuccessful() ? result.toString() : error) + "]";
+                + " - " + (wasSuccessful() ? result.toString() : error)
+                + " - cached for "
+                + ((apiResult.getCachedUntil().getTime() - System.currentTimeMillis()) / 60000)
+                + " min]";
     }
 
 }

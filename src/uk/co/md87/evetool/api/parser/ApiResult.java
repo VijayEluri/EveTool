@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.co.md87.evetool.api.EveApi;
 
 /**
  *
@@ -19,8 +20,6 @@ import java.util.logging.Logger;
 public class ApiResult extends ApiElement {
 
     private static final Logger LOGGER = Logger.getLogger(ApiResult.class.getName());
-
-    protected static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     protected static final long ERROR_OFFSET = 600000;
 
@@ -43,7 +42,7 @@ public class ApiResult extends ApiElement {
             return new Date(System.currentTimeMillis());
         } else {
             try {
-                return new SimpleDateFormat(DATE_FORMAT).parse(ctElement.getContent());
+                return new SimpleDateFormat(EveApi.DATE_FORMAT).parse(ctElement.getContent());
             } catch (ParseException ex) {
                 LOGGER.log(Level.SEVERE, "Error parsing cached from date", ex);
                 return new Date(System.currentTimeMillis());
@@ -58,7 +57,7 @@ public class ApiResult extends ApiElement {
             return new Date(System.currentTimeMillis() + ERROR_OFFSET);
         } else {
             try {
-                return new SimpleDateFormat(DATE_FORMAT).parse(cuElement.getContent());
+                return new SimpleDateFormat(EveApi.DATE_FORMAT).parse(cuElement.getContent());
             } catch (ParseException ex) {
                 LOGGER.log(Level.SEVERE, "Error parsing cached until date", ex);
                 return new Date(System.currentTimeMillis() + ERROR_OFFSET);
