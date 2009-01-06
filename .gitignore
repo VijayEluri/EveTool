@@ -1,4 +1,4 @@
-db
-build
-derby.log
-dist
+/db
+/build
+/derby.log
+/dist
