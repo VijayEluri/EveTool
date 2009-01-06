@@ -21,4 +21,15 @@ public class NamedApiElement extends ApiElement {
         return name;
     }
 
+    public NamedApiElement getChild(final String name) {
+        for (ApiElement child : getChildren()) {
+            if (child instanceof NamedApiElement
+                    && name.equals(((NamedApiElement) child).getName())) {
+                return (NamedApiElement) child;
+            }
+        }
+
+        return null;
+    }
+
 }

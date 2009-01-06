@@ -31,7 +31,7 @@ public class ApiElement {
     public List<ApiElement> getChildren() {
         return children;
     }
-
+    
     public Map<String, String> getAttributes() {
         return attributes;
     }
