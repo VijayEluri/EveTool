@@ -108,10 +108,13 @@ public final class Downloader {
      * @throws java.io.IOException If there's an I/O error while downloading
      */    
     public static List<String> getPage(final String url, final Map<String, String> postData)
-            throws MalformedURLException, IOException {
-        
+            throws MalformedURLException, IOException {        
+        return getPage(url, encodeArguments(postData));
+    }
+
+    public static String encodeArguments(final Map<String, String> postData) {
         final StringBuilder data = new StringBuilder();
-        
+
         try {
             for (Map.Entry<String, String> entry : postData.entrySet()) {
                 data.append('&');
@@ -122,8 +125,8 @@ public final class Downloader {
         } catch (UnsupportedEncodingException ex) {
             // Do nothing
         }
-        
-        return getPage(url, data.length() == 0 ? "" : data.substring(1));
+
+        return data.length() == 0 ? "" : data.substring(1);
     }
     
     /**

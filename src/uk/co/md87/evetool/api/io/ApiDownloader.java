@@ -7,38 +7,47 @@ package uk.co.md87.evetool.api.io;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import uk.co.md87.evetool.api.io.ApiCache.ApiCacheStatus;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
 public class ApiDownloader {
-    
+
+    private static final Logger LOGGER = Logger.getLogger(ApiDownloader.class.getName());
+
+    private final ApiCache cache;
+
     private String userID = null;
     private String charID = null;
     private String apiKey = null;
 
-    public ApiDownloader() {
+    public ApiDownloader(final ApiCache cache) {
+        this.cache = cache;
     }
 
-    public ApiDownloader(final String userID, final String apiKey) {
+    public ApiDownloader(final ApiCache cache, final String userID, final String apiKey) {
+        this(cache);
         this.userID = userID;
         this.apiKey = apiKey;
     }
 
-    public ApiDownloader(final String userID, final String apiKey, final String charID) {
-        this.userID = userID;
-        this.apiKey = apiKey;
+    public ApiDownloader(final ApiCache cache, final String userID,
+            final String apiKey, final String charID) {
+        this(cache, userID, apiKey);
         this.charID = charID;
     }
 
-    public String getPage(final String method, final Map<String, String> args)
-            throws IOException {
+    public String getPage(final String method, final Map<String, String> args) {
         final Map<String, String> ourArgs = new HashMap<String, String>(args);
-        // TODO: Caching
 
+        // TODO: Abstract
         if (userID != null) {
             ourArgs.put("userID", userID);
         }
@@ -51,12 +60,29 @@ public class ApiDownloader {
             ourArgs.put("characterID", charID);
         }
 
-        final StringBuilder builder = new StringBuilder();
-        for (String line : Downloader.getPage(method, ourArgs)) {
-            builder.append(line);
+        final ApiCacheStatus cacheStatus = cache.getCacheStatus(method, args);
+
+        if (cacheStatus == ApiCacheStatus.CACHED) {
+            return cache.getCache(method, args);
         }
 
-        return builder.toString();
+        try {
+            final StringBuilder builder = new StringBuilder();
+            for (String line : Downloader.getPage(method, ourArgs)) {
+                builder.append(line);
+            }
+
+            cache.setCache(method, args, builder.toString(),
+                    System.currentTimeMillis() + 20000); // TODO: Proper time
+            return builder.toString();
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "API request failed", ex);
+            if (cacheStatus == ApiCacheStatus.EXPIRED) {
+                return cache.getCache(method, args);
+            } else {
+                return null;
+            }
+        }
     }
 
 }
