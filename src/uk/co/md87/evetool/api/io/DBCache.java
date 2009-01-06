@@ -8,6 +8,7 @@ package uk.co.md87.evetool.api.io;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ public class DBCache implements ApiCache {
 
     private PreparedStatement prepInsert = null;
     private PreparedStatement prepUpdate = null;
-    // TODO: Statement for retrieving cache time
+    private PreparedStatement prepCheck = null;
     // TODO: Statement for retrieving cache
 
     public DBCache(final Connection conn) {
@@ -39,6 +40,8 @@ public class DBCache implements ApiCache {
             prepUpdate = conn.prepareStatement("UPDATE PageCache SET "
                     + "pc_cachedat = ?, pc_cacheduntil = ?, pc_data = ? WHERE "
                     + "pc_method = ? AND pc_args = ?");
+            prepCheck = conn.prepareStatement("SELECT pc_cacheduntil FROM "
+                    + "PageCache WHERE pc_method = ? AND pc_args = ?");
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error preparing statements", ex);
         }
@@ -76,8 +79,25 @@ public class DBCache implements ApiCache {
     /** {@inheritDoc} */
     @Override
     public ApiCacheStatus getCacheStatus(final String method, final Map<String, String> args) {
-        // TODO: Implement getCacheStatus
-        return null;
+        try {
+            prepCheck.setString(1, method);
+            prepCheck.setString(2, Downloader.encodeArguments(args));
+
+            final ResultSet rs = prepCheck.executeQuery();
+
+            if (rs.next()) {
+                if (rs.getLong("PC_CACHEDUNTIL") < System.currentTimeMillis()) {
+                    return ApiCacheStatus.EXPIRED;
+                } else {
+                    return ApiCacheStatus.CACHED;
+                }
+            } else {
+                return ApiCacheStatus.MISS;
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error checking cache status", ex);
+            return ApiCacheStatus.MISS;
+        }
     }
 
     /** {@inheritDoc} */

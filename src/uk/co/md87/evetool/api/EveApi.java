@@ -57,7 +57,9 @@ public class EveApi {
             } while (line != null);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Error when reading SQL for table: " + table, ex);
+            return;
         }
+        
         try {
             conn.createStatement().execute(sql.toString());
         } catch (SQLException ex) {

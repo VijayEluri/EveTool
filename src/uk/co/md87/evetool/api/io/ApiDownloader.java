@@ -8,9 +8,9 @@ package uk.co.md87.evetool.api.io;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import uk.co.md87.evetool.api.io.ApiCache.ApiCacheStatus;
 
 /**
@@ -21,6 +21,8 @@ import uk.co.md87.evetool.api.io.ApiCache.ApiCacheStatus;
 public class ApiDownloader {
 
     private static final Logger LOGGER = Logger.getLogger(ApiDownloader.class.getName());
+
+    private static final String API_HOST = "http://api.eve-online.com";
 
     private final ApiCache cache;
 
@@ -68,7 +70,7 @@ public class ApiDownloader {
 
         try {
             final StringBuilder builder = new StringBuilder();
-            for (String line : Downloader.getPage(method, ourArgs)) {
+            for (String line : Downloader.getPage(getUrl(method), ourArgs)) {
                 builder.append(line);
             }
 
@@ -83,6 +85,10 @@ public class ApiDownloader {
                 return null;
             }
         }
+    }
+
+    protected static String getUrl(final String method) {
+        return API_HOST + method;
     }
 
 }
