@@ -69,27 +69,16 @@ public class ApiDownloader {
 
         final CacheStatus cacheStatus = cache.getCacheStatus(method, args);
 
-        if (cacheStatus == CacheStatus.HIT) {
-            return cache.getCache(method, args);
-        }
-
-        try {
-            final StringBuilder builder = new StringBuilder();
-            for (String line : Downloader.getPage(getUrl(method), ourArgs)) {
-                builder.append(line);
-            }
-
-            cache.setCache(method, args, builder.toString(),
-                    System.currentTimeMillis() + 20000); // TODO: Proper time
-            return cache.getCache(method, args);
-        } catch (IOException ex) {
-            LOGGER.log(Level.WARNING, "API request failed", ex);
-            if (cacheStatus == CacheStatus.EXPIRED) {
-                return cache.getCache(method, args);
-            } else {
-                return null;
+        if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
+            try {
+                cache.setCache(method, args, Downloader.getPage(getUrl(method), ourArgs),
+                        System.currentTimeMillis() + 20000); // TODO: Proper time
+            } catch (IOException ex) {
+                LOGGER.log(Level.WARNING, "API request failed", ex);
             }
         }
+
+        return cache.getCache(method, args);
     }
 
     protected static String getUrl(final String method) {

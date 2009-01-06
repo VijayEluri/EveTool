@@ -8,6 +8,7 @@ package uk.co.md87.evetool.api.parser;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;

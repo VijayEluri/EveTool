@@ -58,7 +58,7 @@ public final class Downloader {
      * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url)
+    public static String getPage(final String url)
             throws MalformedURLException, IOException {
         
         return getPage(url, "");
@@ -66,17 +66,18 @@ public final class Downloader {
 
     /**
      * Retrieves the specified page, sending the specified post data.
-     * 
+     *
+     * TODO: Update
      * @param url The URL to retrieve
      * @param postData The raw POST data to send
      * @return A list of lines received from the server
      * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */    
-    public static List<String> getPage(final String url, final String postData)
+    public static String getPage(final String url, final String postData)
             throws MalformedURLException, IOException {
         
-        final List<String> res = new ArrayList<String>();
+        final StringBuilder res = new StringBuilder();
         
         final URLConnection urlConn = getConnection(url, postData);
         
@@ -89,25 +90,26 @@ public final class Downloader {
             line = in.readLine();
             
             if (line != null) {
-                res.add(line);
+                res.append(line);
             }
         } while (line != null);
         
         in.close();
         
-        return res;
+        return res.toString();
     }
     
     /**
      * Retrieves the specified page, sending the specified post data.
-     * 
+     *
+     * TODO: Update
      * @param url The URL to retrieve
      * @param postData A map of post data that should be sent
      * @return A list of lines received from the server
      * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */    
-    public static List<String> getPage(final String url, final Map<String, String> postData)
+    public static String getPage(final String url, final Map<String, String> postData)
             throws MalformedURLException, IOException {        
         return getPage(url, encodeArguments(postData));
     }
