@@ -31,12 +31,30 @@ public class EveApi {
 
     private final Connection conn;
     private final ApiDownloader downloader;
+    private String userID;
+    private String charID;
+    private String apiKey;
 
     public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
         checkTables();
 
         this.downloader = new ApiDownloader(new DBCache(conn));
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+        downloader.setApiKey(apiKey);
+    }
+
+    public void setCharID(String charID) {
+        this.charID = charID;
+        downloader.setCharID(charID);
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+        downloader.setUserID(userID);
     }
 
     // TODO: Abstract db maintenance

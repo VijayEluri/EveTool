@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -41,10 +42,17 @@ public class ApiParser {
 
     @SuppressWarnings("unchecked")
     protected void addElements(final ApiElement result, final Element element) {
+        for (Attribute attr : (List<Attribute>) element.getAttributes()) {
+            result.addAttribute(attr.getName(), attr.getValue());
+        }
+
+        if (element.getChildren().isEmpty()) {
+            result.setContent(element.getTextTrim());
+        }
+
         for (Element child : (List<Element>) element.getChildren()) {
             final ApiElement apiElement = new NamedApiElement(child.getName());
             // TODO: Parse rowsets correctly
-            // TODO: Include content and attributes
             result.addChild(apiElement);
 
             addElements(apiElement, child);

@@ -81,6 +81,18 @@ public class ApiDownloader {
         return cache.getCache(method, args);
     }
 
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public void setCharID(String charID) {
+        this.charID = charID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     protected static String getUrl(final String method) {
         return API_HOST + method;
     }
