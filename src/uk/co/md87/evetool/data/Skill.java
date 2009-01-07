@@ -20,35 +20,32 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api;
+package uk.co.md87.evetool.data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.List;
+import java.util.Map;
+import uk.co.md87.evetool.api.wrappers.SkillGroup;
+import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
 /**
  *
+ * TODO: Document Skill
  * @author chris
  */
-public class EveApiTest {
+public class Skill extends SkillInfo {
 
-    private static String dbURL = "jdbc:derby:build/test-db/eveApi;create=true";
+    public Skill(final SkillGroup group, final String name, final int id,
+            final String description, final int rank,
+            final List<SkillRequirement> requirements,
+            final String primaryAttribute, final String secondaryAttribute,
+            final Map<String, String> bonuses) {
+        super(group, name, id, description, rank, requirements, primaryAttribute,
+                secondaryAttribute, bonuses);
+    }
 
-    /**
-     * Test of createTable method, of class EveApi.
-     */
-    @Test
-    public void testCreateTables() throws SQLException {
-        final Connection conn = DriverManager.getConnection(dbURL);
-
-        if (conn.getMetaData().getTables(null, null, "PAGECACHE", null).next()) {
-            conn.createStatement().execute("DROP TABLE PAGECACHE");
-        }
-        
-        final EveApi api = new EveApi(conn, new DataFactory());
-        assertTrue(conn.getMetaData().getTables(null, null, "PAGECACHE", null).next());
+    public int getSkillpointsForLevel(final int level) {        
+        return (int) Math.ceil(250 * rank * Math.pow(32, ((double) level - 1) / 2));
     }
 
 }

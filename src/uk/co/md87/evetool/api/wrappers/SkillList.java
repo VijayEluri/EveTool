@@ -24,6 +24,7 @@ package uk.co.md87.evetool.api.wrappers;
 
 import java.util.ArrayList;
 
+import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.parser.ApiElement;
 
 /**
@@ -33,9 +34,9 @@ import uk.co.md87.evetool.api.parser.ApiElement;
  */
 public class SkillList extends ArrayList<SkillGroup> {
 
-    public SkillList(final ApiElement resultElement) {
+    public SkillList(final ApiElement resultElement, final DataFactory df) {
         for (ApiElement row : resultElement.getRowset("skillGroups").getChildren()) {
-            add(new SkillGroup(row));
+            add(new SkillGroup(row, df));
         }
     }
 

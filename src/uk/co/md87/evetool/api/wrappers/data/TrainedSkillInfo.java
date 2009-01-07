@@ -24,16 +24,16 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 /**
  *
- * TODO: Document TrainedSkill
+ * TODO: Document TrainedSkillInfo
  * @author chris
  */
-public class TrainedSkill {
+public class TrainedSkillInfo {
 
     private final int id;
     private final int level;
     private final int skillpoints;
 
-    public TrainedSkill(int id, int level, int skillpoints) {
+    public TrainedSkillInfo(final int id, final int level, final int skillpoints) {
         this.id = id;
         this.level = level;
         this.skillpoints = skillpoints;

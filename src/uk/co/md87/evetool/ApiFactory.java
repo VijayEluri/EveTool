@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.EveApi;
 
 /**
@@ -62,7 +63,7 @@ public class ApiFactory {
      * @return An instance of the EVE API.
      */
     public static EveApi getApi() {
-        return new EveApi(createConnection());
+        return new EveApi(createConnection(), new DataFactory());
     }
 
 }

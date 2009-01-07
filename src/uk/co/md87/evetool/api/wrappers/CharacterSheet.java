@@ -27,13 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.Attribute;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCloneInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
 import uk.co.md87.evetool.api.wrappers.data.Implant;
-import uk.co.md87.evetool.api.wrappers.data.TrainedSkill;
+import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 
 /**
  *
@@ -49,12 +50,12 @@ public class CharacterSheet {
     private final double balance;
     private final List<Implant> implants;
     private final Map<Attribute, Integer> attributes;
-    private final List<TrainedSkill> skills;
+    private final List<TrainedSkillInfo> skills;
     private final List<Integer> certificates;
 
     private final BasicCharInfo charInfo;
 
-    public CharacterSheet(final ApiElement resultElement) {
+    public CharacterSheet(final ApiElement resultElement, final DataFactory df) {
         super();
 
         this.race = resultElement.getChild("race").getContent();
@@ -71,7 +72,7 @@ public class CharacterSheet {
         this.attributes = new HashMap<Attribute, Integer>();
         // TODO: Attributes
 
-        this.skills = new ArrayList<TrainedSkill>();
+        this.skills = new ArrayList<TrainedSkillInfo>();
         parseSkills(resultElement.getRowset("skills"));
 
         this.certificates = new ArrayList<Integer>();
@@ -94,7 +95,7 @@ public class CharacterSheet {
             final int id = Integer.parseInt(row.getAttributes().get("typeID"));
             final int level = Integer.parseInt(row.getAttributes().get("level"));
             final int sp = Integer.parseInt(row.getAttributes().get("skillpoints"));
-            skills.add(new TrainedSkill(id, level, sp));
+            skills.add(new TrainedSkillInfo(id, level, sp));
         }
     }
 
@@ -145,7 +146,7 @@ public class CharacterSheet {
         return race;
     }
 
-    public List<TrainedSkill> getSkills() {
+    public List<TrainedSkillInfo> getSkills() {
         return skills;
     }
 

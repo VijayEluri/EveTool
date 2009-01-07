@@ -20,35 +20,34 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api;
+package uk.co.md87.evetool.data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.List;
+import java.util.Map;
+
+import uk.co.md87.evetool.api.DataFactory;
+import uk.co.md87.evetool.api.wrappers.SkillGroup;
+import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
 /**
+ * An enhanced {@link DataFactory} which provides concrete classes from the
+ * <code>data</code> package, which contain extra functionality for use in
+ * the program.
  *
  * @author chris
  */
-public class EveApiTest {
+public class EnhancedDataFactory extends DataFactory {
 
-    private static String dbURL = "jdbc:derby:build/test-db/eveApi;create=true";
-
-    /**
-     * Test of createTable method, of class EveApi.
-     */
-    @Test
-    public void testCreateTables() throws SQLException {
-        final Connection conn = DriverManager.getConnection(dbURL);
-
-        if (conn.getMetaData().getTables(null, null, "PAGECACHE", null).next()) {
-            conn.createStatement().execute("DROP TABLE PAGECACHE");
-        }
-        
-        final EveApi api = new EveApi(conn, new DataFactory());
-        assertTrue(conn.getMetaData().getTables(null, null, "PAGECACHE", null).next());
+    /** {@inheritDoc} */
+    @Override
+    public SkillInfo getSkillInfo(final SkillGroup group, final String name,
+            final int id, final String description, final int rank,
+            final List<SkillRequirement> requirements,
+            final String primaryAttribute, final String secondaryAttribute,
+            final Map<String, String> bonuses) {
+        return new Skill(group, name, id, description, rank, requirements,
+                primaryAttribute, secondaryAttribute, bonuses);
     }
 
 }

@@ -22,33 +22,27 @@
 
 package uk.co.md87.evetool.api;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.List;
+import java.util.Map;
+import uk.co.md87.evetool.api.wrappers.SkillGroup;
+import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
 /**
  *
+ * TODO: Document DataFactory
+ * TODO: Add other data classes
  * @author chris
  */
-public class EveApiTest {
+public class DataFactory {
 
-    private static String dbURL = "jdbc:derby:build/test-db/eveApi;create=true";
-
-    /**
-     * Test of createTable method, of class EveApi.
-     */
-    @Test
-    public void testCreateTables() throws SQLException {
-        final Connection conn = DriverManager.getConnection(dbURL);
-
-        if (conn.getMetaData().getTables(null, null, "PAGECACHE", null).next()) {
-            conn.createStatement().execute("DROP TABLE PAGECACHE");
-        }
-        
-        final EveApi api = new EveApi(conn, new DataFactory());
-        assertTrue(conn.getMetaData().getTables(null, null, "PAGECACHE", null).next());
+    public SkillInfo getSkillInfo(final SkillGroup group, final String name,
+            final int id, final String description, final int rank,
+            final List<SkillRequirement> requirements,
+            final String primaryAttribute, final String secondaryAttribute,
+            final Map<String, String> bonuses) {
+        return new SkillInfo(group, name, id, description, rank, requirements,
+                primaryAttribute, secondaryAttribute, bonuses);
     }
 
 }

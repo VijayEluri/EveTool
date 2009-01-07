@@ -28,10 +28,10 @@ import uk.co.md87.evetool.api.wrappers.SkillGroup;
 
 /**
  *
- * TODO: Document Skill
+ * TODO: Document SkillInfo
  * @author chris
  */
-public class Skill {
+public class SkillInfo {
 
     protected final SkillGroup group;
     protected final String name;
@@ -43,7 +43,7 @@ public class Skill {
     protected final String secondaryAttribute;
     protected final Map<String, String> bonuses;
 
-    public Skill(final SkillGroup group, final String name, final int id,
+    public SkillInfo(final SkillGroup group, final String name, final int id,
             final String description, final int rank,
             final List<SkillRequirement> requirements,
             final String primaryAttribute, final String secondaryAttribute,
