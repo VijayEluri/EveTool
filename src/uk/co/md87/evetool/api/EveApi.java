@@ -39,6 +39,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
+import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
 
@@ -124,6 +125,16 @@ public class EveApi {
      */
     public ApiResponse<CharacterList> getCharacterList() {
         return getResponse("/account/Characters.xml.aspx", CharacterList.class, true, false);
+    }
+
+    /**
+     * Retrieves the character sheet for the specified character.
+     * Requires a limited API key, user ID and character ID.
+     *
+     * @return The character's extended information
+     */
+    public ApiResponse<CharacterSheet> getCharacterSheet() {
+        return getResponse("/char/CharacterSheet.xml.aspx", CharacterSheet.class, true, true);
     }
 
     /**

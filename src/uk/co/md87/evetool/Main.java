@@ -51,9 +51,7 @@ public class Main {
         api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
         api.setUserID("403848");
         api.setCharID("113499922");
-        System.out.println(api.getCharacterList());
-        System.out.println(api.getSkillInTraining());
-        System.out.println(api.getSkillTree());
+        System.out.println(api.getCharacterSheet());
     }
 
 }

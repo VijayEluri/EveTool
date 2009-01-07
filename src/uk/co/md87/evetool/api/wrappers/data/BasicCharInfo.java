@@ -33,7 +33,7 @@ public class BasicCharInfo {
     private final int id;
     private final BasicCorpInfo corp;
 
-    public BasicCharInfo(String name, int id, BasicCorpInfo corp) {
+    public BasicCharInfo(final String name, final int id, final BasicCorpInfo corp) {
         this.name = name;
         this.id = id;
         this.corp = corp;
