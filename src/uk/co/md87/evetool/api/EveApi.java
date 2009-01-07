@@ -43,24 +43,42 @@ import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
 
 /**
+ * Allows access to the EVE Api (see http://api.eve-online.com/).
  *
- * TODO: Document
  * @author chris
  */
 public class EveApi {
 
+    /** SQL tables required by the API. */
     private static final String[] TABLES = {"PageCache"};
 
+    /** Logger to use for this class. */
     private static final Logger LOGGER = Logger.getLogger(EveApi.class.getName());
 
+    /** Date format for dates returned by the API. */
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    /** The database connection to use. */
     private final Connection conn;
+
+    /** The downloader to use. */
     private final ApiDownloader downloader;
+    
+    /** The client's user ID, if specified. */
     private String userID;
+
+    /** The client's character ID, if specified. */
     private String charID;
+
+    /** The client's API key, if specified. */
     private String apiKey;
 
+    /**
+     * Creates a new instance of the EVE API client using the specified database
+     * connection.
+     *
+     * @param sqlConnection A connection to a database to use
+     */
     public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
         checkTables();
@@ -68,33 +86,77 @@ public class EveApi {
         this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
 
+    /**
+     * Sets the API key used by this client.
+     *
+     * @param apiKey The user's API key
+     */
     public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
         downloader.setApiKey(apiKey);
     }
 
+    /**
+     * Sets the character ID used by this client.
+     *
+     * @param charID The user's chosen character ID
+     */
     public void setCharID(final String charID) {
         this.charID = charID;
         downloader.setCharID(charID);
     }
 
+    /**
+     * Sets the user ID used by this client.
+     *
+     * @param userID The user's user ID
+     */
     public void setUserID(final String userID) {
         this.userID = userID;
         downloader.setUserID(userID);
     }
 
+    /**
+     * Retrieves the character list for the user's account.
+     * Requires a limited API key and user ID.
+     *
+     * @return The user's character list
+     */
     public ApiResponse<CharacterList> getCharacterList() {
         return getResponse("/account/Characters.xml.aspx", CharacterList.class, true, false);
     }
 
+    /**
+     * Retrieves the skill that's currently in training.
+     * Requires a limited API key, user ID and character ID.
+     *
+     * @return The character's currently training skill
+     */
     public ApiResponse<SkillInTraining> getSkillInTraining() {
         return getResponse("/char/SkillInTraining.xml.aspx", SkillInTraining.class, true, true);
     }
 
+    /**
+     * Retrieves the full skill tree for EVE.
+     * Does not require an API key.
+     *
+     * @return The complete EVE skill tree
+     */
     public ApiResponse<SkillList> getSkillTree() {
         return getResponse("/eve/SkillTree.xml.aspx ", SkillList.class, false, true);
     }
 
+    /**
+     * Utility method to send a request to the API and manufacture the
+     * appropaite response objects.
+     *
+     * @param <T> The type of object that will be returned on success
+     * @param method The method (path) of the API being used
+     * @param type The class of object to return on success
+     * @param needKey Whether or not an API key is needed
+     * @param needChar Whether or not a character ID is needed
+     * @return An appropriate ApiResponse encapsulating the request
+     */
     protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,
             final boolean needKey, final boolean needChar) {
         // TODO: Require userid + apikey
@@ -116,6 +178,12 @@ public class EveApi {
 
     // TODO: Abstract db maintenance
     // TODO: Version tables somehow
+    /**
+     * Creates the table with the specified name. SQL is read from the
+     * <code>db</code> package.
+     *
+     * @param table The table to be created
+     */
     protected void createTable(final String table) {
         LOGGER.log(Level.FINE, "Creating table " + table);
         final StringBuilder sql = new StringBuilder();
@@ -143,6 +211,12 @@ public class EveApi {
         }
     }
 
+    /**
+     * Checks to ensure that all required tables exist. If any table is missing,
+     * it will be created.
+     *
+     * @see #createTable(java.lang.String)
+     */
     protected void checkTables() {
         LOGGER.log(Level.FINEST, "Checking that tables exist");
 
@@ -157,6 +231,11 @@ public class EveApi {
         LOGGER.log(Level.FINEST, "Done checking tables");
     }
 
+    /**
+     * Retrieves a list of tables that exist in the database.
+     *
+     * @return A list of table names that exist
+     */
     protected List<String> getTables() {
         final List<String> tables = new ArrayList<String>();
 
