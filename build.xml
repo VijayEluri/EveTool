@@ -72,10 +72,10 @@
 
     -->
 
-    <target name="-pre-init">
+    <target name="-post-compile">
         <exec dir="." executable="/bin/bash">
             <arg value="-c"/>
-            <arg value="git-describe --tags >src/uk/co/md87/evetool/version.txt"/>
+            <arg value="git-describe --tags >build/classes/uk/co/md87/evetool/version.txt"/>
         </exec>
     </target>
 </project>
