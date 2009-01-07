@@ -39,7 +39,7 @@ import net.miginfocom.swing.MigLayout;
 public class MainWindow extends JFrame {
 
     public MainWindow() throws HeadlessException {
-        super("EVE Tool");
+        super("EVE Tool - Loading Character");
         
         setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
                 "[fill,grow]0[]"));
@@ -56,7 +56,7 @@ public class MainWindow extends JFrame {
     }
 
     protected void addComponents() {
-        add(new MenuPanel(), "width 200!");
+        add(new MenuPanel(), "width 201!");
         add(new ContentPanel());
         add(new StatusPanel(), "growx, span, height 30!");
     }

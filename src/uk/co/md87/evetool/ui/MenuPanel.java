@@ -23,7 +23,16 @@
 package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -36,10 +45,18 @@ import net.miginfocom.swing.MigLayout;
 public class MenuPanel extends JPanel {
 
     public MenuPanel() {
-        super(new MigLayout());
+        super(new MigLayout("wrap 1, fillx, ins 4 0 0 0"));
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
         setBackground(Color.GRAY);
+        
+        try {
+            add(new JLabel(new ImageIcon(ImageIO.read(
+                    new URL("http://img.eve.is/serv.asp?s=256&c=113499922")))),
+                    "height 192!, width 192!, gap 4");
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
