@@ -24,10 +24,25 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 /**
  *
- * TODO: Implement TrainedSkill
  * TODO: Document TrainedSkill
  * @author chris
  */
 public class TrainedSkill {
+
+    private final int id;
+    private final int level;
+    private final int skillpoints;
+
+    public TrainedSkill(int id, int level, int skillpoints) {
+        this.id = id;
+        this.level = level;
+        this.skillpoints = skillpoints;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return "[" + id + " @ " + skillpoints + " (lvl " + level + ")]";
+    }
 
 }

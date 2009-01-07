@@ -60,28 +60,52 @@ public class CharacterSheet {
         this.race = resultElement.getChild("race").getContent();
         this.bloodline = resultElement.getChild("bloodLine").getContent();
         this.gender = resultElement.getChild("gender").getContent();
+        this.balance = Double.parseDouble(resultElement.getChild("balance").getContent());
+
         this.clone = new BasicCloneInfo();
         // TODO: Clone
-        this.balance = Double.parseDouble(resultElement.getChild("balance").getContent());
+
         this.implants = new ArrayList<Implant>();
         // TODO: Implants
+
         this.attributes = new HashMap<Attribute, Integer>();
         // TODO: Attributes
+
         this.skills = new ArrayList<TrainedSkill>();
-        // TODO: Skills
+        parseSkills(resultElement.getRowset("skills"));
+
         this.certificates = new ArrayList<Integer>();
-        // TODO: Certs
+        parseCertificates(resultElement.getRowset("certificates"));
 
         final int id = Integer.parseInt(resultElement.getChild("characterID").getContent());
         final String name = resultElement.getChild("name").getContent();
 
         final String corpName = resultElement.getChild("corporationName").getContent();
-        final int corpId = Integer.parseInt(resultElement.getChild("corporationID").getContent());
+        final int corpId = Integer.parseInt(resultElement
+                .getChild("corporationID").getContent());
 
         charInfo = new BasicCharInfo(name, id, new BasicCorpInfo(corpName, corpId));
     }
 
-    protected BasicCharInfo getBasicInformation() {
+    protected void parseSkills(final ApiElement rowset) {
+        // TODO: Nice methods in ApiElement for getting [numeric] atts/children
+        // TODO: Nice way to quickly parse rowsets?
+        for (ApiElement row : rowset.getChildren()) {
+            final int id = Integer.parseInt(row.getAttributes().get("typeID"));
+            final int level = Integer.parseInt(row.getAttributes().get("level"));
+            final int sp = Integer.parseInt(row.getAttributes().get("skillpoints"));
+            skills.add(new TrainedSkill(id, level, sp));
+        }
+    }
+
+    protected void parseCertificates(final ApiElement rowset) {
+        for (ApiElement row : rowset.getChildren()) {
+            final int id = Integer.parseInt(row.getAttributes().get("certificateID"));
+            certificates.add(id);
+        }
+    }
+
+    public BasicCharInfo getBasicInformation() {
         return charInfo;
     }
 
