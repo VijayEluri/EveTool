@@ -49,10 +49,10 @@ public class OverviewPage extends JPanel {
         setLayout(new MigLayout("fillx"));
         add(new JLabel("Account 1 - 403848"), "span, wrap");
 
-        final JPanel panel = new JPanel(new MigLayout());
-        panel.add(new JLabel("Loading..."));
+        final JPanel panel = new JPanel(new MigLayout(" fillx", "[|fill,grow|fill,grow]"));
+        panel.add(new JLabel("Loading..."), "span");
         panels.put("Account 1", panel);
-        add(panel, "wrap");
+        add(panel, "growx, wrap");
 
         new AccountUpdateWorker("Account 1",this).execute();
     }

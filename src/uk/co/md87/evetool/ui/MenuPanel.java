@@ -48,12 +48,13 @@ public class MenuPanel extends JPanel {
 
         final JLabel label = new JLabel("Loading...");
         add(label, "height 192!, width 192!");
-        new PortraitLoaderWorker(113499922, label).execute();
 
         add(new MenuButton("Overview"), "growx");
         add(new MenuButton("Skills"), "growx");
         add(new MenuButton("Assets"), "growx");
         add(new MenuButton("Settings"), "growx");
+
+        new PortraitLoaderWorker(113499922, label, 192).execute();
     }
 
 }

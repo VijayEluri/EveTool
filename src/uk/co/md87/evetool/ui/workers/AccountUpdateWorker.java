@@ -68,13 +68,13 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     final JLabel portrait = new JLabel("Loading...");
 
                     overview.getPanels().get(account)
-                            .add(portrait, "spany 2, height 64!, width 64!");
+                            .add(portrait, "spany 1, height 64!, width 64!");
                     overview.getPanels().get(account)
-                            .add(new JLabel(character.getName()), "wrap");
+                            .add(new JLabel(character.getName()));
                     overview.getPanels().get(account)
-                            .add(new JLabel(character.getCorp().getName()), "wrap");
+                            .add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
 
-                    new PortraitLoaderWorker(character.getId(), portrait).execute();
+                    new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
                 }
             } else {
                 overview.getPanels().get(account).removeAll();
