@@ -36,7 +36,7 @@ public class ContentPanel extends JPanel {
     public ContentPanel() {
         super(new MigLayout());
 
-        setBackground(Color.BLUE);
+        //setBackground(Color.BLUE);
         add(new JLabel("Main content", JLabel.CENTER), "push, grow");
     }
 

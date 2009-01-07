@@ -24,6 +24,10 @@ package uk.co.md87.evetool.ui;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 
@@ -36,13 +40,19 @@ public class MainWindow extends JFrame {
 
     public MainWindow() throws HeadlessException {
         super("EVE Tool");
-
-        setLayout(new MigLayout("insets 0, fill, wrap 2",
-                "[]0[fill,grow]", "[fill,grow]0[]"));
+        
+        setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
+                "[fill,grow]0[]"));
         addComponents();
         setMinimumSize(new Dimension(300, 300));
-        setPreferredSize(new Dimension(800, 600));
+        setSize(new Dimension(800, 600));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        try {
+            setIconImage(ImageIO.read(getClass().getResource("res/icon.png")));
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     protected void addComponents() {

@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -33,11 +34,19 @@ import net.miginfocom.swing.MigLayout;
  */
 public class StatusPanel extends JPanel {
 
+    private final JLabel leftLabel;
+    private final JLabel rightLabel;
+
     public StatusPanel() {
         super(new MigLayout());
 
-        setBackground(Color.GREEN);
-        add(new JLabel("Status information", JLabel.CENTER), "push, grow");
+        leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
+        rightLabel = new JLabel("No skill training", JLabel.RIGHT);
+
+        setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
+        setBackground(Color.GRAY);
+        add(leftLabel, "push, grow");
+        add(rightLabel, "push, grow");
     }
 
 }

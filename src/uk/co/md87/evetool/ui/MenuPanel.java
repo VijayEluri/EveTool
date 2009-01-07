@@ -23,8 +23,9 @@
 package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -37,8 +38,8 @@ public class MenuPanel extends JPanel {
     public MenuPanel() {
         super(new MigLayout());
 
-        setBackground(Color.RED);
-        add(new JLabel("Menu + char portraits", JLabel.CENTER), "push, grow");
+        setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
+        setBackground(Color.GRAY);
     }
 
 }
