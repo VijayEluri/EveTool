@@ -20,49 +20,26 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui;
+package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import net.miginfocom.swing.MigLayout;
-import uk.co.md87.evetool.ui.components.MenuButton;
+import javax.swing.JToggleButton;
 
 /**
  *
- * TODO: Document
  * @author chris
  */
-public class MenuPanel extends JPanel {
+public class MenuButton extends JToggleButton {
 
-    public MenuPanel() {
-        super(new MigLayout("wrap 1, fillx, ins 4"));
+    public MenuButton(final String text) {
+        super(text);
 
-        setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
+        setMinimumSize(new Dimension(0, 25));
         setBackground(Color.GRAY);
-        
-        try {
-            add(new JLabel(new ImageIcon(ImageIO.read(
-                    new URL("http://img.eve.is/serv.asp?s=256&c=113499922")))),
-                    "height 192!, width 192!");
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        add(new MenuButton("Overview"), "growx");
-        add(new MenuButton("Skills"), "growx");
-        add(new MenuButton("Assets"), "growx");
-        add(new MenuButton("Settings"), "growx");
+        setFocusPainted(false);
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY.brighter()));
     }
 
 }

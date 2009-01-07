@@ -22,6 +22,7 @@
 
 package uk.co.md87.evetool.ui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,10 +35,11 @@ import net.miginfocom.swing.MigLayout;
 public class ContentPanel extends JPanel {
 
     public ContentPanel() {
-        super(new MigLayout());
+        super(new CardLayout());
 
         //setBackground(Color.BLUE);
         add(new JLabel("Main content", JLabel.CENTER), "push, grow");
+        add(new JLabel("Main content2", JLabel.CENTER), "push, grow");
     }
 
 }
