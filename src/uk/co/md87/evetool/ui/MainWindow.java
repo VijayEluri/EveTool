@@ -20,40 +20,35 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool;
+package uk.co.md87.evetool.ui;
 
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import uk.co.md87.evetool.api.EveApi;
-import uk.co.md87.evetool.ui.MainWindow;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import javax.swing.JFrame;
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
-public class Main {
+public class MainWindow extends JFrame {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Logger.getLogger("uk").setLevel(Level.ALL);
+    public MainWindow() throws HeadlessException {
+        super("EVE Tool");
 
-        for (Handler handler : Logger.getLogger("").getHandlers()) {
-            handler.setLevel(Level.ALL);
-        }
+        setLayout(new MigLayout("insets 0, fill, wrap 2",
+                "[]0[fill,grow]", "[fill,grow]0[]"));
+        addComponents();
+        setMinimumSize(new Dimension(300, 300));
+        setPreferredSize(new Dimension(800, 600));
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
 
-        new MainWindow().setVisible(true);
-        
-        final EveApi api = ApiFactory.getApi();
-        api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
-        api.setUserID("403848");
-        api.setCharID("113499922");
-        System.out.println(api.getCharacterList());
-        System.out.println(api.getSkillInTraining());
-        System.out.println(api.getSkillTree());
+    protected void addComponents() {
+        add(new MenuPanel(), "width 200!");
+        add(new ContentPanel());
+        add(new StatusPanel(), "growx, span, height 30!");
     }
 
 }

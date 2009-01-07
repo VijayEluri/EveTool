@@ -20,40 +20,24 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool;
+package uk.co.md87.evetool.ui;
 
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import uk.co.md87.evetool.api.EveApi;
-import uk.co.md87.evetool.ui.MainWindow;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
  * @author chris
  */
-public class Main {
+public class StatusPanel extends JPanel {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Logger.getLogger("uk").setLevel(Level.ALL);
+    public StatusPanel() {
+        super(new MigLayout());
 
-        for (Handler handler : Logger.getLogger("").getHandlers()) {
-            handler.setLevel(Level.ALL);
-        }
-
-        new MainWindow().setVisible(true);
-        
-        final EveApi api = ApiFactory.getApi();
-        api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
-        api.setUserID("403848");
-        api.setCharID("113499922");
-        System.out.println(api.getCharacterList());
-        System.out.println(api.getSkillInTraining());
-        System.out.println(api.getSkillTree());
+        setBackground(Color.GREEN);
+        add(new JLabel("Status information", JLabel.CENTER), "push, grow");
     }
 
 }
