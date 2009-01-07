@@ -24,7 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
 import java.util.Map;
-import uk.co.md87.evetool.api.wrappers.SkillGroup;
+import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 
 /**
  *
@@ -57,6 +57,10 @@ public class SkillInfo {
         this.primaryAttribute = primaryAttribute;
         this.secondaryAttribute = secondaryAttribute;
         this.bonuses = bonuses;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getSkillpointsForLevel(final int level) {

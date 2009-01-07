@@ -22,11 +22,14 @@
 
 package uk.co.md87.evetool;
 
+import java.util.Collections;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import uk.co.md87.evetool.api.EveApi;
+import uk.co.md87.evetool.api.wrappers.CharacterSheet;
+import uk.co.md87.evetool.comparators.SkillByRemainingSPComparator;
 import uk.co.md87.evetool.ui.MainWindow;
 
 /**
@@ -51,7 +54,11 @@ public class Main {
         api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
         api.setUserID("403848");
         api.setCharID("113499922");
-        System.out.println(api.getCharacterSheet().getResult().getCertificates());
+
+        final CharacterSheet cs = api.getCharacterSheet().getResult();
+        cs.associateSkills(api.getSkillTree().getResult());
+        Collections.sort(cs.getSkills(), new SkillByRemainingSPComparator(true));
+        System.out.println(cs.getSkills());
     }
 
 }

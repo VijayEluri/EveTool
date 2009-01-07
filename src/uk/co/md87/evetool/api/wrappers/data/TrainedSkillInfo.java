@@ -23,26 +23,104 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 /**
- *
- * TODO: Document TrainedSkillInfo
+ * Represents a skill that has been trained by a player.
+ * 
  * @author chris
  */
 public class TrainedSkillInfo {
 
+    /** The information for this skill, if it has been associated. */
+    private SkillInfo skill;
+
+    /** The ID of the skill. */
     private final int id;
+    /** The level the skill is trained to. */
     private final int level;
+    /** The current number of skill points. */
     private final int skillpoints;
 
+    /**
+     * Creates a new TrainedSkillInfo with the specified ID, level and number
+     * of skill points.
+     *
+     * @param id The ID of the skill
+     * @param level The level the skill is trained to
+     * @param skillpoints The current number of skill points
+     */
     public TrainedSkillInfo(final int id, final int level, final int skillpoints) {
         this.id = id;
         this.level = level;
         this.skillpoints = skillpoints;
     }
 
+    /**
+     * Retrieve the ID of this skill.
+     *
+     * @return This skill's ID
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Retrieves the total number of skillpoints trained for this skill.
+     *
+     * @return This skill's number of skillpoints
+     */
+    public int getSP() {
+        return skillpoints;
+    }
+
+    /**
+     * Associates the specified {@link SkillInfo} object with this skill.
+     *
+     * @param skill The corresponding {@link SkillInfo} object
+     */
+    public void setSkill(final SkillInfo skill) {
+        this.skill = skill;
+    }
+
+    /**
+     * Determines whether or not this skill can be trained further.
+     *
+     * @return True if the skill can be trained fruther, false otherwise
+     */
+    public boolean canTrainFurther() {
+        return level < 5;
+    }
+
+    /**
+     * Retrieves the level that this skill will be trained to next.
+     *
+     * @return The next trainable level
+     */
+    public int getNextLevel() {
+        return level + 1;
+    }
+
+    /**
+     * Calculates the number of skillpoints needed for the next level.
+     *
+     * @return The total number of skillpoints for the next level.
+     */
+    public int getSPForNextLevel() {
+        return skill.getSkillpointsForLevel(getNextLevel());
+    }
+
+    /**
+     * Calculates the number of extra skillpoints needed for the next level.
+     *
+     * @return The number of SP that need to be attained to level up.
+     */
+    public int getExtraSPForNextLevel() {
+        return getSPForNextLevel() - getSP();
+    }
+
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return "[" + id + " @ " + skillpoints + " (lvl " + level + ")]";
+        return "[" + id + " @ " + skillpoints + " (lvl " + level + ")"
+                + (skill == null ? "" : " -- " + skill) + "]";
     }
 
 }

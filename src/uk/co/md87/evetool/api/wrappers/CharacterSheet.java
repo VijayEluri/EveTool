@@ -87,6 +87,12 @@ public class CharacterSheet {
         charInfo = new BasicCharInfo(name, id, new BasicCorpInfo(corpName, corpId));
     }
 
+    public void associateSkills(final SkillList skilltree) {
+        for (TrainedSkillInfo skill : skills) {
+            skill.setSkill(skilltree.getSkillById(skill.getId()));
+        }
+    }
+
     protected void parseSkills(final ApiElement rowset) {
         // TODO: Nice methods in ApiElement for getting [numeric] atts/children
         // TODO: Nice way to quickly parse rowsets?
