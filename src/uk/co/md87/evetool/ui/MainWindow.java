@@ -33,7 +33,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * TODO: Document
+ * TODO: Document MainWindow
  * @author chris
  */
 public class MainWindow extends JFrame {

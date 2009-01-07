@@ -24,7 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 /**
  *
- * TODO: Document
+ * TODO: Document SkillRequirement
  * @author chris
  */
 public class SkillRequirement {

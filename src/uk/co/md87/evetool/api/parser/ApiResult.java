@@ -31,7 +31,7 @@ import uk.co.md87.evetool.api.EveApi;
 
 /**
  *
- * TODO: Document
+ * TODO: Document ApiResult
  * @author chris
  */
 public class ApiResult extends ApiElement {

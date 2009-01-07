@@ -66,7 +66,7 @@ public final class Downloader {
     /**
      * Retrieves the specified page, sending the specified post data.
      *
-     * TODO: Update
+     * TODO: Update javadoc for Downloader#getPage
      * @param url The URL to retrieve
      * @param postData The raw POST data to send
      * @return A list of lines received from the server
@@ -101,7 +101,7 @@ public final class Downloader {
     /**
      * Retrieves the specified page, sending the specified post data.
      *
-     * TODO: Update
+     * TODO: Update javadoc for Downloader#getPage
      * @param url The URL to retrieve
      * @param postData A map of post data that should be sent
      * @return A list of lines received from the server

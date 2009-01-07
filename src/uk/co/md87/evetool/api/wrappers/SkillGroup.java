@@ -30,7 +30,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 
 /**
  *
- * TODO: Document
+ * TODO: Document SkillGroup
  * @author chris
  */
 public class SkillGroup extends ArrayList<Skill> {
@@ -84,7 +84,7 @@ public class SkillGroup extends ArrayList<Skill> {
     }
 
     protected Map<String, String> getBonuses(final ApiElement rowset) {
-        return null; // TODO: Implement
+        return null; // TODO: Implement getBonuses
     }
 
 }

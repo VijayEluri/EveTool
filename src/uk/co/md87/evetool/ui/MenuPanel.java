@@ -24,23 +24,23 @@ package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+
 import uk.co.md87.evetool.ui.components.MenuButton;
 
 /**
  *
- * TODO: Document
+ * TODO: Document MenuPanel
  * @author chris
  */
 public class MenuPanel extends JPanel {

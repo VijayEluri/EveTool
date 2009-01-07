@@ -28,7 +28,7 @@ import uk.co.md87.evetool.api.wrappers.SkillGroup;
 
 /**
  *
- * TODO: Document
+ * TODO: Document Skill
  * @author chris
  */
 public class Skill {

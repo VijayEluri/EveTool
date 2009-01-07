@@ -28,7 +28,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 
 /**
  *
- * TODO: Document
+ * TODO: Document SkillList
  * @author chris
  */
 public class SkillList extends ArrayList<SkillGroup> {

@@ -24,7 +24,7 @@ package uk.co.md87.evetool.api.parser;
 
 /**
  *
- * TODO: Document
+ * TODO: Document ParserException
  * @author chris
  */
 public class ParserException extends Exception {

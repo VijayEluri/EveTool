@@ -33,7 +33,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 
 /**
  *
- * TODO: Document
+ * TODO: Document SkillInTraining
  * @author chris
  */
 public class SkillInTraining {
