@@ -44,7 +44,7 @@ public class PortraitLoaderWorker extends SwingWorker<ImageIcon, Object> {
     protected void done() {
         try {
             target.setIcon(get());
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Logger.getLogger(PortraitLoaderWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

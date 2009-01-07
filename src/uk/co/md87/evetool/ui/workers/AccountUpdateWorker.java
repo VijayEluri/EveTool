@@ -81,7 +81,7 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                 overview.getPanels().get(account).add(new JLabel("Error!: " + res.getError()));
             }
             overview.getPanels().get(account).revalidate();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Logger.getLogger(OverviewPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
