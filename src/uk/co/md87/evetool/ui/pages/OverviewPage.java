@@ -20,34 +20,49 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui;
+package uk.co.md87.evetool.ui.pages;
 
-import java.awt.Color;
-import javax.swing.BorderFactory;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
-import uk.co.md87.evetool.Main;
+
+import uk.co.md87.evetool.api.EveApi;
+import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
 /**
  *
+ * TODO: Document OverviewPage
  * @author chris
  */
-public class StatusPanel extends JPanel {
+public class OverviewPage extends JPanel {
 
-    private final JLabel leftLabel;
-    private final JLabel rightLabel;
+    private final EveApi api;
+    private final Map<String, JPanel> panels = new HashMap<String, JPanel>();
 
-    public StatusPanel() {
-        super(new MigLayout());
+    public OverviewPage(final EveApi api) {
+        this.api = api;
 
-        leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
-        rightLabel = new JLabel(Main.version, JLabel.RIGHT);
+        setLayout(new MigLayout("fillx"));
+        add(new JLabel("Account 1 - 403848"), "span, wrap");
 
-        setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
-        setBackground(Color.GRAY);
-        add(leftLabel, "push, grow");
-        add(rightLabel, "push, grow");
+        final JPanel panel = new JPanel(new MigLayout());
+        panel.add(new JLabel("Loading..."));
+        panels.put("Account 1", panel);
+        add(panel, "wrap");
+
+        new AccountUpdateWorker("Account 1",this).execute();
+    }
+
+    public EveApi getApi() {
+        return api;
+    }
+
+    public Map<String, JPanel> getPanels() {
+        return panels;
     }
 
 }

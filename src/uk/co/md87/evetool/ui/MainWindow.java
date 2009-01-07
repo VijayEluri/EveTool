@@ -23,13 +23,14 @@
 package uk.co.md87.evetool.ui;
 
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
 import net.miginfocom.swing.MigLayout;
+import uk.co.md87.evetool.api.EveApi;
 
 /**
  *
@@ -38,8 +39,12 @@ import net.miginfocom.swing.MigLayout;
  */
 public class MainWindow extends JFrame {
 
-    public MainWindow() throws HeadlessException {
-        super("EVE Tool - Loading Character");
+    private final EveApi api;
+
+    public MainWindow(final EveApi api) {
+        super("EVE Tool - Initialising...");
+
+        this.api = api;
         
         setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
                 "[fill,grow]0[]"));
@@ -57,7 +62,7 @@ public class MainWindow extends JFrame {
 
     protected void addComponents() {
         add(new MenuPanel(), "width 201!");
-        add(new ContentPanel());
+        add(new ContentPanel(api));
         add(new StatusPanel(), "growx, span, height 30!");
     }
 

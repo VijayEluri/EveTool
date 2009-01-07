@@ -39,6 +39,18 @@ public class BasicCharInfo {
         this.corp = corp;
     }
 
+    public BasicCorpInfo getCorp() {
+        return corp;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "[" + name + " (" + id + ") in " + corp + "]";

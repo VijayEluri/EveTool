@@ -84,7 +84,7 @@ public class ApiDownloader {
         }
     }
 
-    public ApiResult getPage(final String method, final Map<String, String> args) {
+    public synchronized ApiResult getPage(final String method, final Map<String, String> args) {
         final Map<String, String> ourArgs = new HashMap<String, String>();
 
         if (args != null) {

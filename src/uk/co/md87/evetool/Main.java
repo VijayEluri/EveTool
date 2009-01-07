@@ -54,18 +54,13 @@ public class Main {
         for (Handler handler : Logger.getLogger("").getHandlers()) {
             handler.setLevel(Level.ALL);
         }
-
-        new MainWindow().setVisible(true);
         
         final EveApi api = ApiFactory.getApi();
         api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
         api.setUserID("403848");
         api.setCharID("113499922");
 
-        final CharacterSheet cs = api.getCharacterSheet().getResult();
-        cs.associateSkills(api.getSkillTree().getResult());
-        Collections.sort(cs.getSkills(), new SkillByRemainingSPComparator(true));
-        System.out.println(cs.getSkills());
+        new MainWindow(api).setVisible(true);
     }
 
     protected static void readVersion() {
