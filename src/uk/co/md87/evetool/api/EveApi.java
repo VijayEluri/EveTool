@@ -40,6 +40,7 @@ import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
+import uk.co.md87.evetool.api.wrappers.SkillList;
 
 /**
  *
@@ -88,6 +89,10 @@ public class EveApi {
 
     public ApiResponse<SkillInTraining> getSkillInTraining() {
         return getResponse("/char/SkillInTraining.xml.aspx", SkillInTraining.class, true, true);
+    }
+
+    public ApiResponse<SkillList> getSkillTree() {
+        return getResponse("/eve/SkillTree.xml.aspx ", SkillList.class, false, true);
     }
 
     protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,

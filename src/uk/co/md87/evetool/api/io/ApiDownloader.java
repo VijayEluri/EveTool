@@ -99,7 +99,9 @@ public class ApiDownloader {
             try {
                 final String page = Downloader.getPage(getUrl(method), ourArgs);
                 final ApiResult res = parser.parseResult(page);
+                
                 cache.setCache(method, ourArgs, page, res.getCachedUntil().getTime());
+                // TODO: Time should be converted from GMT
 
                 return res;
             } catch (IOException ex) {

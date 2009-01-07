@@ -20,36 +20,21 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool;
-
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.co.md87.evetool.api.EveApi;
+package uk.co.md87.evetool.api.wrappers.data;
 
 /**
  *
+ * TODO: Document
  * @author chris
  */
-public class Main {
+public class SkillRequirement {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Logger.getLogger("uk").setLevel(Level.ALL);
+    private final int skillId;
+    private final int requiredLevel;
 
-        for (Handler handler : Logger.getLogger("").getHandlers()) {
-            handler.setLevel(Level.ALL);
-        }
-        
-        final EveApi api = ApiFactory.getApi();
-        api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
-        api.setUserID("403848");
-        api.setCharID("113499922");
-        System.out.println(api.getCharacterList());
-        System.out.println(api.getSkillInTraining());
-        System.out.println(api.getSkillTree());
+    public SkillRequirement(int skillId, int requiredLevel) {
+        this.skillId = skillId;
+        this.requiredLevel = requiredLevel;
     }
 
 }

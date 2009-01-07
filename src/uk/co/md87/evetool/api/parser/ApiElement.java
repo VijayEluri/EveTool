@@ -73,4 +73,16 @@ public class ApiElement {
         return null;
     }
 
+    public ApiElement getRowset(final String name) {
+        for (ApiElement child : getChildren()) {
+            if (child instanceof NamedApiElement
+                    && "rowset".equals(((NamedApiElement) child).getName())
+                    && name.equals(child.getAttributes().get("name"))) {
+                return child;
+            }
+        }
+
+        return null;
+    }
+
 }
