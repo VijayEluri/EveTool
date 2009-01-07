@@ -22,12 +22,13 @@
 
 package uk.co.md87.evetool.api.wrappers;
 
-import uk.co.md87.evetool.api.wrappers.data.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import uk.co.md87.evetool.api.DataFactory;
+
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
 /**
  *
@@ -39,12 +40,12 @@ public class SkillGroup extends ArrayList<SkillInfo> {
     private final int id;
     private final String name;
 
-    public SkillGroup(final ApiElement rowElement, final DataFactory df) {
+    public SkillGroup(final ApiElement rowElement) {
         this.name = rowElement.getAttributes().get("groupName");
         this.id = Integer.parseInt(rowElement.getAttributes().get("groupID"));
 
         for (ApiElement row : rowElement.getChild("rowset").getChildren()) {
-            addSkill(row, df);
+            addSkill(row);
         }
     }
 
@@ -56,7 +57,7 @@ public class SkillGroup extends ArrayList<SkillInfo> {
         return name;
     }
 
-    protected void addSkill(final ApiElement row, final DataFactory df) {
+    protected void addSkill(final ApiElement row) {
         final String skillName = row.getAttributes().get("typeName");
         final int typeId = Integer.parseInt(row.getAttributes().get("typeID"));
         final String desc = row.getChild("description").getContent();
@@ -68,7 +69,7 @@ public class SkillGroup extends ArrayList<SkillInfo> {
                 .getChild("secondaryAttribute").getContent();
         final Map<String, String> bonuses = getBonuses(row.getRowset("skillBonusCollection"));
 
-        add(df.getSkillInfo(this, skillName, typeId, desc, rank, reqs, primaryAttribute,
+        add(new SkillInfo(this, skillName, typeId, desc, rank, reqs, primaryAttribute,
                 secondaryAttribute, bonuses));
     }
 

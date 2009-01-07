@@ -62,9 +62,6 @@ public class EveApi {
     /** The database connection to use. */
     private final Connection conn;
 
-    /** The factory to use for constructing data objects. */
-    private final DataFactory df;
-
     /** The downloader to use. */
     private final ApiDownloader downloader;
     
@@ -82,11 +79,9 @@ public class EveApi {
      * connection.
      *
      * @param sqlConnection A connection to a database to use
-     * @param df The factory to use for constructing data objects
      */
-    public EveApi(final Connection sqlConnection, final DataFactory df) {
+    public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
-        this.df = df;
         
         checkTables();
 
@@ -182,8 +177,8 @@ public class EveApi {
         if (result.wasSuccessful()) {
             try {
                 return new ApiResponse<T>(type
-                        .getConstructor(ApiElement.class, DataFactory.class)
-                        .newInstance(result.getResultElement(), df), result);
+                        .getConstructor(ApiElement.class)
+                        .newInstance(result.getResultElement()), result);
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Unable to create response object", ex);
             }

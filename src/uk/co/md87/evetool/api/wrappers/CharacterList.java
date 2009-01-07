@@ -25,7 +25,6 @@ package uk.co.md87.evetool.api.wrappers;
 import java.util.ArrayList;
 import java.util.Map;
 
-import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
@@ -37,7 +36,7 @@ import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
  */
 public class CharacterList extends ArrayList<BasicCharInfo> {
 
-    public CharacterList(final ApiElement resultElement, final DataFactory df) {
+    public CharacterList(final ApiElement resultElement) {
         super();
 
         for (ApiElement child : resultElement.getChild("rowset").getChildren()) {

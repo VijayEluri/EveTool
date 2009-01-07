@@ -47,7 +47,7 @@ public class EveApiTest {
             conn.createStatement().execute("DROP TABLE PAGECACHE");
         }
         
-        final EveApi api = new EveApi(conn, new DataFactory());
+        final EveApi api = new EveApi(conn);
         assertTrue(conn.getMetaData().getTables(null, null, "PAGECACHE", null).next());
     }
 

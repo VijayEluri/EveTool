@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.EveApi;
 import static org.junit.Assert.*;
 
@@ -46,7 +45,7 @@ public class DBCacheTest {
     public void testBasicInsert() throws SQLException {
         final Map<String, String> args = new HashMap<String, String>();
         final Connection conn = DriverManager.getConnection(dbURL);
-        new EveApi(conn, new DataFactory()); // To create tables
+        new EveApi(conn); // To create tables
         final DBCache cache = new DBCache(conn);
 
         args.put("foo", "bar");

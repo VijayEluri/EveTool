@@ -59,6 +59,10 @@ public class SkillInfo {
         this.bonuses = bonuses;
     }
 
+    public int getSkillpointsForLevel(final int level) {
+        return (int) Math.ceil(250 * rank * Math.pow(32, ((double) level - 1) / 2));
+    }
+
     @Override
     public String toString() {
         return "[" + name + " (" + id + ")]";

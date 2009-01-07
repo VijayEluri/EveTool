@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.Attribute;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
@@ -55,7 +54,7 @@ public class CharacterSheet {
 
     private final BasicCharInfo charInfo;
 
-    public CharacterSheet(final ApiElement resultElement, final DataFactory df) {
+    public CharacterSheet(final ApiElement resultElement) {
         super();
 
         this.race = resultElement.getChild("race").getContent();

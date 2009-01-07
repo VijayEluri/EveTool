@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.co.md87.evetool.api.DataFactory;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.parser.ApiElement;
 
@@ -47,7 +46,7 @@ public class SkillInTraining {
     private int startSP, targetSP;
     private int targetLevel;
 
-    public SkillInTraining(final ApiElement resultElement, final DataFactory df) {
+    public SkillInTraining(final ApiElement resultElement) {
         super();
 
         if ("0".equals(resultElement.getChild("skillInTraining").getContent())) {

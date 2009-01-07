@@ -20,29 +20,34 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api;
+package uk.co.md87.evetool.api.wrappers.data;
 
-import java.util.List;
-import java.util.Map;
-import uk.co.md87.evetool.api.wrappers.SkillGroup;
-import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
-import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * TODO: Document DataFactory
- * TODO: Add other data classes
  * @author chris
  */
-public class DataFactory {
+public class SkillInfoTest {
 
-    public SkillInfo getSkillInfo(final SkillGroup group, final String name,
-            final int id, final String description, final int rank,
-            final List<SkillRequirement> requirements,
-            final String primaryAttribute, final String secondaryAttribute,
-            final Map<String, String> bonuses) {
-        return new SkillInfo(group, name, id, description, rank, requirements,
-                primaryAttribute, secondaryAttribute, bonuses);
+    @Test
+    public void testGetSkillpointsForLevel() {
+        final int[][] data = new int[][]{
+            {1, 3, 8000},
+            {1, 4, 45255},
+            {1, 5, 256000},
+            {3, 1, 750},
+            {3, 5, 768000},
+            {8, 5, 2048000},
+            {10, 3, 80000},
+        };
+
+        for (int[] datum : data) {
+            final SkillInfo skill = new SkillInfo(null, null, 0, null, datum[0],
+                    null, null, null, null);
+            assertEquals(datum[2], skill.getSkillpointsForLevel(datum[1]));
+        }
     }
 
 }
