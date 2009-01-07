@@ -22,6 +22,9 @@
 
 package uk.co.md87.evetool;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -38,10 +41,14 @@ import uk.co.md87.evetool.ui.MainWindow;
  */
 public class Main {
 
+    public static String version;
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
+        readVersion();
+        
         Logger.getLogger("uk").setLevel(Level.ALL);
 
         for (Handler handler : Logger.getLogger("").getHandlers()) {
@@ -59,6 +66,16 @@ public class Main {
         cs.associateSkills(api.getSkillTree().getResult());
         Collections.sort(cs.getSkills(), new SkillByRemainingSPComparator(true));
         System.out.println(cs.getSkills());
+    }
+
+    protected static void readVersion() {
+        try {
+            final BufferedReader br = new BufferedReader(new InputStreamReader(
+                    Main.class.getResourceAsStream("version.txt")));
+            version = br.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

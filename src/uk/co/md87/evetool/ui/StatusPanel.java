@@ -27,6 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import uk.co.md87.evetool.Main;
 
 /**
  *
@@ -40,7 +41,7 @@ public class StatusPanel extends JPanel {
     public StatusPanel() {
         super(new MigLayout());
 
-        leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
+        leftLabel = new JLabel("Welcome to EVE Tool " + Main.version, JLabel.LEFT);
         rightLabel = new JLabel("No skill training", JLabel.RIGHT);
 
         setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));

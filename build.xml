@@ -71,4 +71,11 @@
     nbproject/build-impl.xml file. 
 
     -->
+
+    <target name="-pre-init">
+        <exec dir="." executable="/bin/bash">
+            <arg value="-c"/>
+            <arg value="git-describe --tags >src/uk/co/md87/evetool/version.txt"/>
+        </exec>
+    </target>
 </project>
