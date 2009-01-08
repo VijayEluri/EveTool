@@ -23,24 +23,36 @@
 package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.JToggleButton;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 /**
  *
  * @author chris
  */
-public class MenuButton extends JToggleButton {
+public class FilterButton extends JButton {
 
-    public MenuButton(final String text) {
-        super(text);
+    public FilterButton() {
+        super("Filter");
 
-        setUI(new ETButtonUI(Color.DARK_GRAY));
-        setMinimumSize(new Dimension(0, 25));
+        setUI(new ETButtonUI(Color.BLUE));
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.DARK_GRAY),
+                BorderFactory.createEmptyBorder(0, 3, 0, 7)));
         setBackground(Color.GRAY);
         setFocusPainted(false);
-        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY.brighter()));
+
+        setForeground(Color.WHITE);
+
+        try {
+            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/filter.png"))));
+        } catch (IOException ex) {
+            // TODO: Do something with ex
+        }
     }
 
 }

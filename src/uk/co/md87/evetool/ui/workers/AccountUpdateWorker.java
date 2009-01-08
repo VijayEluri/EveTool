@@ -85,7 +85,7 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     target.add(portrait, "spany 2, height 64!, width 64!");
                     target.add(nameLabel, "height 20!");
                     target.add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
-                    target.add(skillLabel, "gaptop 20, height 20!");
+                    target.add(skillLabel, "span, split, gaptop 20, height 20!");
                     target.add(iskLabel, "wrap");
 
                     final EveApi newApi = api.clone();

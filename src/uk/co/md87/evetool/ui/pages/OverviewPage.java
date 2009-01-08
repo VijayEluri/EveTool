@@ -38,6 +38,7 @@ import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.components.AddButton;
+import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
 /**
@@ -62,6 +63,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         }
 
         context.add(new AddButton("Add account"), "growy");
+        context.add(new FilterButton(), "growy, al right");
     }
 
     protected void addAccount(final Account account) {

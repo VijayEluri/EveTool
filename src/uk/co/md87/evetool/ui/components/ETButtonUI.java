@@ -23,24 +23,24 @@
 package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.BorderFactory;
-import javax.swing.JToggleButton;
+import javax.swing.plaf.metal.MetalButtonUI;
 
 /**
  *
  * @author chris
  */
-public class MenuButton extends JToggleButton {
+public class ETButtonUI extends MetalButtonUI {
 
-    public MenuButton(final String text) {
-        super(text);
+    protected final Color selectColour;
 
-        setUI(new ETButtonUI(Color.DARK_GRAY));
-        setMinimumSize(new Dimension(0, 25));
-        setBackground(Color.GRAY);
-        setFocusPainted(false);
-        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY.brighter()));
+    public ETButtonUI(Color selectColour) {
+        this.selectColour = selectColour;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Color getSelectColor() {
+        return selectColour;
     }
 
 }
