@@ -22,14 +22,7 @@
 
 package uk.co.md87.evetool.api;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +31,7 @@ import uk.co.md87.evetool.api.io.DBCache;
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
+import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
@@ -83,7 +77,7 @@ public class EveApi {
     public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
         
-        checkTables();
+        new TableCreator(conn, "../db/", TABLES).checkTables();
 
         this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
@@ -171,7 +165,7 @@ public class EveApi {
      */
     protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,
             final boolean needKey, final boolean needChar) {
-        // TODO: Require userid + apikey
+        // TODO: Require userid + apikey (remove from downloader)
         final ApiResult result = downloader.getPage(method, null);
 
         if (result.wasSuccessful()) {
@@ -187,84 +181,6 @@ public class EveApi {
         } else {
             return new ApiResponse<T>(result.getError(), result);
         }
-    }
-
-    // TODO: Abstract db maintenance
-    // TODO: Version tables somehow
-    /**
-     * Creates the table with the specified name. SQL is read from the
-     * <code>db</code> package.
-     *
-     * @param table The table to be created
-     */
-    protected void createTable(final String table) {
-        LOGGER.log(Level.FINE, "Creating table " + table);
-        final StringBuilder sql = new StringBuilder();
-        final BufferedReader stream = new BufferedReader(new InputStreamReader(
-                getClass().getResourceAsStream("db/" + table.toLowerCase() + ".sql")));
-        String line;
-
-        try {
-            do {
-                line = stream.readLine();
-
-                if (line != null) {
-                    sql.append(line);
-                }
-            } while (line != null);
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error when reading SQL for table: " + table, ex);
-            return;
-        }
-        
-        try {
-            conn.createStatement().execute(sql.toString());
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error creating table: " + table, ex);
-        }
-    }
-
-    /**
-     * Checks to ensure that all required tables exist. If any table is missing,
-     * it will be created.
-     *
-     * @see #createTable(java.lang.String)
-     */
-    protected void checkTables() {
-        LOGGER.log(Level.FINEST, "Checking that tables exist");
-
-        final List<String> tables = getTables();
-
-        for (String table : TABLES) {
-            if (!tables.contains(table.toUpperCase())) {
-                createTable(table);
-            }
-        }
-
-        LOGGER.log(Level.FINEST, "Done checking tables");
-    }
-
-    /**
-     * Retrieves a list of tables that exist in the database.
-     *
-     * @return A list of table names that exist
-     */
-    protected List<String> getTables() {
-        final List<String> tables = new ArrayList<String>();
-
-        try {
-            final ResultSet rs = conn.getMetaData().getTables(null, null, null, null);
-
-            while (rs.next()) {
-                tables.add(rs.getString("TABLE_NAME"));
-            }
-
-            rs.close();
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "SQL Error when checking for tables", ex);
-        }
-
-        return tables;
     }
 
 }
