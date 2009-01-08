@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import javax.swing.UIManager;
 import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.api.EveApi;
 
@@ -43,6 +44,8 @@ public class MainWindow extends JFrame {
 
     public MainWindow(final EveApi api) {
         super("EVE Tool - Initialising...");
+
+        UIManager.put("swing.boldMetal", false);
 
         this.api = api;
         

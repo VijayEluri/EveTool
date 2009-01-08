@@ -22,10 +22,12 @@
 
 package uk.co.md87.evetool.ui.workers;
 
+import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JLabel;
+import javax.swing.JSeparator;
 import javax.swing.SwingWorker;
 
 import uk.co.md87.evetool.api.ApiResponse;
@@ -64,15 +66,31 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
             System.out.println(Thread.currentThread().getName());
             if (res.wasSuccessful()) {
                 overview.getPanels().get(account).removeAll();
-                for (BasicCharInfo character : res.getResult()) {
-                    final JLabel portrait = new JLabel("Loading...");
+                boolean first = true;
 
+                for (BasicCharInfo character : res.getResult()) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        overview.getPanels().get(account).add(new JSeparator(),
+                                "span, growx, pushx, gaptop 5, gapbottom 5");
+                    }
+
+                    final JLabel portrait = new JLabel("Loading...");
+                    final JLabel nameLabel = new JLabel(character.getName());
+                    nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
+                    
                     overview.getPanels().get(account)
-                            .add(portrait, "spany 1, height 64!, width 64!");
+                            .add(portrait, "spany 2, height 64!, width 64!");
                     overview.getPanels().get(account)
-                            .add(new JLabel(character.getName()));
+                            .add(nameLabel, "height 20!");
                     overview.getPanels().get(account)
                             .add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
+                    overview.getPanels().get(account)
+                            .add(new JLabel("Training XXXX to level 5 " +
+                            "(3 years 1 second...)"), "gaptop 20, height 20!");
+                    overview.getPanels().get(account)
+                            .add(new JLabel("1,333,337 ISK", JLabel.RIGHT), "wrap");
 
                     new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
                 }
