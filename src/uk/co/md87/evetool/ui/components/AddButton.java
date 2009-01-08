@@ -42,7 +42,7 @@ public class AddButton extends JButton {
         setUI(new ETButtonUI(Color.GREEN.darker().darker()));
         setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY),
-                BorderFactory.createEmptyBorder(0, 3, 0, 7)));
+                BorderFactory.createEmptyBorder(0, 3, 0, 6)));
         setBackground(Color.GRAY);
         setFocusPainted(false);
 

@@ -22,13 +22,23 @@
 
 package uk.co.md87.evetool.ui.pages;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import javax.swing.SwingUtilities;
+
+import javax.swing.border.BevelBorder;
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.Account;
@@ -67,8 +77,39 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     }
 
     protected void addAccount(final Account account) {
-        // TODO: Number them or reformat or something
-        add(new JLabel("Account N - " + account.getId()), "span, wrap");
+        final JLabel header = new JLabel("Account #" + account.getId());
+        final JPanel headerP = new JPanel(new MigLayout("fillx"));
+        header.setFont(header.getFont().deriveFont(14f).deriveFont(Font.BOLD));
+        headerP.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createBevelBorder(BevelBorder.RAISED),
+                BorderFactory.createEmptyBorder(0, 5, 0, 5)));
+        headerP.add(header, "growx");
+
+        try {
+            final JButton editButton = new JButton(new ImageIcon(ImageIO
+                    .read(getClass().getResource("../res/edit-inactive.png"))));
+            editButton.setRolloverIcon(new ImageIcon(ImageIO
+                    .read(getClass().getResource("../res/edit.png"))));
+            editButton.setBorder(BorderFactory.createEmptyBorder());
+            editButton.setOpaque(false);
+            editButton.setContentAreaFilled(false);
+
+            final JButton delButton = new JButton(new ImageIcon(ImageIO
+                    .read(getClass().getResource("../res/close-inactive.png"))));
+            delButton.setRolloverIcon(new ImageIcon(ImageIO
+                    .read(getClass().getResource("../res/close-active.png"))));
+            delButton.setBorder(BorderFactory.createEmptyBorder());
+            delButton.setOpaque(false);
+            delButton.setContentAreaFilled(false);
+
+            headerP.add(editButton, "al right");
+            headerP.add(delButton, "al right");
+        } catch (IOException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,
+                    "Error loading images", ex);
+        }
+
+        add(headerP, "span, growx, wrap");
 
         final JPanel panel = new JPanel(new MigLayout(" fillx", "[|fill,grow|fill,grow]"));
         panel.add(new JLabel("Loading..."), "span");

@@ -36,7 +36,7 @@ public class MenuButton extends JToggleButton {
     public MenuButton(final String text) {
         super(text);
 
-        setUI(new ETButtonUI(Color.DARK_GRAY));
+        setUI(new ETButtonUI(Color.LIGHT_GRAY));
         setMinimumSize(new Dimension(0, 25));
         setBackground(Color.GRAY);
         setFocusPainted(false);
