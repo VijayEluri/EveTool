@@ -25,14 +25,12 @@ package uk.co.md87.evetool;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import uk.co.md87.evetool.api.EveApi;
-import uk.co.md87.evetool.api.wrappers.CharacterSheet;
-import uk.co.md87.evetool.comparators.SkillByRemainingSPComparator;
+import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.ui.MainWindow;
 
 /**
@@ -41,19 +39,19 @@ import uk.co.md87.evetool.ui.MainWindow;
  */
 public class Main {
 
+    /** The version of this instance of EVE Tool. */
     public static String version;
+
+    /** Tables that are needed by the application. */
+    private static final String[] TABLES = new String[]{"Accounts"};
 
     /**
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+        initLogging();
         readVersion();
-        
-        Logger.getLogger("uk").setLevel(Level.ALL);
-
-        for (Handler handler : Logger.getLogger("").getHandlers()) {
-            handler.setLevel(Level.ALL);
-        }
+        initTables();
         
         final EveApi api = ApiFactory.getApi();
         api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
@@ -63,6 +61,28 @@ public class Main {
         new MainWindow(api).setVisible(true);
     }
 
+    /**
+     * Initialises the logging system.
+     */
+    protected static void initLogging() {
+        Logger.getLogger("uk").setLevel(Level.ALL);
+
+        for (Handler handler : Logger.getLogger("").getHandlers()) {
+            handler.setLevel(Level.ALL);
+        }
+    }
+
+    /**
+     * Initialises tables used by the program.
+     */
+    protected static void initTables() {
+        new TableCreator(ApiFactory.getConnection(), "/uk/co/md87/evetool/sql/",
+                TABLES).checkTables();
+    }
+
+    /**
+     * Reads the version string from the bundled version.txt file.
+     */
     protected static void readVersion() {
         try {
             final BufferedReader br = new BufferedReader(new InputStreamReader(

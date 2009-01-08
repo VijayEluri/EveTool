@@ -41,14 +41,16 @@ public class ApiFactory {
     /** The URL of the database. */
     private static String dbURL = "jdbc:derby:db/eveApi;create=true";
 
+    private static Connection dbConn;
+
     /**
      * Creates a database connection for use by the API.
      *
      * @return A Database Connection
      */
-    private static Connection createConnection() {
+    public static synchronized Connection getConnection() {
         try {
-            return DriverManager.getConnection(dbURL);
+            return dbConn == null ? dbConn = DriverManager.getConnection(dbURL) : dbConn;
         } catch (SQLException ex) {
             Logger.getLogger(ApiFactory.class.getName()).log(Level.SEVERE,
                     "Exception when creating DB connection", ex);
@@ -62,7 +64,7 @@ public class ApiFactory {
      * @return An instance of the EVE API.
      */
     public static EveApi getApi() {
-        return new EveApi(createConnection());
+        return new EveApi(getConnection());
     }
 
 }
