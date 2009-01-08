@@ -28,9 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-
 import javax.swing.UIManager;
+
 import net.miginfocom.swing.MigLayout;
+
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 
@@ -43,6 +44,7 @@ public class MainWindow extends JFrame {
 
     private final AccountManager manager;
     private final ApiFactory factory;
+    private final ContextPanel contextPanel;
 
     public MainWindow(final AccountManager manager, final ApiFactory factory) {
         super("EVE Tool - Initialising...");
@@ -51,6 +53,8 @@ public class MainWindow extends JFrame {
 
         this.factory = factory;
         this.manager = manager;
+
+        this.contextPanel = new ContextPanel();
         
         setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
                 "[fill,grow]0[]"));
@@ -66,10 +70,15 @@ public class MainWindow extends JFrame {
         }
     }
 
+    public ContextPanel getContextPanel() {
+        return contextPanel;
+    }
+
     protected void addComponents() {
-        add(new MenuPanel(), "width 201!");
-        add(new ContentPanel(manager, factory));
-        add(new StatusPanel(), "growx, span, height 30!");
+        add(new MenuPanel(this), "width 201!, spany2");
+        add(new ContentPanel(this, manager, factory));
+        add(contextPanel, "growx, height 30!");
+        add(new StatusPanel(this), "growx, span, height 30!");
     }
 
 }

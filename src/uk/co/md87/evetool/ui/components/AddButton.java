@@ -20,36 +20,39 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui;
+package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
-import uk.co.md87.evetool.Main;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 /**
  *
- * TODO: Document StatusPanel
- * TODO: Annoying serialVersionUID things
  * @author chris
  */
-public class StatusPanel extends JPanel {
+public class AddButton extends JButton {
 
-    private final JLabel leftLabel;
-    private final JLabel rightLabel;
+    public AddButton(final String text) {
+        super(text);
 
-    public StatusPanel(final MainWindow window) {
-        super(new MigLayout());
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.DARK_GRAY),
+                BorderFactory.createEmptyBorder(0, 0, 0, 5)));
+        setBackground(Color.GREEN.darker().darker());
+        setForeground(Color.WHITE);
+        setIconTextGap(2);
+        //setFont(getFont().deriveFont(Font.BOLD));
 
-        leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
-        rightLabel = new JLabel(Main.version, JLabel.RIGHT);
-
-        setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
-        setBackground(Color.GRAY);
-        add(leftLabel, "push, grow");
-        add(rightLabel, "push, grow");
+        try {
+            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/icon25_11.png"))));
+        } catch (IOException ex) {
+            // TODO: Do something with ex
+        }
     }
 
 }

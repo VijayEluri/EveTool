@@ -36,12 +36,19 @@ import uk.co.md87.evetool.ui.pages.OverviewPage;
  */
 public class ContentPanel extends JPanel {
 
-    public ContentPanel(final AccountManager manager, final ApiFactory factory) {
+    public ContentPanel(final MainWindow window, final AccountManager manager,
+            final ApiFactory factory) {
         super(new CardLayout());
 
         //setBackground(Color.BLUE);
-        add(new OverviewPage(manager, factory), "push, grow");
+        add(new OverviewPage(window.getContextPanel(), manager, factory), "push, grow");
         add(new JLabel("Main content2", JLabel.CENTER), "push, grow");
+    }
+
+    public static abstract class Page extends JPanel {
+
+        // TODO: Add method for activation
+
     }
 
 }

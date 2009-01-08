@@ -24,32 +24,20 @@ package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-import uk.co.md87.evetool.Main;
 
 /**
  *
- * TODO: Document StatusPanel
- * TODO: Annoying serialVersionUID things
  * @author chris
  */
-public class StatusPanel extends JPanel {
+public class ContextPanel extends JPanel {
 
-    private final JLabel leftLabel;
-    private final JLabel rightLabel;
-
-    public StatusPanel(final MainWindow window) {
-        super(new MigLayout());
-
-        leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
-        rightLabel = new JLabel(Main.version, JLabel.RIGHT);
+    public ContextPanel() {
+        super(new MigLayout("ins 2, fill"));
 
         setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
-        setBackground(Color.GRAY);
-        add(leftLabel, "push, grow");
-        add(rightLabel, "push, grow");
+        setBackground(Color.LIGHT_GRAY);
     }
 
 }

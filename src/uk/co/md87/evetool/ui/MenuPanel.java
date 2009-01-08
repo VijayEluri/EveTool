@@ -40,7 +40,7 @@ import uk.co.md87.evetool.ui.workers.PortraitLoaderWorker;
  */
 public class MenuPanel extends JPanel {
 
-    public MenuPanel() {
+    public MenuPanel(final MainWindow window) {
         super(new MigLayout("wrap 1, fillx, ins 4"));
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));

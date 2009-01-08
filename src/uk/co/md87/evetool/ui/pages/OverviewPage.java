@@ -35,6 +35,9 @@ import uk.co.md87.evetool.Account;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.EveApi;
+import uk.co.md87.evetool.ui.ContentPanel.Page;
+import uk.co.md87.evetool.ui.ContextPanel;
+import uk.co.md87.evetool.ui.components.AddButton;
 import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
 /**
@@ -42,13 +45,14 @@ import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
  * TODO: Document OverviewPage
  * @author chris
  */
-public class OverviewPage extends JPanel implements AccountManager.AccountListener {
+public class OverviewPage extends Page implements AccountManager.AccountListener {
 
     private final ApiFactory factory;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
 
-    public OverviewPage(final AccountManager manager, final ApiFactory factory) {
+    public OverviewPage(final ContextPanel context, final AccountManager manager,
+            final ApiFactory factory) {
         this.factory = factory;
 
         setLayout(new MigLayout("fillx"));
@@ -56,6 +60,8 @@ public class OverviewPage extends JPanel implements AccountManager.AccountListen
         for (Account account : manager.getAccounts(this)) {
             addAccount(account);
         }
+
+        context.add(new AddButton("Add account"), "growy");
     }
 
     protected void addAccount(final Account account) {
