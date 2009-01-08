@@ -32,6 +32,7 @@ import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
+import uk.co.md87.evetool.ui.util.Formatter;
 
 /**
  *
@@ -78,7 +79,7 @@ public class CharacterSkillUpdateWorker extends
                     final long duration = st.getEndTime().getTime() - System.currentTimeMillis();
                     skillLabel.setText("Training " + st.getSkill().getName()
                             + " to level " + st.getTargetLevel() + " ("
-                            + duration + ")");
+                            + Formatter.formatDuration((int) (duration / 1000)) + ")");
                 } else {
                     skillLabel.setText("Nothing training");
                 }
