@@ -42,10 +42,13 @@ import uk.co.md87.evetool.api.wrappers.SkillList;
  *
  * @author chris
  */
-public class EveApi {
+public class EveApi implements Cloneable {
 
     /** SQL tables required by the API. */
     private static final String[] TABLES = {"PageCache"};
+
+    /** Whether or not tables have been checked. */
+    private static boolean checkedTables = false;
 
     /** Logger to use for this class. */
     private static final Logger LOGGER = Logger.getLogger(EveApi.class.getName());
@@ -76,8 +79,11 @@ public class EveApi {
      */
     public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
-        
-        new TableCreator(conn, "../db/", TABLES).checkTables(); // TODO: Only do this once?
+
+        if (!checkedTables) {
+            new TableCreator(conn, "../db/", TABLES).checkTables();
+            checkedTables = true;
+        }
 
         this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
@@ -181,6 +187,16 @@ public class EveApi {
         } else {
             return new ApiResponse<T>(result.getError(), result);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EveApi clone() {
+        final EveApi copy = new EveApi(conn);
+        copy.setApiKey(apiKey);
+        copy.setUserID(userID);
+        copy.setCharID(charID);
+        return copy;
     }
 
 }

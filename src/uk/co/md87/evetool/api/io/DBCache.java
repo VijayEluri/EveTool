@@ -54,6 +54,8 @@ public class DBCache implements ApiCache {
         this.conn = conn;
         
         try {
+            conn.setAutoCommit(false);
+            
             prepInsert = conn.prepareStatement("INSERT INTO PageCache (pc_method, "
                     + "pc_args, pc_cachedat, pc_cacheduntil, pc_data) VALUES ("
                     + "?, ?, ?, ?, ?)");
@@ -72,7 +74,7 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public void setCache(final String method, final Map<String, String> args,
+    public synchronized void setCache(final String method, final Map<String, String> args,
             final String data, final long cacheUntil) {
         try {
             if (getCacheStatus(method, args) == CacheStatus.MISS) {
@@ -101,7 +103,7 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public CacheStatus getCacheStatus(final String method, final Map<String, String> args) {
+    public synchronized CacheStatus getCacheStatus(final String method, final Map<String, String> args) {
         try {
             prepCheck.setString(1, method);
             prepCheck.setString(2, Downloader.encodeArguments(args));
@@ -123,7 +125,7 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public CacheResult getCache(final String method, final Map<String, String> args) {
+    public synchronized CacheResult getCache(final String method, final Map<String, String> args) {
         try {
             prepRetrieve.setString(1, method);
             prepRetrieve.setString(2, Downloader.encodeArguments(args));

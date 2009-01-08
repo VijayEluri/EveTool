@@ -57,16 +57,13 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
     /** {@inheritDoc} */
     @Override
     protected ApiResponse<CharacterList> doInBackground() throws Exception {
-        Logger.getLogger(OverviewPage.class.getName()).log(Level.FINEST, "doInBackground()");
         return api.getCharacterList();
     }
 
     @Override
     protected void done() {
-        Logger.getLogger(OverviewPage.class.getName()).log(Level.FINEST, "done() - ");
         try {
             final ApiResponse<CharacterList> res = get();
-            System.out.println(Thread.currentThread().getName());
             if (res.wasSuccessful()) {
                 target.removeAll();
                 boolean first = true;
@@ -81,20 +78,26 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
 
                     final JLabel portrait = new JLabel("Loading...");
                     final JLabel nameLabel = new JLabel(character.getName());
+                    final JLabel skillLabel = new JLabel("Loading...");
+                    final JLabel iskLabel = new JLabel("Loading...", JLabel.RIGHT);
                     nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
                     
                     target.add(portrait, "spany 2, height 64!, width 64!");
                     target.add(nameLabel, "height 20!");
                     target.add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
-                    target.add(new JLabel("Training XXXX to level 5 " +
-                            "(3 years 1 second...)"), "gaptop 20, height 20!");
-                    target.add(new JLabel("1,333,337 ISK", JLabel.RIGHT), "wrap");
+                    target.add(skillLabel, "gaptop 20, height 20!");
+                    target.add(iskLabel, "wrap");
+
+                    final EveApi newApi = api.clone();
+                    newApi.setCharID(character.getId());
 
                     new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
+                    new CharacterBalanceUpdateWorker(newApi, iskLabel).execute();
+                    new CharacterSkillUpdateWorker(newApi, skillLabel).execute();
                 }
             } else {
                 target.removeAll();
-                target.add(new JLabel("Error!: " + res.getError()));
+                target.add(new JLabel("Error: " + res.getError()));
             }
             target.revalidate();
         } catch (Exception ex) {
