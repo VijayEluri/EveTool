@@ -23,6 +23,8 @@
 package uk.co.md87.evetool.api;
 
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,7 +97,6 @@ public class EveApi implements Cloneable {
      */
     public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
-        downloader.setApiKey(apiKey);
     }
 
     /**
@@ -105,7 +106,6 @@ public class EveApi implements Cloneable {
      */
     public void setCharID(final int charID) {
         this.charID = charID;
-        downloader.setCharID(charID);
     }
 
     /**
@@ -115,7 +115,6 @@ public class EveApi implements Cloneable {
      */
     public void setUserID(final int userID) {
         this.userID = userID;
-        downloader.setUserID(userID);
     }
 
     /**
@@ -171,8 +170,18 @@ public class EveApi implements Cloneable {
      */
     protected <T> ApiResponse<T> getResponse(final String method, final Class<T> type,
             final boolean needKey, final boolean needChar) {
-        // TODO: Require userid + apikey (remove from downloader)
-        final ApiResult result = downloader.getPage(method, null);
+        final Map<String, String> args = new HashMap<String, String>();
+
+        if (needKey) {
+            args.put("userID", String.valueOf(userID));
+            args.put("apiKey", apiKey);
+
+            if (needChar) {
+                args.put("characterID", String.valueOf(charID));
+            }
+        }
+
+        final ApiResult result = downloader.getPage(method, args);
 
         if (result.wasSuccessful()) {
             try {

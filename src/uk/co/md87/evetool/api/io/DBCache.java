@@ -121,16 +121,10 @@ public class DBCache implements ApiCache {
                 final CacheStatus res = rs.getTimestamp("PC_CACHEDUNTIL")
                         .before(new Date(System.currentTimeMillis()))
                         ? CacheStatus.EXPIRED : CacheStatus.HIT;
-
-                LOGGER.log(Level.FINER, "Cache " + res + " for " + method
-                    + "?" + Downloader.encodeArguments(args));
-
+                
                 rs.close();
                 return res;
             } else {
-                LOGGER.log(Level.FINER, "Cache MISS for " + method
-                    + "?" + Downloader.encodeArguments(args));
-
                 rs.close();
                 return CacheStatus.MISS;
             }
@@ -142,7 +136,8 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public synchronized CacheResult getCache(final String method, final Map<String, String> args) {
+    public synchronized CacheResult getCache(final String method,
+            final Map<String, String> args) {
         try {
             prepRetrieve.setString(1, method);
             prepRetrieve.setString(2, Downloader.encodeArguments(args));

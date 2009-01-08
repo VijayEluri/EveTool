@@ -48,40 +48,9 @@ public class ApiDownloader {
     private final ApiCache cache;
     private final ApiParser parser;
 
-    private int userID = -1;
-    private int charID = -1;
-    private String apiKey = null;
-
     public ApiDownloader(final ApiCache cache, final ApiParser parser) {
         this.cache = cache;
         this.parser = parser;
-    }
-
-    public ApiDownloader(final ApiCache cache, final ApiParser parser,
-            final int userID, final String apiKey) {
-        this(cache, parser);
-        this.userID = userID;
-        this.apiKey = apiKey;
-    }
-
-    public ApiDownloader(final ApiCache cache, final ApiParser parser,
-            final int userID, final String apiKey, final int charID) {
-        this(cache, parser, userID, apiKey);
-        this.charID = charID;
-    }
-
-    protected void addArgs(final Map<String, String> args) {
-        if (userID != -1) {
-            args.put("userID", String.valueOf(userID));
-        }
-
-        if (apiKey != null) {
-            args.put("apiKey", apiKey);
-        }
-
-        if (charID != -1) {
-            args.put("characterID", String.valueOf(charID));
-        }
     }
 
     public synchronized ApiResult getPage(final String method, final Map<String, String> args) {
@@ -90,8 +59,6 @@ public class ApiDownloader {
         if (args != null) {
             ourArgs.putAll(args);
         }
-
-        addArgs(ourArgs);
 
         final CacheStatus cacheStatus = cache.getCacheStatus(method, ourArgs);
 
@@ -124,18 +91,6 @@ public class ApiDownloader {
         }
 
         return null;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public void setCharID(int charID) {
-        this.charID = charID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     protected static String getUrl(final String method) {
