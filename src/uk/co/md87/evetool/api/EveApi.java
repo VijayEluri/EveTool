@@ -60,10 +60,10 @@ public class EveApi {
     private final ApiDownloader downloader;
     
     /** The client's user ID, if specified. */
-    private String userID;
+    private int userID;
 
     /** The client's character ID, if specified. */
-    private String charID;
+    private int charID;
 
     /** The client's API key, if specified. */
     private String apiKey;
@@ -77,7 +77,7 @@ public class EveApi {
     public EveApi(final Connection sqlConnection) {
         this.conn = sqlConnection;
         
-        new TableCreator(conn, "../db/", TABLES).checkTables();
+        new TableCreator(conn, "../db/", TABLES).checkTables(); // TODO: Only do this once?
 
         this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
     }
@@ -97,7 +97,7 @@ public class EveApi {
      *
      * @param charID The user's chosen character ID
      */
-    public void setCharID(final String charID) {
+    public void setCharID(final int charID) {
         this.charID = charID;
         downloader.setCharID(charID);
     }
@@ -107,7 +107,7 @@ public class EveApi {
      *
      * @param userID The user's user ID
      */
-    public void setUserID(final String userID) {
+    public void setUserID(final int userID) {
         this.userID = userID;
         downloader.setUserID(userID);
     }

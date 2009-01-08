@@ -27,10 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingWorker;
 
 import uk.co.md87.evetool.api.ApiResponse;
+import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
@@ -42,20 +44,21 @@ import uk.co.md87.evetool.ui.pages.OverviewPage;
  */
 public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>, Object> {
 
-    private final String account;
-    private final OverviewPage overview;
+    private final EveApi api;
+    private final JPanel target;
 
-    public AccountUpdateWorker(final String account, OverviewPage overview) {
+    public AccountUpdateWorker(final EveApi api, final JPanel panel) {
         super();
-        this.overview = overview;
-        this.account = account;
+        
+        this.api = api;
+        this.target = panel;
     }
 
     /** {@inheritDoc} */
     @Override
     protected ApiResponse<CharacterList> doInBackground() throws Exception {
         Logger.getLogger(OverviewPage.class.getName()).log(Level.FINEST, "doInBackground()");
-        return overview.getApi().getCharacterList();
+        return api.getCharacterList();
     }
 
     @Override
@@ -65,14 +68,14 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
             final ApiResponse<CharacterList> res = get();
             System.out.println(Thread.currentThread().getName());
             if (res.wasSuccessful()) {
-                overview.getPanels().get(account).removeAll();
+                target.removeAll();
                 boolean first = true;
 
                 for (BasicCharInfo character : res.getResult()) {
                     if (first) {
                         first = false;
                     } else {
-                        overview.getPanels().get(account).add(new JSeparator(),
+                        target.add(new JSeparator(),
                                 "span, growx, pushx, gaptop 5, gapbottom 5");
                     }
 
@@ -80,25 +83,20 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     final JLabel nameLabel = new JLabel(character.getName());
                     nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
                     
-                    overview.getPanels().get(account)
-                            .add(portrait, "spany 2, height 64!, width 64!");
-                    overview.getPanels().get(account)
-                            .add(nameLabel, "height 20!");
-                    overview.getPanels().get(account)
-                            .add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
-                    overview.getPanels().get(account)
-                            .add(new JLabel("Training XXXX to level 5 " +
+                    target.add(portrait, "spany 2, height 64!, width 64!");
+                    target.add(nameLabel, "height 20!");
+                    target.add(new JLabel(character.getCorp().getName(), JLabel.RIGHT), "wrap");
+                    target.add(new JLabel("Training XXXX to level 5 " +
                             "(3 years 1 second...)"), "gaptop 20, height 20!");
-                    overview.getPanels().get(account)
-                            .add(new JLabel("1,333,337 ISK", JLabel.RIGHT), "wrap");
+                    target.add(new JLabel("1,333,337 ISK", JLabel.RIGHT), "wrap");
 
                     new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
                 }
             } else {
-                overview.getPanels().get(account).removeAll();
-                overview.getPanels().get(account).add(new JLabel("Error!: " + res.getError()));
+                target.removeAll();
+                target.add(new JLabel("Error!: " + res.getError()));
             }
-            overview.getPanels().get(account).revalidate();
+            target.revalidate();
         } catch (Exception ex) {
             Logger.getLogger(OverviewPage.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -48,8 +48,8 @@ public class ApiDownloader {
     private final ApiCache cache;
     private final ApiParser parser;
 
-    private String userID = null;
-    private String charID = null;
+    private int userID = -1;
+    private int charID = -1;
     private String apiKey = null;
 
     public ApiDownloader(final ApiCache cache, final ApiParser parser) {
@@ -58,29 +58,29 @@ public class ApiDownloader {
     }
 
     public ApiDownloader(final ApiCache cache, final ApiParser parser,
-            final String userID, final String apiKey) {
+            final int userID, final String apiKey) {
         this(cache, parser);
         this.userID = userID;
         this.apiKey = apiKey;
     }
 
     public ApiDownloader(final ApiCache cache, final ApiParser parser,
-            final String userID, final String apiKey, final String charID) {
+            final int userID, final String apiKey, final int charID) {
         this(cache, parser, userID, apiKey);
         this.charID = charID;
     }
 
     protected void addArgs(final Map<String, String> args) {
-        if (userID != null) {
-            args.put("userID", userID);
+        if (userID != -1) {
+            args.put("userID", String.valueOf(userID));
         }
 
         if (apiKey != null) {
             args.put("apiKey", apiKey);
         }
 
-        if (charID != null) {
-            args.put("characterID", charID);
+        if (charID != -1) {
+            args.put("characterID", String.valueOf(charID));
         }
     }
 
@@ -130,11 +130,11 @@ public class ApiDownloader {
         this.apiKey = apiKey;
     }
 
-    public void setCharID(String charID) {
+    public void setCharID(int charID) {
         this.charID = charID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

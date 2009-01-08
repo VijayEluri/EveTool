@@ -34,6 +34,7 @@ import uk.co.md87.evetool.api.EveApi;
  * Factory class to create instances of the {@link EveApi} class. Uses an
  * embedded Derby database server by default.
  *
+ * TODO: Make non-static
  * @author chris
  */
 public class ApiFactory {

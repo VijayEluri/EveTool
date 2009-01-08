@@ -28,8 +28,12 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
+import uk.co.md87.evetool.Account;
+import uk.co.md87.evetool.AccountManager;
+import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
@@ -38,31 +42,47 @@ import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
  * TODO: Document OverviewPage
  * @author chris
  */
-public class OverviewPage extends JPanel {
+public class OverviewPage extends JPanel implements AccountManager.AccountListener {
 
-    private final EveApi api;
-    private final Map<String, JPanel> panels = new HashMap<String, JPanel>();
+    private final ApiFactory factory;
+    private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
+    private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
 
-    public OverviewPage(final EveApi api) {
-        this.api = api;
+    public OverviewPage(final AccountManager manager, final ApiFactory factory) {
+        this.factory = factory;
 
         setLayout(new MigLayout("fillx"));
-        add(new JLabel("Account 1 - 403848"), "span, wrap");
+
+        for (Account account : manager.getAccounts(this)) {
+            addAccount(account);
+        }
+    }
+
+    protected void addAccount(final Account account) {
+        // TODO: Number them or reformat or something
+        add(new JLabel("Account N - " + account.getId()), "span, wrap");
 
         final JPanel panel = new JPanel(new MigLayout(" fillx", "[|fill,grow|fill,grow]"));
         panel.add(new JLabel("Loading..."), "span");
-        panels.put("Account 1", panel);
         add(panel, "growx, wrap");
 
-        new AccountUpdateWorker("Account 1",this).execute();
+        panels.put(account, panel);
+        apis.put(account, account.getApi(factory));
+        
+        new AccountUpdateWorker(apis.get(account), panel).execute();
     }
 
-    public EveApi getApi() {
-        return api;
-    }
+    /** {@inheritDoc} */
+    @Override
+    public void accountAdded(final Account account) {
+        SwingUtilities.invokeLater(new Runnable() {
 
-    public Map<String, JPanel> getPanels() {
-        return panels;
+            /** {@inheritDoc} */
+            @Override
+            public void run() {
+                addAccount(account);
+            }
+        });
     }
 
 }

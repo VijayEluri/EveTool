@@ -26,7 +26,8 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import uk.co.md87.evetool.api.EveApi;
+import uk.co.md87.evetool.AccountManager;
+import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
 
 /**
@@ -35,11 +36,11 @@ import uk.co.md87.evetool.ui.pages.OverviewPage;
  */
 public class ContentPanel extends JPanel {
 
-    public ContentPanel(final EveApi api) {
+    public ContentPanel(final AccountManager manager, final ApiFactory factory) {
         super(new CardLayout());
 
         //setBackground(Color.BLUE);
-        add(new OverviewPage(api), "push, grow");
+        add(new OverviewPage(manager, factory), "push, grow");
         add(new JLabel("Main content2", JLabel.CENTER), "push, grow");
     }
 

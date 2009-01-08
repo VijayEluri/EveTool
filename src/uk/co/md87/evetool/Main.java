@@ -52,13 +52,17 @@ public class Main {
         initLogging();
         readVersion();
         initTables();
-        
-        final EveApi api = ApiFactory.getApi();
-        api.setApiKey("yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
-        api.setUserID("403848");
-        api.setCharID("113499922");
 
-        new MainWindow(api).setVisible(true);
+        final AccountManager manager = new AccountManager(ApiFactory.getConnection());
+
+        if (manager.getAccounts().isEmpty()) {
+            // TODO: Remove me before release!
+
+            manager.addAccount(403848,
+                    "yaISaqXrSnaQPnRSFi4ODeWjSzWu2gNq1h6F0tVevtSGr5dzoEkZ6YrzHeBzzgNg");
+        }
+        
+        new MainWindow(manager, new ApiFactory()).setVisible(true);
     }
 
     /**
