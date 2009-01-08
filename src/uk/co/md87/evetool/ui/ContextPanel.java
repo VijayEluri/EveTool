@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 public class ContextPanel extends JPanel {
 
     public ContextPanel() {
-        super(new MigLayout("ins 2, fill"));
+        super(new MigLayout("ins 2 3, fill"));
 
         setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
         setBackground(Color.LIGHT_GRAY);

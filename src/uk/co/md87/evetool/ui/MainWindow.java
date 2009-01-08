@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
@@ -75,8 +77,11 @@ public class MainWindow extends JFrame {
     }
 
     protected void addComponents() {
+        final JScrollPane scrollPane = new JScrollPane(new ContentPanel(this, manager, factory));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
         add(new MenuPanel(this), "width 201!, spany2");
-        add(new ContentPanel(this, manager, factory));
+        add(scrollPane);
         add(contextPanel, "growx, height 30!");
         add(new StatusPanel(this), "growx, span, height 30!");
     }
