@@ -30,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
 
 /**
  *
@@ -40,6 +41,7 @@ public class SkillInTraining {
 
     private static final Logger LOGGER = Logger.getLogger(SkillInTraining.class.getName());
 
+    private SkillInfo skill;
     private final boolean inTraining;
     private Date startTime, endTime;
     private int typeId;
@@ -74,6 +76,14 @@ public class SkillInTraining {
                 LOGGER.log(Level.SEVERE, "Error parsing skill data", ex);
             }
         }
+    }
+
+    public void setSkill(final SkillInfo skill) {
+        this.skill = skill;
+    }
+
+    public SkillInfo getSkill() {
+        return skill;
     }
 
     public Date getEndTime() {

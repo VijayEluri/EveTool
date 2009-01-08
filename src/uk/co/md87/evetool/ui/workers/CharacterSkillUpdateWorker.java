@@ -31,6 +31,7 @@ import javax.swing.SwingWorker;
 import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
+import uk.co.md87.evetool.api.wrappers.SkillList;
 
 /**
  *
@@ -50,7 +51,18 @@ public class CharacterSkillUpdateWorker extends
     /** {@inheritDoc} */
     @Override
     protected ApiResponse<SkillInTraining> doInBackground() throws Exception {
-        return api.getSkillInTraining();
+        final ApiResponse<SkillInTraining> res = api.getSkillInTraining();
+        
+        if (res.wasSuccessful() && res.getResult().isInTraining()) {
+            final ApiResponse<SkillList> skills = api.getSkillTree();
+            
+            if (skills.wasSuccessful()) {
+                res.getResult().setSkill(skills.getResult()
+                        .getSkillById(res.getResult().getTypeId()));
+            }
+        }
+
+        return res;
     }
 
     /** {@inheritDoc} */
@@ -64,7 +76,9 @@ public class CharacterSkillUpdateWorker extends
 
                 if (st.isInTraining()) {
                     final long duration = st.getEndTime().getTime() - System.currentTimeMillis();
-                    skillLabel.setText("Training some skill for " + duration + " more ms");
+                    skillLabel.setText("Training " + st.getSkill().getName()
+                            + " to level " + st.getTargetLevel() + " ("
+                            + duration + ")");
                 } else {
                     skillLabel.setText("Nothing training");
                 }

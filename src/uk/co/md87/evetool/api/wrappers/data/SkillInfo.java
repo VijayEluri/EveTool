@@ -63,6 +63,10 @@ public class SkillInfo {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getSkillpointsForLevel(final int level) {
         return (int) Math.ceil(250 * rank * Math.pow(32, ((double) level - 1) / 2));
     }
