@@ -77,6 +77,9 @@ public class DBCache implements ApiCache {
     public synchronized void setCache(final String method, final Map<String, String> args,
             final String data, final long cacheUntil) {
         try {
+            LOGGER.log(Level.FINER, "Caching " + method + "?"
+                    + Downloader.encodeArguments(args) + " until " + cacheUntil);
+            
             if (getCacheStatus(method, args) == CacheStatus.MISS) {
                 // The page has never been requested before.
                 
@@ -86,6 +89,7 @@ public class DBCache implements ApiCache {
                 prepInsert.setTimestamp(4, new Timestamp(cacheUntil));
                 prepInsert.setClob(5, new SerialClob(data.toCharArray()));
                 prepInsert.executeUpdate();
+                conn.commit();
             } else {
                 // The page has been requested before, but has been updated.
 
@@ -95,6 +99,8 @@ public class DBCache implements ApiCache {
                 prepUpdate.setTimestamp(2, new Timestamp(cacheUntil));
                 prepUpdate.setClob(3, new SerialClob(data.toCharArray()));
                 prepUpdate.executeUpdate();
+                conn.commit();
+
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error adding to cache", ex);
@@ -103,7 +109,8 @@ public class DBCache implements ApiCache {
 
     /** {@inheritDoc} */
     @Override
-    public synchronized CacheStatus getCacheStatus(final String method, final Map<String, String> args) {
+    public synchronized CacheStatus getCacheStatus(final String method,
+            final Map<String, String> args) {
         try {
             prepCheck.setString(1, method);
             prepCheck.setString(2, Downloader.encodeArguments(args));
@@ -111,10 +118,20 @@ public class DBCache implements ApiCache {
             final ResultSet rs = prepCheck.executeQuery();
 
             if (rs.next()) {
-                return rs.getTimestamp("PC_CACHEDUNTIL")
+                final CacheStatus res = rs.getTimestamp("PC_CACHEDUNTIL")
                         .before(new Date(System.currentTimeMillis()))
                         ? CacheStatus.EXPIRED : CacheStatus.HIT;
+
+                LOGGER.log(Level.FINER, "Cache " + res + " for " + method
+                    + "?" + Downloader.encodeArguments(args));
+
+                rs.close();
+                return res;
             } else {
+                LOGGER.log(Level.FINER, "Cache MISS for " + method
+                    + "?" + Downloader.encodeArguments(args));
+
+                rs.close();
                 return CacheStatus.MISS;
             }
         } catch (SQLException ex) {
@@ -136,7 +153,11 @@ public class DBCache implements ApiCache {
                 final Clob clob = rs.getClob("PC_DATA");
                 final long at = rs.getTimestamp("PC_CACHEDAT").getTime();
                 final long until = rs.getTimestamp("PC_CACHEDUNTIL").getTime();
-                return new CacheResult(clob.getSubString(1, (int) clob.length()), at, until);
+                final CacheResult res = new CacheResult(clob.getSubString(1,
+                        (int) clob.length()), at, until);
+
+                rs.close();
+                return res;
             } else {
                 LOGGER.log(Level.WARNING, "No cache result for " + method);
                 return null;

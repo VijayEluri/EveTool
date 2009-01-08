@@ -23,9 +23,8 @@
 package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Insets;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -42,14 +41,14 @@ public class AddButton extends JButton {
 
         setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY),
-                BorderFactory.createEmptyBorder(0, 0, 0, 5)));
-        setBackground(Color.GREEN.darker().darker());
+                BorderFactory.createEmptyBorder(0, 3, 0, 7)));
+        setBackground(Color.GRAY);
+        setFocusPainted(false);
+
         setForeground(Color.WHITE);
-        setIconTextGap(2);
-        //setFont(getFont().deriveFont(Font.BOLD));
 
         try {
-            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/icon25_11.png"))));
+            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/plus.png"))));
         } catch (IOException ex) {
             // TODO: Do something with ex
         }

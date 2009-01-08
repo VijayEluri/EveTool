@@ -155,7 +155,7 @@ public class EveApi implements Cloneable {
      * @return The complete EVE skill tree
      */
     public ApiResponse<SkillList> getSkillTree() {
-        return getResponse("/eve/SkillTree.xml.aspx ", SkillList.class, false, true);
+        return getResponse("/eve/SkillTree.xml.aspx", SkillList.class, false, true);
     }
 
     /**
