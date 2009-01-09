@@ -44,6 +44,13 @@ import uk.co.md87.evetool.ApiFactory;
  */
 public class MainWindow extends JFrame {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     private final AccountManager manager;
     private final ApiFactory factory;
     private final ContextPanel contextPanel;

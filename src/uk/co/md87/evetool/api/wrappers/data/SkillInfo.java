@@ -24,7 +24,6 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
 import java.util.Map;
-import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 
 /**
  *

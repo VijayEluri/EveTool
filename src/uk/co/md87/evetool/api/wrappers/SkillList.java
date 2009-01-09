@@ -22,13 +22,13 @@
 
 package uk.co.md87.evetool.api.wrappers;
 
-import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
@@ -38,6 +38,13 @@ import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
  * @author chris
  */
 public class SkillList extends ArrayList<SkillGroup> {
+
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
 
     protected final Map<Integer, SkillInfo> skills = new HashMap<Integer, SkillInfo>();
 

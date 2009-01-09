@@ -40,6 +40,13 @@ import uk.co.md87.evetool.ui.workers.PortraitLoaderWorker;
  */
 public class MenuPanel extends JPanel {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     public MenuPanel(final MainWindow window) {
         super(new MigLayout("wrap 1, fillx, ins 4"));
 

@@ -36,6 +36,13 @@ import javax.swing.JButton;
  */
 public class AddButton extends JButton {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     public AddButton(final String text) {
         super(text);
 

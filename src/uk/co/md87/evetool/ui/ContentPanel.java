@@ -36,6 +36,13 @@ import uk.co.md87.evetool.ui.pages.OverviewPage;
  */
 public class ContentPanel extends JPanel {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     public ContentPanel(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
         super(new CardLayout());

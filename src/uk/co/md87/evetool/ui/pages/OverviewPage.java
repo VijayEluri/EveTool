@@ -64,6 +64,13 @@ import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 public class OverviewPage extends Page implements AccountManager.AccountListener,
         ActionListener {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     private final ApiFactory factory;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();

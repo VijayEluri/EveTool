@@ -29,7 +29,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.ui.MainWindow;
 
