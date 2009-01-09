@@ -35,6 +35,7 @@ import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
+import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
 
 /**
@@ -44,12 +45,14 @@ import uk.co.md87.evetool.ui.pages.OverviewPage;
  */
 public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>, Object> {
 
+    private final OverviewPage page;
     private final EveApi api;
     private final JPanel target;
 
-    public AccountUpdateWorker(final EveApi api, final JPanel panel) {
+    public AccountUpdateWorker(final OverviewPage page, final EveApi api, final JPanel panel) {
         super();
-        
+
+        this.page = page;
         this.api = api;
         this.target = panel;
     }
@@ -81,6 +84,10 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     final JLabel skillLabel = new JLabel("Loading...");
                     final JLabel iskLabel = new JLabel("Loading...", JLabel.RIGHT);
                     nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
+
+                    final AccountChar ac = new AccountChar(character, portrait,
+                            iskLabel, skillLabel);
+                    page.addChar(ac);
                     
                     target.add(portrait, "spany 2, height 64!, width 64!");
                     target.add(nameLabel, "height 20!");
@@ -92,8 +99,8 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     newApi.setCharID(character.getId());
 
                     new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
-                    new CharacterBalanceUpdateWorker(newApi, iskLabel).execute();
-                    new CharacterSkillUpdateWorker(newApi, skillLabel).execute();
+                    new CharacterBalanceUpdateWorker(newApi, ac).execute();
+                    new CharacterSkillUpdateWorker(newApi, ac).execute();
                 }
             } else {
                 target.removeAll();

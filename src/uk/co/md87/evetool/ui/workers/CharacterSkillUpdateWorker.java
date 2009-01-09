@@ -25,14 +25,13 @@ package uk.co.md87.evetool.ui.workers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
 import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
-import uk.co.md87.evetool.ui.util.Formatter;
+import uk.co.md87.evetool.ui.data.AccountChar;
 
 /**
  *
@@ -42,11 +41,11 @@ public class CharacterSkillUpdateWorker extends
         SwingWorker<ApiResponse<SkillInTraining>, Object> {
 
     private final EveApi api;
-    private final JLabel skillLabel;
+    private final AccountChar ac;
 
-    public CharacterSkillUpdateWorker(final EveApi api, final JLabel skillLabel) {
+    public CharacterSkillUpdateWorker(final EveApi api, final AccountChar ac) {
         this.api = api;
-        this.skillLabel = skillLabel;
+        this.ac = ac;
     }
 
     /** {@inheritDoc} */
@@ -70,25 +69,8 @@ public class CharacterSkillUpdateWorker extends
     @Override
     protected void done() {
         try {
-            final ApiResponse<SkillInTraining> res = get();
-
-            if (res.wasSuccessful()) {
-                final SkillInTraining st = res.getResult();
-
-                if (st.isInTraining()) {
-                    final long duration = st.getEndTime().getTime() - System.currentTimeMillis();
-                    skillLabel.setText("Training " + st.getSkill().getName()
-                            + " to level " + st.getTargetLevel() + " ("
-                            + Formatter.formatDuration((int) (duration / 1000)) + ")");
-                } else {
-                    skillLabel.setText("Nothing training");
-                }
-            } else {
-                skillLabel.setText("Error");
-            }
-        } catch (Exception ex) {
-            skillLabel.setText("Error");
-            
+            ac.setTraining(get());
+        } catch (Exception ex) {            
             Logger.getLogger(CharacterSkillUpdateWorker.class.getName())
                     .log(Level.SEVERE, "Error getting char sheet", ex);
         }

@@ -25,12 +25,12 @@ package uk.co.md87.evetool.ui.workers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
 import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
+import uk.co.md87.evetool.ui.data.AccountChar;
 
 /**
  *
@@ -40,11 +40,11 @@ public class CharacterBalanceUpdateWorker extends
         SwingWorker<ApiResponse<CharacterSheet>, Object> {
 
     private final EveApi api;
-    private final JLabel iskLabel;
+    private final AccountChar character;
 
-    public CharacterBalanceUpdateWorker(final EveApi api, final JLabel iskLabel) {
+    public CharacterBalanceUpdateWorker(final EveApi api, final AccountChar character) {
         this.api = api;
-        this.iskLabel = iskLabel;
+        this.character = character;
     }
 
     /** {@inheritDoc} */
@@ -57,18 +57,8 @@ public class CharacterBalanceUpdateWorker extends
     @Override
     protected void done() {
         try {
-            final ApiResponse<CharacterSheet> res = get();
-
-            if (res.wasSuccessful()) {
-                final CharacterSheet cs = res.getResult();
-
-                iskLabel.setText(String.format("%,.2f ISK", cs.getBalance()));
-            } else {
-                iskLabel.setText("Error");
-            }
-        } catch (Exception ex) {
-            iskLabel.setText("Error");
-            
+            character.setSheet(get());
+        } catch (Exception ex) {            
             Logger.getLogger(CharacterBalanceUpdateWorker.class.getName())
                     .log(Level.SEVERE, "Error getting char sheet", ex);
         }

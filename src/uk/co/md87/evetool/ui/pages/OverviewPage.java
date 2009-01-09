@@ -22,14 +22,17 @@
 
 package uk.co.md87.evetool.ui.pages;
 
-import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -37,8 +40,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
+import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
+
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.Account;
@@ -49,6 +53,7 @@ import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.components.AddButton;
 import uk.co.md87.evetool.ui.components.FilterButton;
+import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
 /**
@@ -56,11 +61,13 @@ import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
  * TODO: Document OverviewPage
  * @author chris
  */
-public class OverviewPage extends Page implements AccountManager.AccountListener {
+public class OverviewPage extends Page implements AccountManager.AccountListener,
+        ActionListener {
 
     private final ApiFactory factory;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
+    private final List<AccountChar> chars = new ArrayList<AccountChar>();
 
     public OverviewPage(final ContextPanel context, final AccountManager manager,
             final ApiFactory factory) {
@@ -74,6 +81,20 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
 
         context.add(new AddButton("Add account"), "growy");
         context.add(new FilterButton(), "growy, al right");
+
+        new Timer(1000, this).start();
+    }
+
+    public void addChar(final AccountChar ac) {
+        synchronized (chars) {
+            chars.add(ac);
+        }
+    }
+
+    public void updateCharacters() {
+        for (AccountChar character : chars) {
+            character.updateSkillInfo(false);
+        }
     }
 
     protected void addAccount(final Account account) {
@@ -118,7 +139,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         panels.put(account, panel);
         apis.put(account, account.getApi(factory));
         
-        new AccountUpdateWorker(apis.get(account), panel).execute();
+        new AccountUpdateWorker(this, apis.get(account), panel).execute();
     }
 
     /** {@inheritDoc} */
@@ -132,6 +153,12 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
                 addAccount(account);
             }
         });
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        updateCharacters();
     }
 
 }
