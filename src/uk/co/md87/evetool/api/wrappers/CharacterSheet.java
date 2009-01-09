@@ -57,10 +57,10 @@ public class CharacterSheet {
     public CharacterSheet(final ApiElement resultElement) {
         super();
 
-        this.race = resultElement.getChild("race").getContent();
-        this.bloodline = resultElement.getChild("bloodLine").getContent();
-        this.gender = resultElement.getChild("gender").getContent();
-        this.balance = Double.parseDouble(resultElement.getChild("balance").getContent());
+        this.race = resultElement.getChildContent("race");
+        this.bloodline = resultElement.getChildContent("bloodLine");
+        this.gender = resultElement.getChildContent("gender");
+        this.balance = Double.parseDouble(resultElement.getChildContent("balance"));
 
         this.clone = new BasicCloneInfo();
         // TODO: Clone
@@ -77,12 +77,11 @@ public class CharacterSheet {
         this.certificates = new ArrayList<Integer>();
         parseCertificates(resultElement.getRowset("certificates"));
 
-        final int id = Integer.parseInt(resultElement.getChild("characterID").getContent());
-        final String name = resultElement.getChild("name").getContent();
+        final int id = Integer.parseInt(resultElement.getChildContent("characterID"));
+        final String name = resultElement.getChildContent("name");
 
-        final String corpName = resultElement.getChild("corporationName").getContent();
-        final int corpId = Integer.parseInt(resultElement
-                .getChild("corporationID").getContent());
+        final String corpName = resultElement.getChildContent("corporationName");
+        final int corpId = Integer.parseInt(resultElement.getChildContent("corporationID"));
 
         charInfo = new BasicCharInfo(name, id, new BasicCorpInfo(corpName, corpId));
     }
@@ -94,19 +93,18 @@ public class CharacterSheet {
     }
 
     protected void parseSkills(final ApiElement rowset) {
-        // TODO: Nice methods in ApiElement for getting [numeric] atts/children
         // TODO: Nice way to quickly parse rowsets?
         for (ApiElement row : rowset.getChildren()) {
-            final int id = Integer.parseInt(row.getAttributes().get("typeID"));
-            final int level = Integer.parseInt(row.getAttributes().get("level"));
-            final int sp = Integer.parseInt(row.getAttributes().get("skillpoints"));
+            final int id = row.getNumericAttribute("typeID");
+            final int level = row.getNumericAttribute("level");
+            final int sp = row.getNumericAttribute("skillpoints");
             skills.add(new TrainedSkillInfo(id, level, sp));
         }
     }
 
     protected void parseCertificates(final ApiElement rowset) {
         for (ApiElement row : rowset.getChildren()) {
-            final int id = Integer.parseInt(row.getAttributes().get("certificateID"));
+            final int id = row.getNumericAttribute("certificateID");
             certificates.add(id);
         }
     }

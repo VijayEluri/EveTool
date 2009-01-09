@@ -50,7 +50,7 @@ public class ApiResult extends ApiElement {
     }
 
     public String getError() {
-        return getChild("error").getContent();
+        return getChildContent("error");
     }
 
     public Date getCachedSince() {

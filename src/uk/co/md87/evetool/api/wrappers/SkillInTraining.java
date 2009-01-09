@@ -52,7 +52,7 @@ public class SkillInTraining {
     public SkillInTraining(final ApiElement resultElement) {
         super();
 
-        if ("0".equals(resultElement.getChild("skillInTraining").getContent())) {
+        if ("0".equals(resultElement.getChildContent("skillInTraining"))) {
             inTraining = false;
         } else {
             final DateFormat datef = new SimpleDateFormat(EveApi.DATE_FORMAT);
@@ -60,17 +60,17 @@ public class SkillInTraining {
 
             try {
                 startTime = datef.parse(resultElement
-                        .getChild("trainingStartTime").getContent());
+                        .getChildContent("trainingStartTime"));
                 endTime = datef.parse(resultElement
-                        .getChild("trainingEndTime").getContent());
+                        .getChildContent("trainingEndTime"));
                 startSP = Integer.parseInt(resultElement
-                        .getChild("trainingStartSP").getContent());
+                        .getChildContent("trainingStartSP"));
                 targetSP = Integer.parseInt(resultElement
-                        .getChild("trainingDestinationSP").getContent());
+                        .getChildContent("trainingDestinationSP"));
                 targetLevel = Integer.parseInt(resultElement
-                        .getChild("trainingToLevel").getContent());
+                        .getChildContent("trainingToLevel"));
                 typeId = Integer.parseInt(resultElement
-                        .getChild("trainingTypeID").getContent());
+                        .getChildContent("trainingTypeID"));
             } catch (NumberFormatException ex) {
                 LOGGER.log(Level.SEVERE, "Error parsing skill data", ex);
             } catch (ParseException ex) {

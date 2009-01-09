@@ -52,11 +52,12 @@ public class CharacterList extends ArrayList<BasicCharInfo> {
     }
 
     protected BasicCharInfo getCharInfo(final ApiElement row) {
-        final Map<String, String> attr = row.getAttributes();
-        final BasicCorpInfo corpInfo = new BasicCorpInfo(attr.get("corporationName"),
-                Integer.parseInt(attr.get("corporationID")));
-        final BasicCharInfo charInfo = new BasicCharInfo(attr.get("name"),
-                Integer.parseInt(attr.get("characterID")), corpInfo);
+        final BasicCorpInfo corpInfo = new BasicCorpInfo(
+                row.getStringAttribute("corporationName"),
+                row.getNumericAttribute("corporationID"));
+        final BasicCharInfo charInfo = new BasicCharInfo(
+                row.getStringAttribute("name"),
+                row.getNumericAttribute("characterID"), corpInfo);
 
         return charInfo;
     }

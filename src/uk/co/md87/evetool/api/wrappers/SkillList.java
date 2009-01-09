@@ -59,8 +59,8 @@ public class SkillList extends ArrayList<SkillGroup> {
     }
 
     protected SkillGroup getSkillGroup(final ApiElement row) {
-        final String name = row.getAttributes().get("groupName");
-        final int id = Integer.parseInt(row.getAttributes().get("groupID"));
+        final String name = row.getStringAttribute("groupName");
+        final int id = row.getNumericAttribute("groupID");
 
         final SkillGroup group = new SkillGroup(name, id);
 
@@ -74,15 +74,15 @@ public class SkillList extends ArrayList<SkillGroup> {
     }
 
     protected SkillInfo getSkill(final SkillGroup group, final ApiElement row) {
-        final String skillName = row.getAttributes().get("typeName");
-        final int typeId = Integer.parseInt(row.getAttributes().get("typeID"));
-        final String desc = row.getChild("description").getContent();
-        final int rank = Integer.parseInt(row.getChild("rank").getContent());
+        final String skillName = row.getStringAttribute("typeName");
+        final int typeId = row.getNumericAttribute("typeID");
+        final String desc = row.getChildContent("description");
+        final int rank = Integer.parseInt(row.getChildContent("rank"));
         final List<SkillRequirement> reqs = getReqs(row.getRowset("requiredSkills"));
         final String primaryAttribute = row.getChild("requiredAttributes")
-                .getChild("primaryAttribute").getContent();
+                .getChildContent("primaryAttribute");
         final String secondaryAttribute = row.getChild("requiredAttributes")
-                .getChild("secondaryAttribute").getContent();
+                .getChildContent("secondaryAttribute");
         final Map<String, String> bonuses = getBonuses(row.getRowset("skillBonusCollection"));
 
         return new SkillInfo(group, skillName, typeId, desc, rank, reqs, primaryAttribute,
@@ -93,9 +93,8 @@ public class SkillList extends ArrayList<SkillGroup> {
         final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
 
         for (ApiElement row : rowset.getChildren()) {
-            reqs.add(new SkillRequirement(
-                    Integer.parseInt(row.getAttributes().get("typeID")),
-                    Integer.parseInt(row.getAttributes().get("skillLevel"))));
+            reqs.add(new SkillRequirement(row.getNumericAttribute("typeID"),
+                    row.getNumericAttribute("skillLevel")));
         }
 
         return reqs;
