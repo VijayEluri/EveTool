@@ -55,7 +55,7 @@ public class AccountChar {
     public synchronized void updateSkillInfo(final boolean initial) {
         if (training == null && initial) {
             this.skill.setText("Loading...");
-        } else if (training.wasSuccessful()) {
+        } else if (training != null && training.wasSuccessful()) {
             if (training.getResult().isInTraining()) {
                 final int duration = (int) (training.getResult().getEndTime().getTime()
                         - System.currentTimeMillis()) / 1000;
