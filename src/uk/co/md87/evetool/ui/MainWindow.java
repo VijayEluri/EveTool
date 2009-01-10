@@ -22,10 +22,15 @@
 
 package uk.co.md87.evetool.ui;
 
+import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -73,8 +78,19 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         try {
-            setIconImage(ImageIO.read(getClass().getResource("res/icon.png")));
+            final Image image = ImageIO.read(getClass().getResource("res/icon.png"));
+            setIconImage(image);
+
+            if (SystemTray.isSupported()) {
+                final TrayIcon trayicon = new TrayIcon(image
+                        .getScaledInstance(SystemTray.getSystemTray().getTrayIconSize().width,
+                        SystemTray.getSystemTray().getTrayIconSize().height,
+                        Image.SCALE_SMOOTH), "EVE Tool");
+                SystemTray.getSystemTray().add(trayicon);
+            }
         } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AWTException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -66,6 +66,10 @@ public class Formatter {
     public static String formatDuration(final int duration) {
         final StringBuilder buff = new StringBuilder();
 
+        if (duration <= 0) {
+            return "Done";
+        }
+
         int seconds = duration;
 
         seconds -= doDuration(buff, seconds, 60*60*24, "d");
