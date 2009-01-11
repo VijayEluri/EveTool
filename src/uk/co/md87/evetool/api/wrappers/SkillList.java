@@ -77,7 +77,7 @@ public class SkillList extends ArrayList<SkillGroup> {
         final String skillName = row.getStringAttribute("typeName");
         final int typeId = row.getNumericAttribute("typeID");
         final String desc = row.getChildContent("description");
-        final int rank = Integer.parseInt(row.getChildContent("rank"));
+        final int rank = row.getNumericChildContent("rank");
         final List<SkillRequirement> reqs = getReqs(row.getRowset("requiredSkills"));
         final String primaryAttribute = row.getChild("requiredAttributes")
                 .getChildContent("primaryAttribute");

@@ -25,9 +25,36 @@ package uk.co.md87.evetool.api.wrappers.data;
 /**
  *
  * TODO: Document Implant
- * TODO: Implement Implant
  * @author chris
  */
 public class Implant {
+
+    private final String name;
+    private final Attribute attribute;
+    private final int bonus;
+
+    public Implant(final String name, final Attribute attribute, final int bonus) {
+        this.name = name;
+        this.attribute = attribute;
+        this.bonus = bonus;
+    }
+
+    public Attribute getAttribute() {
+        return attribute;
+    }
+
+    public int getBonus() {
+        return bonus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return "[" + name + " (+" + bonus + " " + attribute + ")]";
+    }
 
 }

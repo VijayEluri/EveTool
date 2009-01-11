@@ -63,14 +63,10 @@ public class SkillInTraining {
                         .getChildContent("trainingStartTime"));
                 endTime = datef.parse(resultElement
                         .getChildContent("trainingEndTime"));
-                startSP = Integer.parseInt(resultElement
-                        .getChildContent("trainingStartSP"));
-                targetSP = Integer.parseInt(resultElement
-                        .getChildContent("trainingDestinationSP"));
-                targetLevel = Integer.parseInt(resultElement
-                        .getChildContent("trainingToLevel"));
-                typeId = Integer.parseInt(resultElement
-                        .getChildContent("trainingTypeID"));
+                startSP = resultElement.getNumericChildContent("trainingStartSP");
+                targetSP = resultElement.getNumericChildContent("trainingDestinationSP");
+                targetLevel = resultElement.getNumericChildContent("trainingToLevel");
+                typeId = resultElement.getNumericChildContent("trainingTypeID");
             } catch (NumberFormatException ex) {
                 LOGGER.log(Level.SEVERE, "Error parsing skill data", ex);
             } catch (ParseException ex) {

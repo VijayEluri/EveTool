@@ -89,6 +89,10 @@ public class ApiElement {
         return getChild(name).getContent();
     }
 
+    public int getNumericChildContent(final String name) {
+        return Integer.parseInt(getChildContent(name));
+    }
+
     public String getStringAttribute(final String name) {
         return getAttributes().get(name);
     }

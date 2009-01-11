@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.parser.NamedApiElement;
 import uk.co.md87.evetool.api.wrappers.data.Attribute;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCloneInfo;
@@ -66,7 +67,7 @@ public class CharacterSheet {
         // TODO: Clone
 
         this.implants = new ArrayList<Implant>();
-        // TODO: Implants
+        parseImplants(resultElement.getChild("attributeEnhancers"));
 
         this.attributes = new HashMap<Attribute, Integer>();
         // TODO: Attributes
@@ -77,11 +78,11 @@ public class CharacterSheet {
         this.certificates = new ArrayList<Integer>();
         parseCertificates(resultElement.getRowset("certificates"));
 
-        final int id = Integer.parseInt(resultElement.getChildContent("characterID"));
+        final int id = resultElement.getNumericChildContent("characterID");
         final String name = resultElement.getChildContent("name");
 
         final String corpName = resultElement.getChildContent("corporationName");
-        final int corpId = Integer.parseInt(resultElement.getChildContent("corporationID"));
+        final int corpId = resultElement.getNumericChildContent("corporationID");
 
         charInfo = new BasicCharInfo(name, id, new BasicCorpInfo(corpName, corpId));
     }
@@ -89,6 +90,18 @@ public class CharacterSheet {
     public void associateSkills(final SkillList skilltree) {
         for (TrainedSkillInfo skill : skills) {
             skill.setSkill(skilltree.getSkillById(skill.getId()));
+        }
+    }
+
+    protected void parseImplants(final ApiElement root) {
+        for (ApiElement child : root.getChildren()) {
+            if (child instanceof NamedApiElement
+                    && ((NamedApiElement) child).getName().endsWith("Bonus")) {
+                final String type = ((NamedApiElement) child).getName().replace("Bonus", "");
+                final String name = child.getChildContent("augmentatorName");
+                final int value = child.getNumericChildContent("augmentatorValue");
+                implants.add(new Implant(name, Attribute.valueOf(type.toUpperCase()), value));
+            }
         }
     }
 
