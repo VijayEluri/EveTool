@@ -102,7 +102,14 @@ public class SkillList extends ArrayList<SkillGroup> {
     }
 
     protected Map<String, String> getBonuses(final ApiElement rowset) {
-        return null; // TODO: Implement getBonuses
+        final Map<String, String> bonuses = new HashMap<String, String>();
+
+        for (ApiElement child : rowset.getChildren()) {
+            bonuses.put(child.getStringAttribute("bonusType"),
+                    child.getStringAttribute("bonusValue"));
+        }
+
+        return bonuses;
     }
 
 }
