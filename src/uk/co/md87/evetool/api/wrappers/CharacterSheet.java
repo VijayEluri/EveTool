@@ -49,7 +49,8 @@ public class CharacterSheet {
     private final BasicCloneInfo clone;
     private final double balance;
     private final List<Implant> implants;
-    private final Map<Attribute, Integer> attributes;
+    private final Map<Attribute, Integer> baseAttributes;
+    private final Map<Attribute, Double> attributes;
     private final List<TrainedSkillInfo> skills;
     private final List<Integer> certificates;
 
@@ -69,7 +70,8 @@ public class CharacterSheet {
         this.implants = new ArrayList<Implant>();
         parseImplants(resultElement.getChild("attributeEnhancers"));
 
-        this.attributes = new HashMap<Attribute, Integer>();
+        this.attributes = new HashMap<Attribute, Double>();
+        this.baseAttributes = new HashMap<Attribute, Integer>();
         parseAttributes(resultElement.getChild("attributes"));
 
         this.skills = new ArrayList<TrainedSkillInfo>();
@@ -85,6 +87,8 @@ public class CharacterSheet {
         final int corpId = resultElement.getNumericChildContent("corporationID");
 
         charInfo = new BasicCharInfo(name, id, new BasicCorpInfo(corpName, corpId));
+
+        calculateAttributes();
     }
 
     public void associateSkills(final SkillList skilltree) {
@@ -107,7 +111,7 @@ public class CharacterSheet {
 
     protected void parseAttributes(final ApiElement root) {
         for (Attribute attribute : Attribute.values()) {
-            attributes.put(attribute,
+            baseAttributes.put(attribute,
                     root.getNumericChildContent(attribute.name().toLowerCase()));
         }
     }
@@ -129,11 +133,28 @@ public class CharacterSheet {
         }
     }
 
+    protected void calculateAttributes() {
+        for (Attribute attribute : Attribute.values()) {
+            final int base = baseAttributes.get(attribute);
+            final int skillBonus = 0;
+            final int implantBonus = 0;
+            final int total = base + skillBonus + implantBonus;
+            final double learningBonus = 1.0;
+            
+            attributes.put(attribute, total * learningBonus);
+        }
+        // (Base + skill bonuses + implant bonuses) * ( 1+ (learning bonus * 0.02))
+    }
+
     public BasicCharInfo getBasicInformation() {
         return charInfo;
     }
 
-    public Map<Attribute, Integer> getAttributes() {
+    public Map<Attribute, Integer> getBaseAttributes() {
+        return baseAttributes;
+    }
+
+    public Map<Attribute, Double> getAttributes() {
         return attributes;
     }
 

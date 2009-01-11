@@ -24,6 +24,8 @@ package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,7 +40,7 @@ import uk.co.md87.evetool.ui.workers.PortraitLoaderWorker;
  * TODO: Document MenuPanel
  * @author chris
  */
-public class MenuPanel extends JPanel {
+public class MenuPanel extends JPanel implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -56,12 +58,17 @@ public class MenuPanel extends JPanel {
         final JLabel label = new JLabel("Loading...");
         add(label, "height 192!, width 192!");
 
-        add(new MenuButton("Overview"), "growx");
-        add(new MenuButton("Skills"), "growx");
-        add(new MenuButton("Assets"), "growx");
-        add(new MenuButton("Settings"), "growx");
+        add(new MenuButton("Overview", this), "growx");
+        add(new MenuButton("Skills", this), "growx");
+        add(new MenuButton("Assets", this), "growx");
+        add(new MenuButton("Settings", this), "growx");
 
         new PortraitLoaderWorker(113499922, label, 192).execute();
+    }
+
+    /** {@inheritDoc} */
+    public void actionPerformed(final ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

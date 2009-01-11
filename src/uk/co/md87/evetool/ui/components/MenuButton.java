@@ -24,6 +24,7 @@ package uk.co.md87.evetool.ui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JToggleButton;
 
@@ -40,7 +41,7 @@ public class MenuButton extends JToggleButton {
      */
     private static final long serialVersionUID = 10;
 
-    public MenuButton(final String text) {
+    public MenuButton(final String text, final ActionListener listener) {
         super(text);
 
         setUI(new ETButtonUI(Color.LIGHT_GRAY));
@@ -48,6 +49,8 @@ public class MenuButton extends JToggleButton {
         setBackground(Color.GRAY);
         setFocusPainted(false);
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY.brighter()));
+
+        addActionListener(listener);
     }
 
 }
