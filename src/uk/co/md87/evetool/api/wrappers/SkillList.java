@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.Attribute;
 import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
@@ -79,10 +80,10 @@ public class SkillList extends ArrayList<SkillGroup> {
         final String desc = row.getChildContent("description");
         final int rank = row.getNumericChildContent("rank");
         final List<SkillRequirement> reqs = getReqs(row.getRowset("requiredSkills"));
-        final String primaryAttribute = row.getChild("requiredAttributes")
-                .getChildContent("primaryAttribute");
-        final String secondaryAttribute = row.getChild("requiredAttributes")
-                .getChildContent("secondaryAttribute");
+        final Attribute primaryAttribute = Attribute.valueOf(row.getChild("requiredAttributes")
+                .getChildContent("primaryAttribute").toUpperCase());
+        final Attribute secondaryAttribute = Attribute.valueOf(row.getChild("requiredAttributes")
+                .getChildContent("secondaryAttribute").toUpperCase());
         final Map<String, String> bonuses = getBonuses(row.getRowset("skillBonusCollection"));
 
         return new SkillInfo(group, skillName, typeId, desc, rank, reqs, primaryAttribute,

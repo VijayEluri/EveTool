@@ -23,17 +23,25 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 /**
+ * An enumeration of the five attributes of a character.
  *
- * TODO: Document Attribute
- * TODO: Switch skill to use Attribute
  * @author chris
  */
 public enum Attribute {
 
+    /** The intelligence attribute. */
     INTELLIGENCE,
+
+    /** The memory attribute. */
     MEMORY,
+
+    /** The charisma attribute. */
     CHARISMA,
+
+    /** The perception attribute. */
     PERCEPTION,
+
+    /** The willpower attribute. */
     WILLPOWER;
 
 }

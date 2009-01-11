@@ -38,14 +38,14 @@ public class SkillInfo {
     protected final String description;
     protected final int rank;
     protected final List<SkillRequirement> requirements;
-    protected final String primaryAttribute;
-    protected final String secondaryAttribute;
+    protected final Attribute primaryAttribute;
+    protected final Attribute secondaryAttribute;
     protected final Map<String, String> bonuses;
 
     public SkillInfo(final SkillGroup group, final String name, final int id,
             final String description, final int rank,
             final List<SkillRequirement> requirements,
-            final String primaryAttribute, final String secondaryAttribute,
+            final Attribute primaryAttribute, final Attribute secondaryAttribute,
             final Map<String, String> bonuses) {
         this.group = group;
         this.name = name;
