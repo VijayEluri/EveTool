@@ -70,7 +70,7 @@ public class CharacterSheet {
         parseImplants(resultElement.getChild("attributeEnhancers"));
 
         this.attributes = new HashMap<Attribute, Integer>();
-        // TODO: Attributes
+        parseAttributes(resultElement.getChild("attributes"));
 
         this.skills = new ArrayList<TrainedSkillInfo>();
         parseSkills(resultElement.getRowset("skills"));
@@ -102,6 +102,13 @@ public class CharacterSheet {
                 final int value = child.getNumericChildContent("augmentatorValue");
                 implants.add(new Implant(name, Attribute.valueOf(type.toUpperCase()), value));
             }
+        }
+    }
+
+    protected void parseAttributes(final ApiElement root) {
+        for (Attribute attribute : Attribute.values()) {
+            attributes.put(attribute,
+                    root.getNumericChildContent(attribute.name().toLowerCase()));
         }
     }
 
