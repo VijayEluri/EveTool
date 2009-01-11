@@ -35,21 +35,33 @@ import java.util.logging.Logger;
 import javax.sql.rowset.serial.SerialClob;
 
 /**
+ * Implements a cache for the API using a SQL database.
  *
- * TODO: Document DBCache
  * @author chris
  */
 public class DBCache implements ApiCache {
 
+    /** A logger for this class. */
     private static final Logger LOGGER = Logger.getLogger(DBCache.class.getName());
 
+    /** The database connection to use. */
     private final Connection conn;
 
+    /** A prepared statement for inserting new values. */
     private PreparedStatement prepInsert = null;
+    /** A prepared statement for updating existing values. */
     private PreparedStatement prepUpdate = null;
+    /** A prepared statement for checking the status of an item. */
     private PreparedStatement prepCheck = null;
+    /** A prepared statement for retrieving an existing item. */
     private PreparedStatement prepRetrieve = null;
 
+    /**
+     * Creates a new DBCache which will use the specified database connection.
+     * It is assumed that the neccessary tables already exist.
+     *
+     * @param conn The database connection to use
+     */
     public DBCache(final Connection conn) {
         this.conn = conn;
         
