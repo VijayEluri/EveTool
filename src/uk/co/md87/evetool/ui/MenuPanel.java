@@ -51,6 +51,9 @@ public class MenuPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 10;
 
     protected final JLabel portrait;
+    protected final MenuButton overviewButton;
+    protected final MenuButton skillsButton;
+    protected final MenuButton settingsButton;
 
     public MenuPanel(final MainWindow window) {
         super(new MigLayout("wrap 1, fillx, ins 4"));
@@ -61,12 +64,18 @@ public class MenuPanel extends JPanel implements ActionListener {
         portrait = new JLabel("Select a character", JLabel.CENTER);
         add(portrait, "height 192!, width 192!");
 
-        add(new MenuButton("Overview", this), "growx");
-        add(new MenuButton("Skills", this), "growx");
-        add(new MenuButton("Assets", this), "growx");
-        add(new MenuButton("Settings", this), "growx");
+        overviewButton = new MenuButton("Overview", this);
+        overviewButton.setSelected(true);
 
-        
+        skillsButton = new MenuButton("Skills", this);
+        skillsButton.setEnabled(false);
+
+        settingsButton = new MenuButton("Settings", this);
+        settingsButton.setEnabled(false);
+
+        add(overviewButton, "growx");
+        add(skillsButton, "growx");
+        add(settingsButton, "growx");        
     }
 
     public void setSelectedChar(final AccountChar newChar) {
@@ -74,11 +83,13 @@ public class MenuPanel extends JPanel implements ActionListener {
         portrait.setText("Loading...");
         new PortraitLoaderWorker(newChar.getCharInfo().getId(),
                 portrait, 192).execute();
+
+        skillsButton.setEnabled(true);
     }
 
     /** {@inheritDoc} */
     public void actionPerformed(final ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ((MenuButton) e.getSource()).setBackground(Color.RED);
     }
 
 }
