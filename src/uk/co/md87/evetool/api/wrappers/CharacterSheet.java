@@ -124,7 +124,7 @@ public class CharacterSheet {
             final int id = row.getNumericAttribute("typeID");
             final int level = row.getNumericAttribute("level");
             final int sp = row.getNumericAttribute("skillpoints");
-            skills.add(new TrainedSkillInfo(id, level, sp));
+            skills.add(new TrainedSkillInfo(this, id, level, sp));
         }
     }
 

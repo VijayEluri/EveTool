@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.comparators;
+package uk.co.md87.evetool.comparators.skills;
 
 import java.util.Comparator;
+
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 
 /**
@@ -31,7 +32,7 @@ import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
  *
  * @author chris
  */
-public class SkillByRemainingSPComparator implements Comparator<TrainedSkillInfo> {
+public class RemainingSPComparator implements Comparator<TrainedSkillInfo> {
 
     /** Whether to put complete (untrainable) skills last or not. */
     private final boolean untrainableLast;
@@ -41,7 +42,7 @@ public class SkillByRemainingSPComparator implements Comparator<TrainedSkillInfo
      *
      * @param untrainableLast Whether to put complete (untrainable) skills last or not
      */
-    public SkillByRemainingSPComparator(final boolean untrainableLast) {
+    public RemainingSPComparator(final boolean untrainableLast) {
         this.untrainableLast = untrainableLast;
     }
 

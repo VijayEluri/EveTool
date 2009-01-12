@@ -70,6 +70,10 @@ public class SkillInfo {
         return (int) Math.ceil(250 * rank * Math.pow(32, ((double) level - 1) / 2));
     }
 
+    public double getSkillpointsPerMinute(final Map<Attribute, Double> attributes) {
+        return attributes.get(primaryAttribute) + attributes.get(secondaryAttribute) / 2.0;
+    }
+
     public Map<String, String> getBonuses() {
         return bonuses;
     }

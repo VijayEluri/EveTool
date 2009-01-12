@@ -22,6 +22,8 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import uk.co.md87.evetool.api.wrappers.CharacterSheet;
+
 /**
  * Represents a skill that has been trained by a player.
  * 
@@ -32,6 +34,8 @@ public class TrainedSkillInfo {
     /** The information for this skill, if it has been associated. */
     private SkillInfo skill;
 
+    /** The character sheet this skill belongs to. */
+    private final CharacterSheet sheet;
     /** The ID of the skill. */
     private final int id;
     /** The level the skill is trained to. */
@@ -43,11 +47,14 @@ public class TrainedSkillInfo {
      * Creates a new TrainedSkillInfo with the specified ID, level and number
      * of skill points.
      *
+     * @param sheet The CharacterSheet that this skill belongs to
      * @param id The ID of the skill
      * @param level The level the skill is trained to
      * @param skillpoints The current number of skill points
      */
-    public TrainedSkillInfo(final int id, final int level, final int skillpoints) {
+    public TrainedSkillInfo(final CharacterSheet sheet, final int id,
+            final int level, final int skillpoints) {
+        this.sheet = sheet;
         this.id = id;
         this.level = level;
         this.skillpoints = skillpoints;
@@ -123,6 +130,38 @@ public class TrainedSkillInfo {
      */
     public int getExtraSPForNextLevel() {
         return getSPForNextLevel() - getSP();
+    }
+
+    /**
+     * Calculates the number of skill points which will be earned per minute
+     * by training this skill.
+     *
+     * @return The number of skill points earned per minute
+     */
+    public double getSkillpointsPerMinute() {
+        return skill.getSkillpointsPerMinute(sheet.getAttributes());
+    }
+
+    /**
+     * Returns the time in seconds to reach the next level of this skill.
+     *
+     * @return The training time in seconds
+     */
+    public int getTimeToNextLevel() {
+        return getTimeToLevel(getNextLevel());
+    }
+
+    /**
+     * Returns the time in seconds to reach the specified level of this skill.
+     *
+     * @param level The level to reach
+     * @return The reamining time in seconds to that level
+     */
+    public int getTimeToLevel(final int level) {
+        final int remsp = skill.getSkillpointsForLevel(level) - getSP();
+        final double sppm = getSkillpointsPerMinute();
+        final double minutes = remsp / sppm;
+        return (int) Math.ceil(minutes * 60);
     }
 
     /**
