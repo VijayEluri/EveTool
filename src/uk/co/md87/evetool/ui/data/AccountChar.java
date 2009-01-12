@@ -32,8 +32,8 @@ public class AccountChar {
         this.skill = skill;
     }
 
-    public void setPortrait(final Icon icon) {
-        portrait.setIcon(icon);
+    public BasicCharInfo getCharInfo() {
+        return charInfo;
     }
 
     public void setSheet(final ApiResponse<CharacterSheet> sheet) {

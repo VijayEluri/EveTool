@@ -41,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ui.data.AccountChar;
 
 /**
  *
@@ -56,8 +57,10 @@ public class MainWindow extends JFrame {
      */
     private static final long serialVersionUID = 10;
 
+    private AccountChar selectedChar = null;
     private final AccountManager manager;
     private final ApiFactory factory;
+    private final MenuPanel menuPanel;
     private final ContextPanel contextPanel;
 
     public MainWindow(final AccountManager manager, final ApiFactory factory) {
@@ -68,6 +71,7 @@ public class MainWindow extends JFrame {
         this.factory = factory;
         this.manager = manager;
 
+        this.menuPanel = new MenuPanel(this);
         this.contextPanel = new ContextPanel();
         
         setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
@@ -95,6 +99,12 @@ public class MainWindow extends JFrame {
         }
     }
 
+    public void setSelectedChar(final AccountChar newChar) {
+        selectedChar = newChar;
+        menuPanel.setSelectedChar(newChar);
+        setTitle("EVE Tool - " + newChar.getCharInfo().getName());
+    }
+
     public ContextPanel getContextPanel() {
         return contextPanel;
     }
@@ -103,7 +113,7 @@ public class MainWindow extends JFrame {
         final JScrollPane scrollPane = new JScrollPane(new ContentPanel(this, manager, factory));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        add(new MenuPanel(this), "width 201!, spany2");
+        add(menuPanel, "width 201!, spany2");
         add(scrollPane);
         add(contextPanel, "growx, height 30!");
         add(new StatusPanel(this), "growx, span, height 30!");

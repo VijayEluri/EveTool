@@ -23,6 +23,8 @@
 package uk.co.md87.evetool.ui.workers;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -108,6 +110,8 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
                     new CharacterBalanceUpdateWorker(newApi, ac).execute();
                     new CharacterSkillUpdateWorker(newApi, ac).execute();
+
+                    portrait.addMouseListener(new PortraitMouseListener(page, ac));
                 }
             } else {
                 target.removeAll();
@@ -116,6 +120,22 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
             target.revalidate();
         } catch (Exception ex) {
             Logger.getLogger(OverviewPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static class PortraitMouseListener extends MouseAdapter {
+        
+        private final OverviewPage page;
+        private final AccountChar ac;
+
+        public PortraitMouseListener(OverviewPage page, AccountChar ac) {
+            this.page = page;
+            this.ac = ac;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            page.setSelectedChar(ac);
         }
     }
 }

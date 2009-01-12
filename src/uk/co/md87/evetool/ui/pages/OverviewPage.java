@@ -51,6 +51,7 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
+import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.AddButton;
 import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.data.AccountChar;
@@ -71,13 +72,16 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
      */
     private static final long serialVersionUID = 10;
 
+    private final MainWindow window;
     private final ApiFactory factory;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
     private final List<AccountChar> chars = new ArrayList<AccountChar>();
 
-    public OverviewPage(final ContextPanel context, final AccountManager manager,
+    public OverviewPage(final MainWindow window, final ContextPanel context,
+            final AccountManager manager,
             final ApiFactory factory) {
+        this.window = window;
         this.factory = factory;
 
         setLayout(new MigLayout("fillx"));
@@ -96,6 +100,10 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         synchronized (chars) {
             chars.add(ac);
         }
+    }
+
+    public void setSelectedChar(AccountChar ac) {
+        window.setSelectedChar(ac);
     }
 
     public void updateCharacters() {

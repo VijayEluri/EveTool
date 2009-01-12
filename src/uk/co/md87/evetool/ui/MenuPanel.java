@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.ui.components.MenuButton;
+import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.workers.PortraitLoaderWorker;
 
 /**
@@ -49,21 +50,30 @@ public class MenuPanel extends JPanel implements ActionListener {
      */
     private static final long serialVersionUID = 10;
 
+    protected final JLabel portrait;
+
     public MenuPanel(final MainWindow window) {
         super(new MigLayout("wrap 1, fillx, ins 4"));
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
         setBackground(Color.GRAY);
 
-        final JLabel label = new JLabel("Loading...");
-        add(label, "height 192!, width 192!");
+        portrait = new JLabel("Select a character", JLabel.CENTER);
+        add(portrait, "height 192!, width 192!");
 
         add(new MenuButton("Overview", this), "growx");
         add(new MenuButton("Skills", this), "growx");
         add(new MenuButton("Assets", this), "growx");
         add(new MenuButton("Settings", this), "growx");
 
-        new PortraitLoaderWorker(113499922, label, 192).execute();
+        
+    }
+
+    public void setSelectedChar(final AccountChar newChar) {
+        portrait.setIcon(null);
+        portrait.setText("Loading...");
+        new PortraitLoaderWorker(newChar.getCharInfo().getId(),
+                portrait, 192).execute();
     }
 
     /** {@inheritDoc} */

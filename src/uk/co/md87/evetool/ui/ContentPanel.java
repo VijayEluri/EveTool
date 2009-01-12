@@ -48,7 +48,7 @@ public class ContentPanel extends JPanel {
         super(new CardLayout());
 
         //setBackground(Color.BLUE);
-        add(new OverviewPage(window.getContextPanel(), manager, factory), "push, grow");
+        add(new OverviewPage(window, window.getContextPanel(), manager, factory), "push, grow");
         add(new JLabel("Main content2", JLabel.CENTER), "push, grow");
     }
 
