@@ -70,9 +70,13 @@ public class SkillInfo {
         return (int) Math.ceil(250 * rank * Math.pow(32, ((double) level - 1) / 2));
     }
 
+    public Map<String, String> getBonuses() {
+        return bonuses;
+    }
+
     @Override
     public String toString() {
-        return "[" + name + " (" + id + ")]";
+        return "[" + name + " (" + id + ") | " + bonuses + "]";
     }
 
 }

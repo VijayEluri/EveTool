@@ -99,6 +99,15 @@ public class TrainedSkillInfo {
     }
 
     /**
+     * Retrieves the current level this skill is trained at.
+     *
+     * @return This skill's current level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
      * Calculates the number of skillpoints needed for the next level.
      *
      * @return The total number of skillpoints for the next level.
@@ -114,6 +123,16 @@ public class TrainedSkillInfo {
      */
     public int getExtraSPForNextLevel() {
         return getSPForNextLevel() - getSP();
+    }
+
+    /**
+     * Retrieves the associated {@link SkillInfo} object. Note that this will
+     * be null unless {@link #setSkill(SkillInfo)} has been called.
+     *
+     * @return A SkillInfo object if associated
+     */
+    public SkillInfo getSkillInfo() {
+        return skill;
     }
 
     /** {@inheritDoc} */

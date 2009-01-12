@@ -95,6 +95,8 @@ public class CharacterSheet {
         for (TrainedSkillInfo skill : skills) {
             skill.setSkill(skilltree.getSkillById(skill.getId()));
         }
+
+        calculateAttributes();
     }
 
     protected void parseImplants(final ApiElement root) {
@@ -136,14 +138,46 @@ public class CharacterSheet {
     protected void calculateAttributes() {
         for (Attribute attribute : Attribute.values()) {
             final int base = baseAttributes.get(attribute);
-            final int skillBonus = 0;
-            final int implantBonus = 0;
+            final int skillBonus = getSkillBonus(attribute);
+            final int implantBonus = getImplantBonus(attribute);
             final int total = base + skillBonus + implantBonus;
-            final double learningBonus = 1.0;
+            final double learningBonus = 1 + (getSkillBonus("learningBonus") / 100.0);
             
             attributes.put(attribute, total * learningBonus);
         }
-        // (Base + skill bonuses + implant bonuses) * ( 1+ (learning bonus * 0.02))
+    }
+
+    protected int getSkillBonus(final Attribute attribute) {
+        return getSkillBonus(attribute.name().toLowerCase() + "Bonus");
+    }
+
+    protected int getSkillBonus(final String name) {
+        int count = 0;
+
+        for (TrainedSkillInfo skill : skills) {
+            if (skill.getSkillInfo() != null) {
+                for (Map.Entry<String, String> bonus : skill.getSkillInfo()
+                        .getBonuses().entrySet()) {
+                    if (bonus.getKey().equals(name)) {
+                        count += Integer.parseInt(bonus.getValue()) * skill.getLevel();
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    protected int getImplantBonus(final Attribute attribute) {
+        int count = 0;
+
+        for (Implant implant : implants) {
+            if (implant.getAttribute() == attribute) {
+                count += implant.getBonus();
+            }
+        }
+
+        return count;
     }
 
     public BasicCharInfo getBasicInformation() {

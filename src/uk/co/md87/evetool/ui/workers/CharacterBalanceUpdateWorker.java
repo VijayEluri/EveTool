@@ -50,7 +50,13 @@ public class CharacterBalanceUpdateWorker extends
     /** {@inheritDoc} */
     @Override
     protected ApiResponse<CharacterSheet> doInBackground() throws Exception {
-        return api.getCharacterSheet();
+        final ApiResponse<CharacterSheet> res = api.getCharacterSheet();
+
+        if (res.wasSuccessful()) {
+            res.getResult().associateSkills(api.getSkillTree().getResult());
+        }
+
+        return res;
     }
 
     /** {@inheritDoc} */
