@@ -27,6 +27,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JToggleButton;
+import uk.co.md87.evetool.ui.ContentPanel.Page;
 
 /**
  *
@@ -41,8 +42,12 @@ public class MenuButton extends JToggleButton {
      */
     private static final long serialVersionUID = 10;
 
-    public MenuButton(final String text, final ActionListener listener) {
+    protected final Page page;
+
+    public MenuButton(final String text, final Page page, final ActionListener listener) {
         super(text);
+
+        this.page = page;
 
         setUI(new ETButtonUI(Color.LIGHT_GRAY));
         setMinimumSize(new Dimension(0, 25));
@@ -51,6 +56,10 @@ public class MenuButton extends JToggleButton {
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY.brighter()));
 
         addActionListener(listener);
+    }
+
+    public void checkEnabled() {
+        setEnabled(page.isReady());
     }
 
 }

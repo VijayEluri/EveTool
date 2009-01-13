@@ -64,7 +64,7 @@ public class SkillPage extends Page {
     /** {@inheritDoc} */
     @Override
     public boolean isReady() {
-        return true;
+        return character != null;
     }
 
 }

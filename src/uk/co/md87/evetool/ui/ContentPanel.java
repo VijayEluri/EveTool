@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ui.data.AccountChar;
 
 /**
  *
@@ -62,9 +63,19 @@ public class ContentPanel extends JPanel {
 
     public static abstract class Page extends JPanel {
 
+        protected AccountChar character;
+
         // TODO: Add method for activation
         public boolean isReady() {
             return false;
+        }
+
+        public void setActiveChar(final AccountChar ac) {
+            character = ac;
+        }
+
+        public void activated() {
+            
         }
 
     }

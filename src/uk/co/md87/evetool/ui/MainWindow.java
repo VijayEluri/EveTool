@@ -28,22 +28,20 @@ import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
 import uk.co.md87.evetool.ui.pages.SkillPage;
@@ -68,6 +66,7 @@ public class MainWindow extends JFrame {
     private final MenuPanel menuPanel;
     private final ContentPanel contentPanel;
     private final ContextPanel contextPanel;
+    private final Map<String, ContentPanel.Page> pages;
 
     public MainWindow(final AccountManager manager, final ApiFactory factory) {
         super("EVE Tool - Initialising...");
@@ -78,7 +77,7 @@ public class MainWindow extends JFrame {
         this.manager = manager;
         this.contextPanel = new ContextPanel();
 
-        final Map<String, ContentPanel.Page> pages = new HashMap<String, ContentPanel.Page>();
+        pages = new TreeMap<String, ContentPanel.Page>();
         pages.put("Overview", new OverviewPage(this, contextPanel, manager, factory));
         pages.put("Skills", new SkillPage(this, contextPanel, manager, factory));
 
@@ -91,6 +90,8 @@ public class MainWindow extends JFrame {
         setMinimumSize(new Dimension(300, 300));
         setSize(new Dimension(800, 600));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setPage("Overview");
         
         try {
             final Image image = ImageIO.read(getClass().getResource("res/icon.png"));
@@ -111,11 +112,18 @@ public class MainWindow extends JFrame {
     }
 
     public void setPage(final String page) {
+        menuPanel.setSelectedPage(page);
+        pages.get(page).activated();
         contentPanel.show(page);
     }
 
     public void setSelectedChar(final AccountChar newChar) {
         selectedChar = newChar;
+
+        for (Page page : pages.values()) {
+            page.setActiveChar(newChar);
+        }
+
         menuPanel.setSelectedChar(newChar);
         setTitle("EVE Tool - " + newChar.getCharInfo().getName());
     }

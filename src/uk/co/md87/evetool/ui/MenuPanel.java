@@ -26,6 +26,7 @@ import java.awt.Color;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -53,40 +54,36 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     protected final JLabel portrait;
     protected final MainWindow window;
-    protected final MenuButton overviewButton;
-    protected final MenuButton skillsButton;
-    protected final MenuButton settingsButton;
-    protected final Map<String, ContentPanel.Page> pages;
+
+    protected final Map<String, MenuButton> buttons = new HashMap<String, MenuButton>();
 
     public MenuPanel(final MainWindow window, final Map<String, ContentPanel.Page> pages) {
-        super(new MigLayout("wrap 1, fillx, ins 4"));
+        super(new MigLayout("wrap 1, fillx, ins 4, gap 0"));
 
         this.window = window;
-        this.pages = pages;
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
         setBackground(Color.GRAY);
 
         portrait = new JLabel("Select a character", JLabel.CENTER);
-        add(portrait, "height 192!, width 192!");
-
-        overviewButton = new MenuButton("Overview", this);
-
-        skillsButton = new MenuButton("Skills", this);
-        skillsButton.setEnabled(false);
-
-        settingsButton = new MenuButton("Settings", this);
-        settingsButton.setEnabled(false);
+        add(portrait, "height 192!, width 192!, gapbottom 4");
 
         for (Map.Entry<String, ContentPanel.Page> entry : pages.entrySet()) {
-            final MenuButton button = new MenuButton(entry.getKey(), this);
-
-            if (!entry.getValue().isReady()) {
-                button.setEnabled(false);
-            }
+            final MenuButton button = new MenuButton(entry.getKey(), entry.getValue(), this);
+            button.checkEnabled();
 
             add(button, "growx");
+            
+            buttons.put(entry.getKey(), button);
         }
+    }
+
+    public void setSelectedPage(final String page) {
+        for (MenuButton button : buttons.values()) {
+            button.setBackground(Color.GRAY);
+        }
+
+        buttons.get(page).setBackground(Color.LIGHT_GRAY);
     }
 
     public void setSelectedChar(final AccountChar newChar) {
@@ -95,7 +92,9 @@ public class MenuPanel extends JPanel implements ActionListener {
         new PortraitLoaderWorker(newChar.getCharInfo().getId(),
                 portrait, 192).execute();
 
-        skillsButton.setEnabled(true);
+        for (MenuButton button : buttons.values()) {
+            button.checkEnabled();
+        }
     }
 
     /** {@inheritDoc} */
