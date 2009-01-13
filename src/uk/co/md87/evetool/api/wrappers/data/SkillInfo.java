@@ -78,6 +78,10 @@ public class SkillInfo {
         return bonuses;
     }
 
+    public SkillGroup getGroup() {
+        return group;
+    }
+
     @Override
     public String toString() {
         return "[" + name + " (" + id + ") | " + bonuses + "]";

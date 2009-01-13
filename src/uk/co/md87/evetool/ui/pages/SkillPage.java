@@ -25,6 +25,7 @@ package uk.co.md87.evetool.ui.pages;
 
 import javax.swing.JLabel;
 
+import javax.swing.JSeparator;
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
@@ -77,8 +78,15 @@ public class SkillPage extends Page {
         removeAll();
 
         // TODO: Sorting
+        boolean first = true;
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
-            add(new SkillPanel(skill));
+            if (first) {
+                first = false;
+            } else {
+                add(new JSeparator(), "growx, pushx");
+            }
+
+            add(new SkillPanel(skill), "growx, pushx");
         }
     }
 

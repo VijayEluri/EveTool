@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
+import uk.co.md87.evetool.ui.util.Formatter;
 
 /**
  *
@@ -46,17 +47,21 @@ public class SkillPanel extends JPanel {
 
     static {
         try {
-            completeImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_14.png"));
-            trainingImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_12.png"));
-            normalImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_13.png"));
-            untrainedImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_11.png"));
+            completeImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_14.png"))
+                    .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+            trainingImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_12.png"))
+                    .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+            normalImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_13.png"))
+                    .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+            untrainedImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_11.png"))
+                    .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             // Do nothing
         }
     }
 
     public SkillPanel(final TrainedSkillInfo skill) {
-        super(new MigLayout());
+        super(new MigLayout("ins 0, fillx"));
         
         Image image;
 
@@ -72,8 +77,16 @@ public class SkillPanel extends JPanel {
             image = completeImage;
         }
 
-        add(new JLabel(new ImageIcon(image)));
-        add(new JLabel(skill.getSkillInfo().getName()));
+        add(new JLabel(new ImageIcon(image)), "spany 2");
+        add(new JLabel(skill.getSkillInfo().getName() + " level " + skill.getLevel()),
+                "growx, pushx, gaptop 7");
+        add(new JLabel(String.format("%,d/%,d", skill.getSP(),
+                skill.getSkillInfo().getSkillpointsForLevel(5)), JLabel.RIGHT),
+                "growx, pushx, al right, wrap");
+        add(new JLabel(skill.getSkillInfo().getGroup().getName()), "growx, pushx");
+        add(new JLabel(skill.canTrainFurther() ? 
+            Formatter.formatDuration(skill.getTimeToNextLevel()) : "Complete", JLabel.RIGHT),
+                "growx, pushx, al right, gapbottom 8");
     }
 
 }
