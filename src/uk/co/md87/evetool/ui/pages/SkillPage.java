@@ -32,6 +32,7 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
+import uk.co.md87.evetool.ui.components.FilterButton;
 
 /**
  *
@@ -50,8 +51,7 @@ public class SkillPage extends Page {
     private final MainWindow window;
     private final ApiFactory factory;
 
-    public SkillPage(final MainWindow window, final ContextPanel context,
-            final AccountManager manager,
+    public SkillPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
         this.window = window;
         this.factory = factory;
@@ -65,6 +65,11 @@ public class SkillPage extends Page {
     @Override
     public boolean isReady() {
         return character != null;
+    }
+
+    @Override
+    public void activated(final ContextPanel context) {
+        context.add(new FilterButton(), "growy, al right");
     }
 
 }

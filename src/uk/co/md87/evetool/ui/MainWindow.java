@@ -78,8 +78,8 @@ public class MainWindow extends JFrame {
         this.contextPanel = new ContextPanel();
 
         pages = new TreeMap<String, ContentPanel.Page>();
-        pages.put("Overview", new OverviewPage(this, contextPanel, manager, factory));
-        pages.put("Skills", new SkillPage(this, contextPanel, manager, factory));
+        pages.put("Overview", new OverviewPage(this, manager, factory));
+        pages.put("Skills", new SkillPage(this, manager, factory));
 
         this.menuPanel = new MenuPanel(this, pages);
         this.contentPanel = new ContentPanel(this, manager, factory, pages);
@@ -113,8 +113,10 @@ public class MainWindow extends JFrame {
 
     public void setPage(final String page) {
         menuPanel.setSelectedPage(page);
-        pages.get(page).activated();
+        contextPanel.removeAll();
+        pages.get(page).activated(contextPanel);
         contentPanel.show(page);
+        contextPanel.revalidate();
     }
 
     public void setSelectedChar(final AccountChar newChar) {

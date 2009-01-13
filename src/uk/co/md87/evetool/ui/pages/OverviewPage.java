@@ -78,8 +78,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
     private final List<AccountChar> chars = new ArrayList<AccountChar>();
 
-    public OverviewPage(final MainWindow window, final ContextPanel context,
-            final AccountManager manager,
+    public OverviewPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
         this.window = window;
         this.factory = factory;
@@ -89,9 +88,6 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         for (Account account : manager.getAccounts(this)) {
             addAccount(account);
         }
-
-        context.add(new AddButton("Add account"), "growy");
-        context.add(new FilterButton(), "growy, al right");
 
         new Timer(1000, this).start();
     }
@@ -179,6 +175,12 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     @Override
     public boolean isReady() {
         return true;
+    }
+
+    @Override
+    public void activated(final ContextPanel context) {
+        context.add(new AddButton("Add account"), "growy");
+        context.add(new FilterButton(), "growy, al right");
     }
 
 }

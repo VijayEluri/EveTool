@@ -25,7 +25,6 @@ package uk.co.md87.evetool.ui;
 import java.awt.CardLayout;
 import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
@@ -74,8 +73,8 @@ public class ContentPanel extends JPanel {
             character = ac;
         }
 
-        public void activated() {
-            
+        public void activated(final ContextPanel context) {
+            // Do nothing by default
         }
 
     }
