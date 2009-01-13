@@ -79,6 +79,16 @@ public class TrainedSkillInfo {
     }
 
     /**
+     * Determines if this skill is partially trained (i.e., not at a complete
+     * level).
+     *
+     * @return True if the skill is partially trained, false otherwise
+     */
+    public boolean isPartiallyTrained() {
+        return getSP() == getSkillInfo().getSkillpointsForLevel(getLevel());
+    }
+
+    /**
      * Associates the specified {@link SkillInfo} object with this skill.
      *
      * @param skill The corresponding {@link SkillInfo} object

@@ -29,10 +29,12 @@ import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
+import uk.co.md87.evetool.ui.components.SkillPanel;
 
 /**
  *
@@ -56,7 +58,7 @@ public class SkillPage extends Page {
         this.window = window;
         this.factory = factory;
 
-        setLayout(new MigLayout("fillx"));
+        setLayout(new MigLayout("fillx, wrap 1"));
 
         add(new JLabel("Skills! Moo!"));
     }
@@ -64,12 +66,20 @@ public class SkillPage extends Page {
     /** {@inheritDoc} */
     @Override
     public boolean isReady() {
-        return character != null;
+        return character != null && character.getSheet() != null
+                && character.getSheet().wasSuccessful();
     }
 
     @Override
     public void activated(final ContextPanel context) {
         context.add(new FilterButton(), "growy, al right");
+
+        removeAll();
+
+        // TODO: Sorting
+        for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
+            add(new SkillPanel(skill));
+        }
     }
 
 }

@@ -36,6 +36,10 @@ public class AccountChar {
         return charInfo;
     }
 
+    public ApiResponse<CharacterSheet> getSheet() {
+        return sheet;
+    }
+
     public void setSheet(final ApiResponse<CharacterSheet> sheet) {
         this.sheet = sheet;
         
