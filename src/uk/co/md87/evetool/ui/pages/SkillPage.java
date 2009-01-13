@@ -20,23 +20,25 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui;
+package uk.co.md87.evetool.ui.pages;
 
-import java.awt.CardLayout;
-import java.util.Map;
-import javax.swing.BorderFactory;
+
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import javax.swing.JScrollPane;
+import net.miginfocom.swing.MigLayout;
+
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ui.ContentPanel.Page;
+import uk.co.md87.evetool.ui.ContextPanel;
+import uk.co.md87.evetool.ui.MainWindow;
 
 /**
  *
+ * TODO: Document SkillPage
  * @author chris
  */
-public class ContentPanel extends JPanel {
+public class SkillPage extends Page {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -45,28 +47,24 @@ public class ContentPanel extends JPanel {
      */
     private static final long serialVersionUID = 10;
 
-    public ContentPanel(final MainWindow window, final AccountManager manager,
-            final ApiFactory factory, final Map<String, Page> pages) {
-        super(new CardLayout());
+    private final MainWindow window;
+    private final ApiFactory factory;
 
-        for (Map.Entry<String, Page> page : pages.entrySet()) {
-            final JScrollPane scrollPane = new JScrollPane(page.getValue());
-            scrollPane.setBorder(BorderFactory.createEmptyBorder());
-            add(scrollPane, page.getKey());
-        }
+    public SkillPage(final MainWindow window, final ContextPanel context,
+            final AccountManager manager,
+            final ApiFactory factory) {
+        this.window = window;
+        this.factory = factory;
+
+        setLayout(new MigLayout("fillx"));
+
+        add(new JLabel("Skills! Moo!"));
     }
 
-    public void show(final String page) {
-        ((CardLayout) getLayout()).show(this, page);
-    }
-
-    public static abstract class Page extends JPanel {
-
-        // TODO: Add method for activation
-        public boolean isReady() {
-            return false;
-        }
-
+    /** {@inheritDoc} */
+    @Override
+    public boolean isReady() {
+        return true;
     }
 
 }

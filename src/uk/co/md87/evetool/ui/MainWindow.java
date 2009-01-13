@@ -28,6 +28,8 @@ import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,6 +45,8 @@ import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.data.AccountChar;
+import uk.co.md87.evetool.ui.pages.OverviewPage;
+import uk.co.md87.evetool.ui.pages.SkillPage;
 
 /**
  *
@@ -62,6 +66,7 @@ public class MainWindow extends JFrame {
     private final AccountManager manager;
     private final ApiFactory factory;
     private final MenuPanel menuPanel;
+    private final ContentPanel contentPanel;
     private final ContextPanel contextPanel;
 
     public MainWindow(final AccountManager manager, final ApiFactory factory) {
@@ -71,9 +76,14 @@ public class MainWindow extends JFrame {
 
         this.factory = factory;
         this.manager = manager;
-
-        this.menuPanel = new MenuPanel(this);
         this.contextPanel = new ContextPanel();
+
+        final Map<String, ContentPanel.Page> pages = new HashMap<String, ContentPanel.Page>();
+        pages.put("Overview", new OverviewPage(this, contextPanel, manager, factory));
+        pages.put("Skills", new SkillPage(this, contextPanel, manager, factory));
+
+        this.menuPanel = new MenuPanel(this, pages);
+        this.contentPanel = new ContentPanel(this, manager, factory, pages);
         
         setLayout(new MigLayout("insets 0, fill, wrap 2", "[]0[fill,grow]",
                 "[fill,grow]0[]"));
@@ -100,6 +110,10 @@ public class MainWindow extends JFrame {
         }
     }
 
+    public void setPage(final String page) {
+        contentPanel.show(page);
+    }
+
     public void setSelectedChar(final AccountChar newChar) {
         selectedChar = newChar;
         menuPanel.setSelectedChar(newChar);
@@ -111,11 +125,8 @@ public class MainWindow extends JFrame {
     }
 
     protected void addComponents() {
-        final JScrollPane scrollPane = new JScrollPane(new ContentPanel(this, manager, factory));
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-
         add(menuPanel, "width 201!, spany2");
-        add(scrollPane);
+        add(contentPanel);
         add(contextPanel, "growx, height 30!");
         add(new StatusPanel(this), "growx, span, height 30!");
     }

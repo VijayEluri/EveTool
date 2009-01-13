@@ -102,7 +102,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         }
     }
 
-    public void setSelectedChar(AccountChar ac) {
+    public void setSelectedChar(final AccountChar ac) {
         window.setSelectedChar(ac);
     }
 
@@ -174,6 +174,11 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     @Override
     public void actionPerformed(final ActionEvent e) {
         updateCharacters();
+    }
+
+    @Override
+    public boolean isReady() {
+        return true;
     }
 
 }

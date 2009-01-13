@@ -26,6 +26,7 @@ import java.awt.Color;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -51,12 +52,17 @@ public class MenuPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 10;
 
     protected final JLabel portrait;
+    protected final MainWindow window;
     protected final MenuButton overviewButton;
     protected final MenuButton skillsButton;
     protected final MenuButton settingsButton;
+    protected final Map<String, ContentPanel.Page> pages;
 
-    public MenuPanel(final MainWindow window) {
+    public MenuPanel(final MainWindow window, final Map<String, ContentPanel.Page> pages) {
         super(new MigLayout("wrap 1, fillx, ins 4"));
+
+        this.window = window;
+        this.pages = pages;
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY));
         setBackground(Color.GRAY);
@@ -65,7 +71,6 @@ public class MenuPanel extends JPanel implements ActionListener {
         add(portrait, "height 192!, width 192!");
 
         overviewButton = new MenuButton("Overview", this);
-        overviewButton.setSelected(true);
 
         skillsButton = new MenuButton("Skills", this);
         skillsButton.setEnabled(false);
@@ -73,9 +78,15 @@ public class MenuPanel extends JPanel implements ActionListener {
         settingsButton = new MenuButton("Settings", this);
         settingsButton.setEnabled(false);
 
-        add(overviewButton, "growx");
-        add(skillsButton, "growx");
-        add(settingsButton, "growx");        
+        for (Map.Entry<String, ContentPanel.Page> entry : pages.entrySet()) {
+            final MenuButton button = new MenuButton(entry.getKey(), this);
+
+            if (!entry.getValue().isReady()) {
+                button.setEnabled(false);
+            }
+
+            add(button, "growx");
+        }
     }
 
     public void setSelectedChar(final AccountChar newChar) {
@@ -89,7 +100,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     /** {@inheritDoc} */
     public void actionPerformed(final ActionEvent e) {
-        ((MenuButton) e.getSource()).setBackground(Color.RED);
+        window.setPage(((MenuButton) e.getSource()).getText());
     }
 
 }
