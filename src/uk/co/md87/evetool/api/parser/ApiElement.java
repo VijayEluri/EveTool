@@ -93,6 +93,10 @@ public class ApiElement {
         return Integer.parseInt(getChildContent(name));
     }
 
+    public long getLongChildContent(final String name) {
+        return Long.parseLong(getChildContent(name));
+    }
+
     public String getStringAttribute(final String name) {
         return getAttributes().get(name);
     }

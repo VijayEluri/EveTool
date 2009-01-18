@@ -25,9 +25,24 @@ package uk.co.md87.evetool.api.wrappers.data;
 /**
  *
  * TODO: Document BasicCloneInfo
- * TODO: Implement BasicCloneInfo
  * @author chris
  */
 public class BasicCloneInfo {
+
+    private final String name;
+    private final long spLimit;
+
+    public BasicCloneInfo(String name, long spLimit) {
+        this.name = name;
+        this.spLimit = spLimit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getSpLimit() {
+        return spLimit;
+    }
 
 }

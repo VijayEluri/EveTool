@@ -5,8 +5,9 @@
 
 package uk.co.md87.evetool.ui.data;
 
-import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
@@ -20,15 +21,16 @@ import uk.co.md87.evetool.ui.util.Formatter;
 public class AccountChar {
 
     protected final BasicCharInfo charInfo;
-    protected final JLabel portrait, balance, skill;
+    protected final JLabel portrait, balance, skill, name;
     protected ApiResponse<SkillInTraining> training;
     protected ApiResponse<CharacterSheet> sheet;
 
     public AccountChar(final BasicCharInfo charInfo, final JLabel portrait,
-            final JLabel balance, final JLabel skill) {
+            final JLabel name, final JLabel balance, final JLabel skill) {
         this.charInfo = charInfo;
         this.portrait = portrait;
         this.balance = balance;
+        this.name = name;
         this.skill = skill;
     }
 
@@ -45,6 +47,14 @@ public class AccountChar {
         
         if (sheet.wasSuccessful()) {
             this.balance.setText(String.format("%,.2f", sheet.getResult().getBalance()));
+
+            if (sheet.getResult().getSkillPoints() > sheet.getResult().getClone().getSpLimit()) {
+                name.setIcon(new ImageIcon(getClass().getResource("../res/error.png")));
+                name.setToolTipText(
+                        String.format("Character's clone is %,d SP too low",
+                        sheet.getResult().getSkillPoints()
+                        - sheet.getResult().getClone().getSpLimit()));
+            }
         } else {
             this.balance.setText("(Error)");
         }

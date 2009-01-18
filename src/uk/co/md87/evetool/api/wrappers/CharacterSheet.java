@@ -64,8 +64,7 @@ public class CharacterSheet {
         this.gender = resultElement.getChildContent("gender");
         this.balance = Double.parseDouble(resultElement.getChildContent("balance"));
 
-        this.clone = new BasicCloneInfo();
-        // TODO: Clone
+        this.clone = parseCloneInfo(resultElement);
 
         this.implants = new ArrayList<Implant>();
         parseImplants(resultElement.getChild("attributeEnhancers"));
@@ -91,12 +90,29 @@ public class CharacterSheet {
         calculateAttributes();
     }
 
+    public long getSkillPoints() {
+        long res = 0;
+
+        for (TrainedSkillInfo skill : getSkills()) {
+            res += skill.getSP();
+        }
+
+        return res;
+    }
+
     public void associateSkills(final SkillList skilltree) {
         for (TrainedSkillInfo skill : skills) {
             skill.setSkill(skilltree.getSkillById(skill.getId()));
         }
 
         calculateAttributes();
+    }
+
+    protected BasicCloneInfo parseCloneInfo(final ApiElement root) {
+        final String name = root.getChildContent("cloneName");
+        final long sp = root.getLongChildContent("cloneSkillPoints");
+
+        return new BasicCloneInfo(name, sp);
     }
 
     protected void parseImplants(final ApiElement root) {

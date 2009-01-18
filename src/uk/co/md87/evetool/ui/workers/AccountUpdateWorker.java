@@ -95,7 +95,7 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
 
                     final AccountChar ac = new AccountChar(character, portrait,
-                            iskLabel, skillLabel);
+                            nameLabel, iskLabel, skillLabel);
                     page.addChar(ac);
                     
                     target.add(portrait, "spany 2, height 64!, width 64!");

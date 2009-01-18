@@ -70,12 +70,33 @@ public class Formatter {
             return "Done";
         }
 
-        int seconds = duration;
+        int seconds = duration, lseconds = duration;
+        int parts = 4;
 
-        seconds -= doDuration(buff, seconds, 60*60*24, "d");
-        seconds -= doDuration(buff, seconds, 60*60, "h");
-        seconds -= doDuration(buff, seconds, 60, "m");
-        seconds -= doDuration(buff, seconds, 1, "s");
+        if (parts > 0) {
+            seconds -= doDuration(buff, seconds, 60*60*24, "d");
+            parts -= seconds == lseconds ? 1 : 2;
+            lseconds = seconds;
+        }
+
+
+        if (parts > 0) {
+            seconds -= doDuration(buff, seconds, 60*60, "h");
+            parts -= seconds == lseconds ? 1 : 2;
+            lseconds = seconds;
+        }
+
+        if (parts > 0) {
+            seconds -= doDuration(buff, seconds, 60, "m");
+            parts -= seconds == lseconds ? 1 : 2;
+            lseconds = seconds;
+        }
+
+        if (parts > 0) {
+            seconds -= doDuration(buff, seconds, 1, "s");
+            parts -= seconds == lseconds ? 1 : 2;
+            lseconds = seconds;
+        }
 
         return buff.toString();
     }
