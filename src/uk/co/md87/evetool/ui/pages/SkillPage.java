@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.ui.pages;
 
 
+import java.util.Collections;
 import javax.swing.JLabel;
 
 import javax.swing.JSeparator;
@@ -31,6 +32,7 @@ import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
+import uk.co.md87.evetool.comparators.skills.TrainingTimeComparator;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
@@ -77,7 +79,9 @@ public class SkillPage extends Page {
 
         removeAll();
 
-        // TODO: Sorting
+        Collections.sort(character.getSheet().getResult().getSkills(),
+                new TrainingTimeComparator(true));
+        
         boolean first = true;
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
             if (first) {
