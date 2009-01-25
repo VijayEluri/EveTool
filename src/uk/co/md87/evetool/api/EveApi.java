@@ -36,6 +36,7 @@ import uk.co.md87.evetool.api.parser.ApiResult;
 import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
+import uk.co.md87.evetool.api.wrappers.MarketOrders;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
 
@@ -145,6 +146,16 @@ public class EveApi implements Cloneable {
      */
     public ApiResponse<SkillInTraining> getSkillInTraining() {
         return getResponse("/char/SkillInTraining.xml.aspx", SkillInTraining.class, true, true);
+    }
+
+    /**
+     * Retrieves a list of market orders placed by the character.
+     * Requires a limited API key, user ID and character ID.
+     *
+     * @return The character's market orders
+     */
+    public ApiResponse<MarketOrders> getMarketOrders() {
+        return getResponse("/char/MarketOrders.xml.aspx", MarketOrders.class, true, true);
     }
 
     /**
