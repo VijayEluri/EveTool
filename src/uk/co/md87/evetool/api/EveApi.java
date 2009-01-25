@@ -34,6 +34,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
 import uk.co.md87.evetool.api.util.TableCreator;
+import uk.co.md87.evetool.api.wrappers.CertificateTree;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.MarketOrders;
@@ -165,7 +166,17 @@ public class EveApi implements Cloneable {
      * @return The complete EVE skill tree
      */
     public ApiResponse<SkillList> getSkillTree() {
-        return getResponse("/eve/SkillTree.xml.aspx", SkillList.class, false, true);
+        return getResponse("/eve/SkillTree.xml.aspx", SkillList.class, false, false);
+    }
+
+    /**
+     * Retrieves the full certificate tree for EVE.
+     * Does not require an API key.
+     *
+     * @return The complete EVE certificate tree
+     */
+    public ApiResponse<CertificateTree> getCertificateTree() {
+        return getResponse("/eve/CertificateTree.xml.aspx", CertificateTree.class, false, false);
     }
 
     /**
