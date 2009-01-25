@@ -54,4 +54,9 @@ public class CertClass {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "[" + name + ": " + certificates + "]";
+    }
+
 }

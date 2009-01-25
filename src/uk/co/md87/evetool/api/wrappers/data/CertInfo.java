@@ -73,4 +73,9 @@ public class CertInfo {
         return skillReqs;
     }
 
+    @Override
+    public String toString() {
+        return "[" + id + ": grade " + grade + "]";
+    }
+
 }
