@@ -58,7 +58,6 @@ public class DBCacheTest {
         cache.setCache("/unittest", args, "testing 456", System.currentTimeMillis() + 100000);
         assertEquals(ApiCache.CacheStatus.HIT, cache.getCacheStatus("/unittest", args));
         assertEquals("testing 456", cache.getCache("/unittest", args).getData());
-        conn.close();
     }
 
 }
