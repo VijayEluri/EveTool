@@ -134,9 +134,8 @@ public class CharacterSheet {
         }
     }
 
-    protected void parseSkills(final ApiElement rowset) {
-        // TODO: Nice way to quickly parse rowsets?
-        for (ApiElement row : rowset.getChildren()) {
+    protected void parseSkills(final List<ApiElement> rowset) {
+        for (ApiElement row : rowset) {
             final int id = row.getNumericAttribute("typeID");
             final int level = row.getNumericAttribute("level");
             final int sp = row.getNumericAttribute("skillpoints");
@@ -144,8 +143,8 @@ public class CharacterSheet {
         }
     }
 
-    protected void parseCertificates(final ApiElement rowset) {
-        for (ApiElement row : rowset.getChildren()) {
+    protected void parseCertificates(final List<ApiElement> rowset) {
+        for (ApiElement row : rowset) {
             final int id = row.getNumericAttribute("certificateID");
             certificates.add(id);
         }

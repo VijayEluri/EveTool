@@ -73,16 +73,23 @@ public class ApiElement {
         return null;
     }
 
-    public ApiElement getRowset(final String name) {
+    public List<ApiElement> getRowset(final String name) {
+        final List<ApiElement> rows = new ArrayList<ApiElement>();
+        
         for (ApiElement child : getChildren()) {
             if (child instanceof NamedApiElement
                     && "rowset".equals(((NamedApiElement) child).getName())
                     && name.equals(child.getStringAttribute("name"))) {
-                return child;
+                for (ApiElement row : child.getChildren()) {
+                    if (row instanceof NamedApiElement
+                            && "row".equals(((NamedApiElement) row).getName())) {
+                        rows.add(row);
+                    }
+                }
             }
         }
 
-        return null;
+        return rows;
     }
 
     public String getChildContent(final String name) {

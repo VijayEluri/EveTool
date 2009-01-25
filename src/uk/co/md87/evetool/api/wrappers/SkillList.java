@@ -50,7 +50,7 @@ public class SkillList extends ArrayList<SkillGroup> {
     protected final Map<Integer, SkillInfo> skills = new HashMap<Integer, SkillInfo>();
 
     public SkillList(final ApiElement resultElement) {
-        for (ApiElement row : resultElement.getRowset("skillGroups").getChildren()) {
+        for (ApiElement row : resultElement.getRowset("skillGroups")) {
             add(getSkillGroup(row));
         }
     }
@@ -65,7 +65,7 @@ public class SkillList extends ArrayList<SkillGroup> {
 
         final SkillGroup group = new SkillGroup(name, id);
 
-        for (ApiElement skillrow : row.getRowset("skills").getChildren()) {
+        for (ApiElement skillrow : row.getRowset("skills")) {
             final SkillInfo skill = getSkill(group, skillrow);
             group.add(skill);
             skills.put(skill.getId(), skill);
@@ -90,10 +90,10 @@ public class SkillList extends ArrayList<SkillGroup> {
                 secondaryAttribute, bonuses);
     }
 
-    protected List<SkillRequirement> getReqs(final ApiElement rowset) {
+    protected List<SkillRequirement> getReqs(final List<ApiElement> rowset) {
         final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
 
-        for (ApiElement row : rowset.getChildren()) {
+        for (ApiElement row : rowset) {
             reqs.add(new SkillRequirement(row.getNumericAttribute("typeID"),
                     row.getNumericAttribute("skillLevel")));
         }
@@ -101,10 +101,10 @@ public class SkillList extends ArrayList<SkillGroup> {
         return reqs;
     }
 
-    protected Map<String, String> getBonuses(final ApiElement rowset) {
+    protected Map<String, String> getBonuses(final List<ApiElement> rowset) {
         final Map<String, String> bonuses = new HashMap<String, String>();
 
-        for (ApiElement child : rowset.getChildren()) {
+        for (ApiElement child : rowset) {
             bonuses.put(child.getStringAttribute("bonusType"),
                     child.getStringAttribute("bonusValue"));
         }

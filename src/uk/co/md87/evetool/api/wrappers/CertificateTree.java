@@ -50,7 +50,7 @@ public class CertificateTree extends ArrayList<CertCategory> {
     protected final Map<Integer, CertInfo> certs = new HashMap<Integer, CertInfo>();
 
     public CertificateTree(final ApiElement resultElement) {
-        for (ApiElement row : resultElement.getRowset("categories").getChildren()) {
+        for (ApiElement row : resultElement.getRowset("categories")) {
             add(getCategory(row));
         }
     }
@@ -60,7 +60,7 @@ public class CertificateTree extends ArrayList<CertCategory> {
         final String name = row.getStringAttribute("categoryName");
         final List<CertClass> classes = new ArrayList<CertClass>();
 
-        for (ApiElement crow : row.getRowset("classes").getChildren()) {
+        for (ApiElement crow : row.getRowset("classes")) {
             classes.add(getClass(crow));
         }
 
@@ -72,7 +72,7 @@ public class CertificateTree extends ArrayList<CertCategory> {
         final String name = row.getStringAttribute("className");
         final List<CertInfo> certificates = new ArrayList<CertInfo>();
 
-        for (ApiElement crow : row.getRowset("certificates").getChildren()) {
+        for (ApiElement crow : row.getRowset("certificates")) {
             certificates.add(getCert(crow));
         }
 
@@ -87,11 +87,11 @@ public class CertificateTree extends ArrayList<CertCategory> {
         final List<SkillRequirement> skillReqs = new ArrayList<SkillRequirement>();
         final List<Integer> certReqs = new ArrayList<Integer>();
 
-        for (ApiElement srow : row.getRowset("requiredSkills").getChildren()) {
+        for (ApiElement srow : row.getRowset("requiredSkills")) {
             skillReqs.add(getSkillReq(srow));
         }
 
-        for (ApiElement crow : row.getRowset("requiredCertificates").getChildren()) {
+        for (ApiElement crow : row.getRowset("requiredCertificates")) {
             certReqs.add(getCertReq(crow));
         }
 

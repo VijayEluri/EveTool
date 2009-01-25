@@ -45,7 +45,7 @@ public class MarketOrders extends ArrayList<Order> {
 
         double total = 0;
 
-        for (ApiElement row : resultElement.getRowset("orders").getChildren()) {
+        for (ApiElement row : resultElement.getRowset("orders")) {
             if (row.getNumericAttribute("bid") == 0) {
                 // Sell order
                 final double value = row.getNumericAttribute("volRemaining")
