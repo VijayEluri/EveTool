@@ -29,6 +29,7 @@ import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
+import uk.co.md87.evetool.ui.data.interfaces.Retrievable;
 import uk.co.md87.evetool.ui.util.Formatter;
 
 /**
@@ -49,6 +50,11 @@ public class AccountChar {
         this.balance = balance;
         this.name = name;
         this.skill = skill;
+    }
+
+    @Retrievable(name = "Character name")
+    public String getName() {
+        return charInfo.getName();
     }
 
     public BasicCharInfo getCharInfo() {
