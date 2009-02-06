@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
@@ -36,10 +37,14 @@ public class ListablePanel extends JPanel {
 
     private final Listable source;
 
+    private final ListableParser parser;
+
     private final ListableConfig config;
 
-    public ListablePanel(final Listable source, final ListableConfig config) {
+    public ListablePanel(final Listable source, final ListableParser parser,
+            final ListableConfig config) {
         this.source = source;
+        this.parser = parser;
         this.config = config;
     }
 }
