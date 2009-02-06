@@ -29,14 +29,16 @@ import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
-import uk.co.md87.evetool.ui.data.interfaces.Retrievable;
+import uk.co.md87.evetool.ui.listable.ListableImpl;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 import uk.co.md87.evetool.ui.util.Formatter;
 
 /**
  *
+ * TODO: Document AccountChar
  * @author chris
  */
-public class AccountChar {
+public class AccountChar extends ListableImpl {
 
     protected final BasicCharInfo charInfo;
     protected final JLabel portrait, balance, skill, name;
@@ -57,6 +59,11 @@ public class AccountChar {
         return charInfo.getName();
     }
 
+    @Retrievable(name = "Corporation name")
+    public String getCorpName() {
+        return charInfo.getCorp().getName();
+    }
+    
     public BasicCharInfo getCharInfo() {
         return charInfo;
     }

@@ -20,18 +20,16 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.data.interfaces;
-
-import javax.swing.ImageIcon;
+package uk.co.md87.evetool.ui.listable;
 
 /**
  *
  * @author chris
  */
-public interface Listable {
+public class ListableConfig {
 
-    ImageIcon getImage();
-
-    void addUpdateListener(final UpdateListener listener);
+    public String topLeft, topRight, bottomLeft, bottomRight;
+    public String[] sortOrder;
+    public String group;
 
 }

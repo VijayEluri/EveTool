@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.data.interfaces;
+package uk.co.md87.evetool.ui.listable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,8 @@ public class ListableImpl implements Listable {
 
     protected final List<UpdateListener> listeners = new ArrayList<UpdateListener>();
 
+    /** {@inheritDoc} */
+    @Override
     public ImageIcon getImage() {
         return icon;
     }
@@ -56,6 +58,8 @@ public class ListableImpl implements Listable {
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
     public void addUpdateListener(final UpdateListener listener) {
         synchronized (listeners) {
             listeners.add(listener);

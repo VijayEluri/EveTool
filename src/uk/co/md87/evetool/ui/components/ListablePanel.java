@@ -20,14 +20,26 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.data.interfaces;
+package uk.co.md87.evetool.ui.components;
+
+import javax.swing.JPanel;
+
+import uk.co.md87.evetool.ui.listable.Listable;
+import uk.co.md87.evetool.ui.listable.ListableConfig;
 
 /**
  *
- * TODO: Document UpdateListener
+ * TODO: Document ListablePanel
  * @author chris
  */
-public interface UpdateListener {
+public class ListablePanel extends JPanel {
 
-    void listableUpdated(final Listable listable);
+    private final Listable source;
+
+    private final ListableConfig config;
+
+    public ListablePanel(final Listable source, final ListableConfig config) {
+        this.source = source;
+        this.config = config;
+    }
 }

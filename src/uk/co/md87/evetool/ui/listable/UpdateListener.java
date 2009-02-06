@@ -20,22 +20,14 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.data.interfaces;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package uk.co.md87.evetool.ui.listable;
 
 /**
  *
- * TODO: Document Retrievable
+ * TODO: Document UpdateListener
  * @author chris
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Retrievable {
+public interface UpdateListener {
 
-    String name();
-    
+    void listableUpdated(final Listable listable);
 }
