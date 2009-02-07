@@ -24,6 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.ui.listable.formatters.DurationFormatter;
 import uk.co.md87.evetool.ui.listable.formatters.NumberFormatter;
 
 /**
@@ -168,7 +169,7 @@ public class TrainedSkillInfo {
      *
      * @return The training time in seconds
      */
-    @Retrievable
+    @Retrievable(formatWith=DurationFormatter.class)
     public int getTimeToNextLevel() {
         return getTimeToLevel(getNextLevel());
     }
@@ -179,7 +180,7 @@ public class TrainedSkillInfo {
      * @param level The level to reach
      * @return The reamining time in seconds to that level
      */
-    @Retrievable
+    @Retrievable(formatWith=DurationFormatter.class)
     public int getTimeToLevel(final int level) {
         final int remsp = skill.getSkillpointsForLevel(level) - getSP();
         final double sppm = getSkillpointsPerMinute();
