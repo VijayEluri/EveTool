@@ -22,6 +22,8 @@
 
 package uk.co.md87.evetool.ui.pages;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
 
 import javax.swing.JLabel;
@@ -39,6 +41,7 @@ import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
+import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
 
@@ -47,7 +50,7 @@ import uk.co.md87.evetool.ui.listable.ListableParser;
  * TODO: Document SkillPage
  * @author chris
  */
-public class SkillPage extends Page {
+public class SkillPage extends Page implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -59,12 +62,23 @@ public class SkillPage extends Page {
     private final MainWindow window;
     private final ApiFactory factory;
 
+    private final ListableConfig config;
+
     public SkillPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
         this.window = window;
         this.factory = factory;
 
         setLayout(new MigLayout("fillx, wrap 1"));
+
+        config = new ListableConfig();
+        config.topLeft = new ListableConfig.BasicConfigElement("Name");
+        config.topRight = new ListableConfig.CompoundConfigElement(
+                new ListableConfig.BasicConfigElement("Trained skillpoints"),
+                new ListableConfig.LiteralConfigElement("/"),
+                new ListableConfig.BasicConfigElement("MaxSkillpoints"));
+        config.bottomLeft = new ListableConfig.BasicConfigElement("Group Name");
+        config.bottomRight = new ListableConfig.BasicConfigElement("TimeToNextLevel");
     }
 
     /** {@inheritDoc} */
@@ -77,7 +91,9 @@ public class SkillPage extends Page {
     /** {@inheritDoc} */
     @Override
     public void activated(final ContextPanel context) {
-        context.add(new FilterButton(), "growy, al right");
+        final FilterButton button = new FilterButton();
+        button.addActionListener(this);
+        context.add(button, "growy, al right");
 
         removeAll();
 
@@ -85,14 +101,6 @@ public class SkillPage extends Page {
                 new TrainingTimeComparator(true));
 
         final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
-        final ListableConfig config = new ListableConfig();
-        config.topLeft = new ListableConfig.BasicConfigElement("Name");
-        config.topRight = new ListableConfig.CompoundConfigElement(
-                new ListableConfig.BasicConfigElement("Trained skillpoints"),
-                new ListableConfig.LiteralConfigElement("/"),
-                new ListableConfig.BasicConfigElement("MaxSkillpoints"));
-        config.bottomLeft = new ListableConfig.BasicConfigElement("Group Name");
-        config.bottomRight = new ListableConfig.BasicConfigElement("TimeToNextLevel");
         
         boolean first = true;
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
@@ -105,6 +113,13 @@ public class SkillPage extends Page {
             add(new ListablePanel(new TrainedSkillInfoSurrogate(skill), parser, config),
                     "growx, pushx");
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        new ListableConfigDialog(window, config, new TrainedSkillInfoSurrogate(
+                character.getSheet().getResult().getSkills().get(0))).setVisible(true);
     }
 
 }
