@@ -23,7 +23,6 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
-import uk.co.md87.evetool.ui.listable.ListableImpl;
 import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
@@ -31,7 +30,7 @@ import uk.co.md87.evetool.ui.listable.Retrievable;
  * 
  * @author chris
  */
-public class TrainedSkillInfo extends ListableImpl {
+public class TrainedSkillInfo {
 
     /** The information for this skill, if it has been associated. */
     private SkillInfo skill;

@@ -22,11 +22,11 @@
 
 package uk.co.md87.evetool.ui.pages;
 
-
 import java.util.Collections;
-import javax.swing.JLabel;
 
+import javax.swing.JLabel;
 import javax.swing.JSeparator;
+
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
@@ -38,7 +38,7 @@ import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.ListablePanel;
-import uk.co.md87.evetool.ui.components.SkillPanel;
+import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
 
@@ -86,7 +86,7 @@ public class SkillPage extends Page {
         Collections.sort(character.getSheet().getResult().getSkills(),
                 new TrainingTimeComparator(true));
 
-        final ListableParser parser = new ListableParser(TrainedSkillInfo.class);
+        final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
         final ListableConfig config = new ListableConfig();
         config.topLeft = "Name";
         config.bottomLeft = "Group Name";
@@ -99,7 +99,8 @@ public class SkillPage extends Page {
                 add(new JSeparator(), "growx, pushx");
             }
 
-            add(new ListablePanel(skill, parser, config), "growx, pushx");
+            add(new ListablePanel(new TrainedSkillInfoSurrogate(skill), parser, config),
+                    "growx, pushx");
         }
     }
 

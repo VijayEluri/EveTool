@@ -76,6 +76,7 @@ public class ListablePanel extends JPanel implements UpdateListener {
         source.addUpdateListener(this);
 
         updateLabels();
+        updateImage();
     }
 
     protected void updateLabels() {
