@@ -25,6 +25,7 @@ package uk.co.md87.evetool.api.io;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,35 +50,51 @@ public class ApiDownloader {
     private final ApiCache cache;
     private final ApiParser parser;
 
+    private static final Semaphore semaphore = new Semaphore(1, true);
+
     public ApiDownloader(final ApiCache cache, final ApiParser parser) {
         this.cache = cache;
         this.parser = parser;
     }
 
-    public synchronized ApiResult getPage(final String method, final Map<String, String> args) {
+    public ApiResult getPage(final String method, final Map<String, String> args) {
         final Map<String, String> ourArgs = new HashMap<String, String>();
 
         if (args != null) {
             ourArgs.putAll(args);
         }
 
-        final CacheStatus cacheStatus = cache.getCacheStatus(method, ourArgs);
+        CacheStatus cacheStatus = cache.getCacheStatus(method, ourArgs);
+
+        LOGGER.log(Level.FINEST, method + " ==> (1) " + cacheStatus);
 
         if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
-            try {
-                final String page = Downloader.getPage(getUrl(method), ourArgs);
-                final ApiResult res = parser.parseResult(page);
-                
-                cache.setCache(method, ourArgs, page, res.getCachedUntil().getTime());
-                // TODO: Time should be converted from GMT
+            semaphore.acquireUninterruptibly();
 
-                return res;
-            } catch (IOException ex) {
-                LOGGER.log(Level.WARNING, "API request failed", ex);
-            } catch (JDOMException ex) {
-                LOGGER.log(Level.WARNING, "Error parsing API result", ex);
-            } catch (ParserException ex) {
-                LOGGER.log(Level.WARNING, "Error parsing API result", ex);
+            cacheStatus = cache.getCacheStatus(method, ourArgs);
+
+            LOGGER.log(Level.FINEST, method + " ==> (2) " + cacheStatus);
+
+            if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
+                try {
+                    final String page = Downloader.getPage(getUrl(method), ourArgs);
+                    final ApiResult res = parser.parseResult(page);
+
+                    cache.setCache(method, ourArgs, page, res.getCachedUntil().getTime());
+                    // TODO: Time should be converted from GMT
+
+                    return res;
+                } catch (IOException ex) {
+                    LOGGER.log(Level.WARNING, "API request failed", ex);
+                } catch (JDOMException ex) {
+                    LOGGER.log(Level.WARNING, "Error parsing API result", ex);
+                } catch (ParserException ex) {
+                    LOGGER.log(Level.WARNING, "Error parsing API result", ex);
+                } finally {
+                    semaphore.release();
+                }
+            } else {
+                semaphore.release();
             }
         }
 
