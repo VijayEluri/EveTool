@@ -37,7 +37,10 @@ import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
+import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.components.SkillPanel;
+import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
@@ -73,6 +76,7 @@ public class SkillPage extends Page {
                 && character.getSheet().wasSuccessful();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void activated(final ContextPanel context) {
         context.add(new FilterButton(), "growy, al right");
@@ -81,6 +85,11 @@ public class SkillPage extends Page {
 
         Collections.sort(character.getSheet().getResult().getSkills(),
                 new TrainingTimeComparator(true));
+
+        final ListableParser parser = new ListableParser(TrainedSkillInfo.class);
+        final ListableConfig config = new ListableConfig();
+        config.topLeft = "Name";
+        config.bottomLeft = "Group Name";
         
         boolean first = true;
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
@@ -90,7 +99,7 @@ public class SkillPage extends Page {
                 add(new JSeparator(), "growx, pushx");
             }
 
-            add(new SkillPanel(skill), "growx, pushx");
+            add(new ListablePanel(skill, parser, config), "growx, pushx");
         }
     }
 

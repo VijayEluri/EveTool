@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.ArrayList;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
@@ -46,10 +47,12 @@ public class SkillGroup extends ArrayList<SkillInfo> {
         this.id = id;
     }
 
+    @Retrievable
     public int getId() {
         return id;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }

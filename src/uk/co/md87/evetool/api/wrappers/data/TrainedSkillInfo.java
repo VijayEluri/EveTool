@@ -23,13 +23,15 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
+import uk.co.md87.evetool.ui.listable.ListableImpl;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  * Represents a skill that has been trained by a player.
  * 
  * @author chris
  */
-public class TrainedSkillInfo {
+public class TrainedSkillInfo extends ListableImpl {
 
     /** The information for this skill, if it has been associated. */
     private SkillInfo skill;
@@ -65,6 +67,7 @@ public class TrainedSkillInfo {
      *
      * @return This skill's ID
      */
+    @Retrievable
     public int getId() {
         return id;
     }
@@ -74,6 +77,7 @@ public class TrainedSkillInfo {
      *
      * @return This skill's number of skillpoints
      */
+    @Retrievable(name="Trained skillpoints")
     public int getSP() {
         return skillpoints;
     }
@@ -84,6 +88,7 @@ public class TrainedSkillInfo {
      *
      * @return True if the skill is partially trained, false otherwise
      */
+    @Retrievable(name="Is partially trained?")
     public boolean isPartiallyTrained() {
         return getSP() == getSkillInfo().getSkillpointsForLevel(getLevel());
     }
@@ -102,6 +107,7 @@ public class TrainedSkillInfo {
      *
      * @return True if the skill can be trained fruther, false otherwise
      */
+    @Retrievable(name="Can train further?")
     public boolean canTrainFurther() {
         return level < 5;
     }
@@ -111,6 +117,7 @@ public class TrainedSkillInfo {
      *
      * @return The next trainable level
      */
+    @Retrievable(name="Next level")
     public int getNextLevel() {
         return level + 1;
     }
@@ -120,6 +127,7 @@ public class TrainedSkillInfo {
      *
      * @return This skill's current level
      */
+    @Retrievable(name="Current level")
     public int getLevel() {
         return level;
     }
@@ -129,6 +137,7 @@ public class TrainedSkillInfo {
      *
      * @return The total number of skillpoints for the next level.
      */
+    @Retrievable
     public int getSPForNextLevel() {
         return skill.getSkillpointsForLevel(getNextLevel());
     }
@@ -138,6 +147,7 @@ public class TrainedSkillInfo {
      *
      * @return The number of SP that need to be attained to level up.
      */
+    @Retrievable
     public int getExtraSPForNextLevel() {
         return getSPForNextLevel() - getSP();
     }
@@ -148,6 +158,7 @@ public class TrainedSkillInfo {
      *
      * @return The number of skill points earned per minute
      */
+    @Retrievable
     public double getSkillpointsPerMinute() {
         return skill.getSkillpointsPerMinute(sheet.getAttributes());
     }
@@ -157,6 +168,7 @@ public class TrainedSkillInfo {
      *
      * @return The training time in seconds
      */
+    @Retrievable
     public int getTimeToNextLevel() {
         return getTimeToLevel(getNextLevel());
     }
@@ -167,6 +179,7 @@ public class TrainedSkillInfo {
      * @param level The level to reach
      * @return The reamining time in seconds to that level
      */
+    @Retrievable
     public int getTimeToLevel(final int level) {
         final int remsp = skill.getSkillpointsForLevel(level) - getSP();
         final double sppm = getSkillpointsPerMinute();
@@ -180,6 +193,7 @@ public class TrainedSkillInfo {
      *
      * @return A SkillInfo object if associated
      */
+    @Retrievable(deferred=true)
     public SkillInfo getSkillInfo() {
         return skill;
     }

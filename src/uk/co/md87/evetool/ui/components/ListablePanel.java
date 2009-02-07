@@ -25,6 +25,7 @@ package uk.co.md87.evetool.ui.components;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
@@ -54,15 +55,17 @@ public class ListablePanel extends JPanel implements UpdateListener {
 
     public ListablePanel(final Listable source, final ListableParser parser,
             final ListableConfig config) {
+        super(new MigLayout("ins 0, fillx"));
+        
         this.source = source;
         this.parser = parser;
         this.config = config;
 
         image = new JLabel("Loading");
         topLeft = new JLabel("?");
-        topRight = new JLabel("?");
+        topRight = new JLabel("?", JLabel.RIGHT);
         bottomLeft = new JLabel("?");
-        bottomRight = new JLabel("?");
+        bottomRight = new JLabel("?", JLabel.RIGHT);
 
         add(image, "spany 2, width 48, height 48");
         add(topLeft, "growx, pushx, gaptop 7");

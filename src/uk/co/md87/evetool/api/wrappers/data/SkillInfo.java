@@ -24,6 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
 import java.util.Map;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
@@ -58,10 +59,12 @@ public class SkillInfo {
         this.bonuses = bonuses;
     }
 
+    @Retrievable
     public int getId() {
         return id;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }
@@ -78,6 +81,7 @@ public class SkillInfo {
         return bonuses;
     }
 
+    @Retrievable(deferred=true,name="Group")
     public SkillGroup getGroup() {
         return group;
     }

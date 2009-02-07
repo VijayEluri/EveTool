@@ -24,7 +24,9 @@ package uk.co.md87.evetool.ui.listable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,32 +41,55 @@ public class ListableParser {
 
     private static final Logger LOGGER = Logger.getLogger(ListableParser.class.getName());
 
-    private final Map<String, Method> methods = new HashMap<String, Method>();
+    private final Map<String, List<Method>> methods = new HashMap<String, List<Method>>();
 
     public ListableParser(final Class<? extends Listable> target) {
+        parse(target, new ArrayList<Method>(), "");
+    }
+
+    protected void parse(final Class<?> target, final List<Method> methodChain,
+            final String prefix) {
         for (Method method : target.getMethods()) {
             final Retrievable ann = method.getAnnotation(Retrievable.class);
 
             if (ann != null) {
-                final String name = ann.name() == null ? getName(method.getName()) : ann.name();
+                final List<Method> newMethodChain = new ArrayList<Method>(methodChain);
+                newMethodChain.add(method);
+                
+                if (ann.deferred()) {
+                    if (ann.name().isEmpty()) {
+                        parse(method.getReturnType(), newMethodChain, prefix);
+                    } else if (prefix.isEmpty()) {
+                        parse(method.getReturnType(), newMethodChain, ann.name());
+                    } else {
+                        parse(method.getReturnType(), newMethodChain, prefix + " " + ann.name());
+                    }
+                } else {
+                    final String name = (prefix.isEmpty() ? prefix : prefix + " ") +
+                            (ann.name().isEmpty() ? getName(method.getName()) : ann.name());
 
-                methods.put(name, method);
+                    methods.put(name, newMethodChain);
+                }
             }
         }
     }
 
     protected String getName(final String methodName) {
-        return methodName;
+        return methodName.startsWith("get") ? methodName.substring(3) : methodName;
     }
 
     public Set<String> getRetrievableNames() {
         return methods.keySet();
     }
 
-    public String getValue(final Listable target, final String name) {
+    public String getValue(final Object target, final String name) {
         if (methods.containsKey(name)) {
+            Object result = target;
+
             try {
-                final Object result = methods.get(name).invoke(target);
+                for (Method method : methods.get(name)) {
+                    result = method.invoke(result);
+                }
 
                 return String.valueOf(result);
             } catch (IllegalAccessException ex) {

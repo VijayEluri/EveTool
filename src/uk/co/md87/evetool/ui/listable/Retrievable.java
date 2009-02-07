@@ -36,6 +36,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Retrievable {
 
+    boolean deferred() default false;
+    
     String name() default "";
     
 }
