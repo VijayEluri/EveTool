@@ -61,7 +61,7 @@ public class ListablePanel extends JPanel implements UpdateListener {
         this.parser = parser;
         this.config = config;
 
-        image = new JLabel("Loading");
+        image = new JLabel();
         topLeft = new JLabel("?");
         topRight = new JLabel("?", JLabel.RIGHT);
         bottomLeft = new JLabel("?");

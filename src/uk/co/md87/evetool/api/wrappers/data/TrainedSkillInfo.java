@@ -89,7 +89,7 @@ public class TrainedSkillInfo {
      */
     @Retrievable(name="Is partially trained?")
     public boolean isPartiallyTrained() {
-        return getSP() == getSkillInfo().getSkillpointsForLevel(getLevel());
+        return getSP() != getSkillInfo().getSkillpointsForLevel(getLevel());
     }
 
     /**
