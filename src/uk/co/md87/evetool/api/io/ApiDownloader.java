@@ -23,9 +23,12 @@
 package uk.co.md87.evetool.api.io;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,10 +50,14 @@ public class ApiDownloader {
 
     private static final String API_HOST = "http://api.eve-online.com";
 
+    private static final List<QueueSizeListener> listeners = new ArrayList<QueueSizeListener>();
+
     private final ApiCache cache;
     private final ApiParser parser;
 
     private static final Semaphore semaphore = new Semaphore(1, true);
+
+    private static AtomicInteger queueSize = new AtomicInteger(0);
 
     public ApiDownloader(final ApiCache cache, final ApiParser parser) {
         this.cache = cache;
@@ -69,6 +76,8 @@ public class ApiDownloader {
         LOGGER.log(Level.FINEST, method + " ==> (1) " + cacheStatus);
 
         if (cacheStatus == CacheStatus.MISS || cacheStatus == CacheStatus.EXPIRED) {
+            fireQueueSizeChange(queueSize.incrementAndGet());
+
             semaphore.acquireUninterruptibly();
 
             cacheStatus = cache.getCacheStatus(method, ourArgs);
@@ -91,9 +100,11 @@ public class ApiDownloader {
                 } catch (ParserException ex) {
                     LOGGER.log(Level.WARNING, "Error parsing API result", ex);
                 } finally {
+                    fireQueueSizeChange(queueSize.decrementAndGet());
                     semaphore.release();
                 }
             } else {
+                fireQueueSizeChange(queueSize.decrementAndGet());
                 semaphore.release();
             }
         }
@@ -109,6 +120,21 @@ public class ApiDownloader {
         }
 
         return null;
+    }
+
+    public static void addQueueSizeListener(final QueueSizeListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+            listener.queueSizeUpdate(queueSize.get());
+        }
+    }
+
+    protected static void fireQueueSizeChange(final int queueSize) {
+        synchronized (listeners) {
+            for (QueueSizeListener listener : listeners) {
+                listener.queueSizeUpdate(queueSize);
+            }
+        }
     }
 
     protected static String getUrl(final String method) {

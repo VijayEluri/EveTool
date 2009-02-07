@@ -28,13 +28,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.Main;
+import uk.co.md87.evetool.api.io.ApiDownloader;
+import uk.co.md87.evetool.api.io.QueueSizeListener;
 
 /**
  *
  * TODO: Document StatusPanel
  * @author chris
  */
-public class StatusPanel extends JPanel {
+public class StatusPanel extends JPanel implements QueueSizeListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -43,19 +45,27 @@ public class StatusPanel extends JPanel {
      */
     private static final long serialVersionUID = 10;
 
-    private final JLabel leftLabel;
-    private final JLabel rightLabel;
+    private final JLabel leftLabel, centreLabel, rightLabel;
 
     public StatusPanel(final MainWindow window) {
         super(new MigLayout());
 
         leftLabel = new JLabel("Welcome to EVE Tool", JLabel.LEFT);
+        centreLabel = new JLabel("", JLabel.CENTER);
         rightLabel = new JLabel(Main.version, JLabel.RIGHT);
 
         setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.DARK_GRAY));
         setBackground(Color.GRAY);
         add(leftLabel, "push, grow");
+        add(centreLabel, "push, grow");
         add(rightLabel, "push, grow");
+
+        ApiDownloader.addQueueSizeListener(this);
+    }
+
+    public void queueSizeUpdate(final int size) {
+        centreLabel.setText(size == 0 ? "" : 
+            (size + " queued request" + (size == 1 ? "" : "s")));
     }
 
 }
