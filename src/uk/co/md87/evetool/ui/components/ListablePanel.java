@@ -80,10 +80,10 @@ public class ListablePanel extends JPanel implements UpdateListener {
     }
 
     protected void updateLabels() {
-        topLeft.setText(parser.getValue(source, config.topLeft));
-        topRight.setText(parser.getValue(source, config.topRight));
-        bottomLeft.setText(parser.getValue(source, config.bottomLeft));
-        bottomRight.setText(parser.getValue(source, config.bottomRight));
+        topLeft.setText(config.topLeft.getValue(source, parser));
+        topRight.setText(config.topRight.getValue(source, parser));
+        bottomLeft.setText(config.bottomLeft.getValue(source, parser));
+        bottomRight.setText(config.bottomRight.getValue(source, parser));
     }
 
     protected void updateImage() {

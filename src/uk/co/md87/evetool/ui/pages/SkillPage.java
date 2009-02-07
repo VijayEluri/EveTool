@@ -86,8 +86,13 @@ public class SkillPage extends Page {
 
         final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
         final ListableConfig config = new ListableConfig();
-        config.topLeft = "Name";
-        config.bottomLeft = "Group Name";
+        config.topLeft = new ListableConfig.BasicConfigElement("Name");
+        config.topRight = new ListableConfig.CompoundConfigElement(
+                new ListableConfig.BasicConfigElement("Trained skillpoints"),
+                new ListableConfig.LiteralConfigElement("/"),
+                new ListableConfig.BasicConfigElement("MaxSkillpoints"));
+        config.bottomLeft = new ListableConfig.BasicConfigElement("Group Name");
+        config.bottomRight = new ListableConfig.BasicConfigElement("TimeToNextLevel");
         
         boolean first = true;
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {

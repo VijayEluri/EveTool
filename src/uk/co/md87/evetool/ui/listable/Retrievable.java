@@ -27,6 +27,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import uk.co.md87.evetool.ui.listable.formatters.NullFormatter;
+
 /**
  * Designates that the return type of the method is retrievable for use in a
  * {@link Listable}.
@@ -56,5 +58,15 @@ public @interface Retrievable {
      * @return The custom name for the method
      */
     String name() default "";
+
+    /**
+     * The class which should be used to format the output of the method. The
+     * specified class should have a static method named <code>getValue</code>
+     * which takes a single argument of type {@link Object} and returns a
+     * {@link String}.
+     *
+     * @return The formatter to use for this retrievable
+     */
+    Class<?> formatWith() default NullFormatter.class;
     
 }

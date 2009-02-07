@@ -24,6 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.ui.listable.formatters.NumberFormatter;
 
 /**
  * Represents a skill that has been trained by a player.
@@ -76,7 +77,7 @@ public class TrainedSkillInfo {
      *
      * @return This skill's number of skillpoints
      */
-    @Retrievable(name="Trained skillpoints")
+    @Retrievable(name="Trained skillpoints",formatWith=NumberFormatter.class)
     public int getSP() {
         return skillpoints;
     }
@@ -136,7 +137,7 @@ public class TrainedSkillInfo {
      *
      * @return The total number of skillpoints for the next level.
      */
-    @Retrievable
+    @Retrievable(formatWith=NumberFormatter.class)
     public int getSPForNextLevel() {
         return skill.getSkillpointsForLevel(getNextLevel());
     }
@@ -146,7 +147,7 @@ public class TrainedSkillInfo {
      *
      * @return The number of SP that need to be attained to level up.
      */
-    @Retrievable
+    @Retrievable(formatWith=NumberFormatter.class)
     public int getExtraSPForNextLevel() {
         return getSPForNextLevel() - getSP();
     }

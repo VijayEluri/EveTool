@@ -91,12 +91,19 @@ public class ListableParser {
                     result = method.invoke(result);
                 }
 
-                return String.valueOf(result);
+                final Class<?> formatter = methods.get(name)
+                        .get(methods.get(name).size() - 1)
+                        .getAnnotation(Retrievable.class).formatWith();
+
+                return (String) formatter.getMethod("getValue", Object.class)
+                        .invoke(null, result);
             } catch (IllegalAccessException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             } catch (IllegalArgumentException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             } catch (InvocationTargetException ex) {
+                LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
+            } catch (NoSuchMethodException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             }
         }

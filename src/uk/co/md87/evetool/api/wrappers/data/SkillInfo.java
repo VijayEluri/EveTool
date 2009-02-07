@@ -25,6 +25,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 import java.util.List;
 import java.util.Map;
 import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.ui.listable.formatters.NumberFormatter;
 
 /**
  *
@@ -67,6 +68,11 @@ public class SkillInfo {
     @Retrievable
     public String getName() {
         return name;
+    }
+
+    @Retrievable(formatWith=NumberFormatter.class)
+    public int getMaxSkillpoints() {
+        return getSkillpointsForLevel(5);
     }
 
     public int getSkillpointsForLevel(final int level) {
