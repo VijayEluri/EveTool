@@ -35,6 +35,13 @@ import uk.co.md87.evetool.ui.listable.ListableParser;
  */
 public class ListablePanel extends JPanel {
 
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
+
     private final Listable source;
 
     private final ListableParser parser;

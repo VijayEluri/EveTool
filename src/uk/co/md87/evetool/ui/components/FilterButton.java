@@ -32,6 +32,7 @@ import javax.swing.JButton;
 
 /**
  *
+ * TODO: Document FilterButton
  * @author chris
  */
 public class FilterButton extends JButton {
