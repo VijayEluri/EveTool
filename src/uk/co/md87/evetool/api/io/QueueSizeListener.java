@@ -23,12 +23,21 @@
 package uk.co.md87.evetool.api.io;
 
 /**
- *
- * TODO: Document QueueSizeListener
+ * An interface to be implemented by objects that wish to be notified when
+ * the size of the queue of API requests changes. The queue and notification
+ * of listeners is handled by the {@link ApiDownloader}.
+ * 
  * @author chris
  */
 public interface QueueSizeListener {
 
+    /**
+     * Called whenever the queue size changes (in either direction), and
+     * immediately after the listener is registered with the
+     * {@link ApiDownloader}.
+     *
+     * @param size The new size of the request queue
+     */
     void queueSizeUpdate(final int size);
 
 }

@@ -22,6 +22,8 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import uk.co.md87.evetool.ui.listable.Retrievable;
+
 /**
  *
  * TODO: Document BasicCorpInfo
@@ -37,14 +39,17 @@ public class BasicCorpInfo {
         this.id = id;
     }
 
+    @Retrievable
     public int getId() {
         return id;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "[" + name + " (" + id + ")]";

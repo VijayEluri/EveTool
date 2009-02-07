@@ -33,6 +33,8 @@ import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.ui.MainWindow;
 
 /**
+ * Main class for the program. Handles initialisation of the core assets
+ * and UI.
  *
  * @author chris
  */
@@ -45,6 +47,8 @@ public class Main {
     private static final String[] TABLES = new String[]{"Accounts"};
 
     /**
+     * Main program entry point.
+     * 
      * @param args the command line arguments
      */
     public static void main(final String[] args) {

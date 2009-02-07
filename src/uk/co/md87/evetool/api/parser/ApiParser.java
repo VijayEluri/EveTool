@@ -33,19 +33,34 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
- *
- * TODO: Document ApiParser
+ * Parses the result of an API request.
+ * 
  * @author chris
  */
 public class ApiParser {
 
+    /**
+     * Parses the specified data into a tree of {@link ApiResult}s.
+     *
+     * @param data The data to be parsed
+     * @return A representation of the data as a tree of ApiResults
+     * @throws IOException If the data cannot be read correctly
+     * @throws JDOMException If the XML data cannot be parsed correctly
+     * @throws ParserException If the API data cannot be processed correctly
+     */
     public ApiResult parseResult(final String data) throws IOException, JDOMException,
             ParserException {
         return parseResult(new SAXBuilder().build(new StringReader(data)));
     }
 
-    public ApiResult parseResult(final Document doc) throws IOException, JDOMException,
-            ParserException {
+    /**
+     * Parses the specified document into a tree of {@link ApiResult}s.
+     *
+     * @param doc The document to be parsed
+     * @return A representation of the document as a tree of ApiResults
+     * @throws ParserException If the API data cannot be processed correctly
+     */
+    public ApiResult parseResult(final Document doc) throws ParserException {
         final Element root = doc.getRootElement();
 
         if (!"eveapi".equals(root.getName())) {
@@ -58,6 +73,13 @@ public class ApiParser {
         return result;
     }
 
+    /**
+     * Adds the specified XML {@link Element} and its children to the specified
+     * {@link ApiElement}.
+     *
+     * @param result The ApiElement to append the results to
+     * @param element The XML Element to be parsed and added
+     */
     @SuppressWarnings("unchecked")
     protected void addElements(final ApiElement result, final Element element) {
         for (Attribute attr : (List<Attribute>) element.getAttributes()) {

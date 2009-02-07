@@ -23,8 +23,9 @@
 package uk.co.md87.evetool.api.parser;
 
 /**
- *
- * TODO: Document ParserException
+ * Indicates that a problem was encountered when parsing the XML API result
+ * in line with the published EVE API specifications.
+ * 
  * @author chris
  */
 public class ParserException extends Exception {
@@ -36,11 +37,23 @@ public class ParserException extends Exception {
      */
     private static final long serialVersionUID = 10;
 
-    public ParserException(String message, Throwable cause) {
+    /**
+     * Creates a new ParserException caused by the specified {@link Throwable},
+     * with the specified error message.
+     *
+     * @param message A textual description of the exception
+     * @param cause The exception or error that caused the parser failure
+     */
+    public ParserException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public ParserException(String message) {
+    /**
+     * Creates a new ParserException with the specified error message.
+     *
+     * @param message A textual description of the exception
+     */
+    public ParserException(final String message) {
         super(message);
     }
 

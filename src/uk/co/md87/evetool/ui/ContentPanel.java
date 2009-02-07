@@ -34,6 +34,7 @@ import uk.co.md87.evetool.ui.data.AccountChar;
 
 /**
  *
+ * TODO: Document ContentPanel
  * @author chris
  */
 public class ContentPanel extends JPanel {

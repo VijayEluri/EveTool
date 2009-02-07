@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
@@ -53,18 +54,22 @@ public class CertInfo {
         return certReqs;
     }
 
+    @Retrievable(name="Issuing corporation ID")
     public int getCorp() {
         return corp;
     }
 
+    @Retrievable(name="Description")
     public String getDesc() {
         return desc;
     }
 
+    @Retrievable
     public int getGrade() {
         return grade;
     }
 
+    @Retrievable
     public int getId() {
         return id;
     }
@@ -73,6 +78,7 @@ public class CertInfo {
         return skillReqs;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "[" + id + ": grade " + grade + "]";

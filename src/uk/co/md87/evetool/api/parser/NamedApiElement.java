@@ -23,18 +23,30 @@
 package uk.co.md87.evetool.api.parser;
 
 /**
- *
- * TODO: Document NamedApiElement
+ * An extension of a standard {@link ApiElement} that has a name associated with
+ * it.
+ * 
  * @author chris
  */
 public class NamedApiElement extends ApiElement {
 
+    /** The name of this ApiElement. */
     private final String name;
 
-    public NamedApiElement(String name) {
+    /**
+     * Creates a new NamedApiElement with the specified name.
+     *
+     * @param name The name of the ApiElement
+     */
+    public NamedApiElement(final String name) {
         this.name = name;
     }
 
+    /**
+     * Retrieves the name of this NamedApiElement.
+     *
+     * @return This element's name
+     */
     public String getName() {
         return name;
     }

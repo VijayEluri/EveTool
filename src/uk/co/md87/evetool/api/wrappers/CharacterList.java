@@ -23,15 +23,14 @@
 package uk.co.md87.evetool.api.wrappers;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
 
 /**
- *
- * TODO: Document CharacterList
+ * A list of characters associated with a particular account.
+ * 
  * @author chris
  */
 public class CharacterList extends ArrayList<BasicCharInfo> {
@@ -43,14 +42,26 @@ public class CharacterList extends ArrayList<BasicCharInfo> {
      */
     private static final long serialVersionUID = 10;
 
+    /**
+     * Creates a new character list from the specified result set.
+     *
+     * @param resultElement The result element of a character list query.
+     */
     public CharacterList(final ApiElement resultElement) {
         super();
 
-        for (ApiElement child : resultElement.getChild("rowset").getChildren()) {
+        for (ApiElement child : resultElement.getRowset("characters")) {
             add(getCharInfo(child));
         }
     }
 
+    /**
+     * Constructs a {@link BasicCharInfo} object corresponding to the data in
+     * the specified row.
+     *
+     * @param row The row of data to be parsed
+     * @return A corresponding BasicCharInfo object
+     */
     protected BasicCharInfo getCharInfo(final ApiElement row) {
         final BasicCorpInfo corpInfo = new BasicCorpInfo(
                 row.getStringAttribute("corporationName"),

@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
@@ -46,10 +47,12 @@ public class CertClass {
         return certificates;
     }
 
+    @Retrievable
     public int getId() {
         return id;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }

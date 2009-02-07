@@ -23,17 +23,20 @@
 package uk.co.md87.evetool.ui;
 
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
+
 import uk.co.md87.evetool.Main;
 import uk.co.md87.evetool.api.io.ApiDownloader;
 import uk.co.md87.evetool.api.io.QueueSizeListener;
 
 /**
- *
- * TODO: Document StatusPanel
+ * Panel which shows status information at the bottom of the main window.
+ * 
  * @author chris
  */
 public class StatusPanel extends JPanel implements QueueSizeListener {
@@ -45,8 +48,14 @@ public class StatusPanel extends JPanel implements QueueSizeListener {
      */
     private static final long serialVersionUID = 10;
 
+    /** Labels used to display various pieces of information. */
     private final JLabel leftLabel, centreLabel, rightLabel;
 
+    /**
+     * Creates a new status panel for the specified window.
+     *
+     * @param window The {@link MainWindow} that this status panel is for
+     */
     public StatusPanel(final MainWindow window) {
         super(new MigLayout());
 
@@ -63,9 +72,11 @@ public class StatusPanel extends JPanel implements QueueSizeListener {
         ApiDownloader.addQueueSizeListener(this);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public void queueSizeUpdate(final int size) {
         centreLabel.setText(size == 0 ? "" : 
-            (size + " queued request" + (size == 1 ? "" : "s")));
+            (size + " API quer" + (size == 1 ? "y" : "ies") + " pending"));
     }
 
 }

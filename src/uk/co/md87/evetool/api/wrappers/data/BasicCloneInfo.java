@@ -22,6 +22,8 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import uk.co.md87.evetool.ui.listable.Retrievable;
+
 /**
  *
  * TODO: Document BasicCloneInfo
@@ -37,10 +39,12 @@ public class BasicCloneInfo {
         this.spLimit = spLimit;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }
 
+    @Retrievable(name="Skillpoint limit")
     public long getSpLimit() {
         return spLimit;
     }

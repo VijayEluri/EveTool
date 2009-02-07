@@ -65,8 +65,6 @@ public class SkillPage extends Page {
         this.factory = factory;
 
         setLayout(new MigLayout("fillx, wrap 1"));
-
-        add(new JLabel("Skills! Moo!"));
     }
 
     /** {@inheritDoc} */

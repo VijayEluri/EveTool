@@ -28,16 +28,33 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
- * TODO: Document Retrievable
+ * Designates that the return type of the method is retrievable for use in a
+ * {@link Listable}.
+ * 
  * @author chris
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Retrievable {
 
+    /**
+     * Indicates that the return type of the method should be scanned for
+     * other retrievable methods, instead of just using the result directly.
+     * If the {@link #name()} property is specified as well, the name is used
+     * as a prefix for the methods found in the returned retrievable.
+     * 
+     * @return True if the return type should be scanned for 'deferred'
+     * retrievables, false if the result should be used verbatim
+     */
     boolean deferred() default false;
-    
+
+    /**
+     * A custom name for the retrievable method. If no name is specified, it is
+     * inferred from the method name by stripping prefixes such as 'get' and
+     * inserting spaces before CamelCase words.
+     * 
+     * @return The custom name for the method
+     */
     String name() default "";
     
 }

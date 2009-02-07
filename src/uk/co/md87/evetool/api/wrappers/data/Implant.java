@@ -22,6 +22,8 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import uk.co.md87.evetool.ui.listable.Retrievable;
+
 /**
  *
  * TODO: Document Implant
@@ -39,14 +41,17 @@ public class Implant {
         this.bonus = bonus;
     }
 
+    @Retrievable
     public Attribute getAttribute() {
         return attribute;
     }
 
+    @Retrievable
     public int getBonus() {
         return bonus;
     }
 
+    @Retrievable
     public String getName() {
         return name;
     }

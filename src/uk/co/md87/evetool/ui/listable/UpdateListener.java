@@ -23,11 +23,17 @@
 package uk.co.md87.evetool.ui.listable;
 
 /**
- *
- * TODO: Document UpdateListener
+ * Interface to be implemented by objects that wish to be notified when a
+ * {@link Listable} has been updated in some way.
+ * 
  * @author chris
  */
 public interface UpdateListener {
 
+    /**
+     * Called when a {@link Listable} has been updated.
+     *
+     * @param listable The object that was updated
+     */
     void listableUpdated(final Listable listable);
 }
