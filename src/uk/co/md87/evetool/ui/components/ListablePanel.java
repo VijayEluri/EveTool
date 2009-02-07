@@ -22,18 +22,20 @@
 
 package uk.co.md87.evetool.ui.components;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
+import uk.co.md87.evetool.ui.listable.UpdateListener;
 
 /**
  *
  * TODO: Document ListablePanel
  * @author chris
  */
-public class ListablePanel extends JPanel {
+public class ListablePanel extends JPanel implements UpdateListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -48,10 +50,46 @@ public class ListablePanel extends JPanel {
 
     private final ListableConfig config;
 
+    private final JLabel image, topLeft, topRight, bottomLeft, bottomRight;
+
     public ListablePanel(final Listable source, final ListableParser parser,
             final ListableConfig config) {
         this.source = source;
         this.parser = parser;
         this.config = config;
+
+        image = new JLabel("Loading");
+        topLeft = new JLabel("?");
+        topRight = new JLabel("?");
+        bottomLeft = new JLabel("?");
+        bottomRight = new JLabel("?");
+
+        add(image, "spany 2, width 48, height 48");
+        add(topLeft, "growx, pushx, gaptop 7");
+        add(topRight, "growx, pushx, al right, wrap");
+        add(bottomLeft, "growx, pushx");
+        add(bottomRight, "growx, pushx, al right, gapbottom 8");
+
+        source.addUpdateListener(this);
+
+        updateLabels();
+    }
+
+    protected void updateLabels() {
+        topLeft.setText(parser.getValue(source, config.topLeft));
+        topRight.setText(parser.getValue(source, config.topRight));
+        bottomLeft.setText(parser.getValue(source, config.bottomLeft));
+        bottomRight.setText(parser.getValue(source, config.bottomRight));
+    }
+
+    protected void updateImage() {
+        image.setIcon(source.getImage());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void listableUpdated(final Listable listable) {
+        updateLabels();
+        updateImage();
     }
 }
