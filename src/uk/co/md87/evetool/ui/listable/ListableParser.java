@@ -75,7 +75,7 @@ public class ListableParser {
         }
     }
 
-    protected String getName(final String methodName) {
+    protected static String getName(final String methodName) {
         final StringBuilder builder = new StringBuilder();
         boolean lastCap = false;
 
@@ -95,7 +95,6 @@ public class ListableParser {
             lastCap = Character.isUpperCase(ch);
         }
 
-        System.out.println(methodName + " ==> " + builder.toString());
         return builder.toString();
     }
 
