@@ -25,16 +25,28 @@ package uk.co.md87.evetool.ui.dialogs.listableconfig;
 import java.awt.Dialog.ModalityType;
 import java.awt.Window;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableConfig.BasicConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.LiteralConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
@@ -55,6 +67,8 @@ public class ListableConfigDialog extends JDialog {
     private final Listable sample;
     private final ListableParser parser;
 
+    private final Set<String> retrievables;
+
     private final JPanel configPanel, previewPanel;
     private final ListablePanel panel;
 
@@ -68,7 +82,9 @@ public class ListableConfigDialog extends JDialog {
         this.sample = sample;
         this.parser = new ListableParser(sample.getClass());
         
-        this.configPanel = new JPanel(new MigLayout("wrap 2, fill", "[fill]"));
+        this.retrievables = parser.getRetrievableNames();
+        
+        this.configPanel = new JPanel(new MigLayout("fill", "[fill]"));
         this.previewPanel = new JPanel(new MigLayout("fill", "[fill]", "[fill]"));
         
         configPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
@@ -91,10 +107,47 @@ public class ListableConfigDialog extends JDialog {
     }
 
     protected void layoutConfigPanel() {
-        configPanel.add(new JLabel("Top left:", JLabel.RIGHT), "wrap");
-        configPanel.add(new JLabel("Bottom left:", JLabel.RIGHT), "wrap");
-        configPanel.add(new JLabel("Top right:", JLabel.RIGHT), "wrap");
-        configPanel.add(new JLabel("Bottom right:", JLabel.RIGHT), "wrap");
+        configPanel.add(new JLabel("Top left:", JLabel.RIGHT));
+        addComponents(config.topLeft);
+        configPanel.add(new JButton("+"));
+        configPanel.add(new JLabel("Bottom left:", JLabel.RIGHT), "newline");
+        addComponents(config.bottomLeft);
+        configPanel.add(new JButton("+"));
+        configPanel.add(new JLabel("Top right:", JLabel.RIGHT), "newline");
+        addComponents(config.topRight);
+        configPanel.add(new JButton("+"));
+        configPanel.add(new JLabel("Bottom right:", JLabel.RIGHT), "newline");
+        addComponents(config.bottomRight);
+        configPanel.add(new JButton("+"));
+    }
+
+    protected void addComponents(final ConfigElement element) {
+        final List<JComponent> components = getComponents(element);
+
+        String firstText = ", split " + components.size();
+        for (JComponent component : components) {
+            final int compWidth = component instanceof JComboBox ? 150 : 100;
+            configPanel.add(component, "width " + compWidth + "!" + firstText);
+            firstText = "";
+        }
+    }
+
+    protected List<JComponent> getComponents(final ConfigElement element) {
+        final List<JComponent> components = new ArrayList<JComponent>();
+
+        if (element instanceof LiteralConfigElement) {
+            components.add(new JTextField(((LiteralConfigElement) element).getText()));
+        } else if (element instanceof BasicConfigElement) {
+            final JComboBox box = new JComboBox(retrievables.toArray());
+            box.setSelectedItem(((BasicConfigElement) element).getName());
+            components.add(box);
+        } else {
+            for (ConfigElement subElement : ((CompoundConfigElement) element).getElements()) {
+                components.addAll(getComponents(subElement));
+            }
+        }
+
+        return components;
     }
 
 }

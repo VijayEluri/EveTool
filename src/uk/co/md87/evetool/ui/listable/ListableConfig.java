@@ -49,6 +49,10 @@ public class ListableConfig {
         public String getValue(final Object target, ListableParser parser) {
             return parser.getValue(target, name);
         }
+
+        public String getName() {
+            return name;
+        }
     }
 
     public static class LiteralConfigElement implements ConfigElement {
@@ -60,6 +64,10 @@ public class ListableConfig {
         }
 
         public String getValue(Object target, ListableParser parser) {
+            return text;
+        }
+
+        public String getText() {
             return text;
         }
     }
@@ -80,6 +88,10 @@ public class ListableConfig {
             }
 
             return builder.toString();
+        }
+
+        public ConfigElement[] getElements() {
+            return elements;
         }
     }
 

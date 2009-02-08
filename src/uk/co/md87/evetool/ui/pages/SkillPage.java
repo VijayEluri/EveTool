@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
 
-import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
@@ -72,13 +71,13 @@ public class SkillPage extends Page implements ActionListener {
         setLayout(new MigLayout("fillx, wrap 1"));
 
         config = new ListableConfig();
-        config.topLeft = new ListableConfig.BasicConfigElement("Name");
+        config.topLeft = new ListableConfig.BasicConfigElement("name");
         config.topRight = new ListableConfig.CompoundConfigElement(
-                new ListableConfig.BasicConfigElement("Trained skillpoints"),
+                new ListableConfig.BasicConfigElement("trained skillpoints"),
                 new ListableConfig.LiteralConfigElement("/"),
-                new ListableConfig.BasicConfigElement("MaxSkillpoints"));
-        config.bottomLeft = new ListableConfig.BasicConfigElement("Group Name");
-        config.bottomRight = new ListableConfig.BasicConfigElement("TimeToNextLevel");
+                new ListableConfig.BasicConfigElement("max skillpoints"));
+        config.bottomLeft = new ListableConfig.BasicConfigElement("group name");
+        config.bottomRight = new ListableConfig.BasicConfigElement("time to next level");
     }
 
     /** {@inheritDoc} */

@@ -62,20 +62,41 @@ public class ListableParser {
                     } else if (prefix.isEmpty()) {
                         parse(method.getReturnType(), newMethodChain, ann.name());
                     } else {
-                        parse(method.getReturnType(), newMethodChain, prefix + " " + ann.name());
+                        parse(method.getReturnType(), newMethodChain, prefix + " "
+                                + ann.name());
                     }
                 } else {
                     final String name = (prefix.isEmpty() ? prefix : prefix + " ") +
                             (ann.name().isEmpty() ? getName(method.getName()) : ann.name());
 
-                    methods.put(name, newMethodChain);
+                    methods.put(name.toLowerCase(), newMethodChain);
                 }
             }
         }
     }
 
     protected String getName(final String methodName) {
-        return methodName.startsWith("get") ? methodName.substring(3) : methodName;
+        final StringBuilder builder = new StringBuilder();
+        boolean lastCap = false;
+
+        final char[] chrs = (methodName.startsWith("get") ? methodName.substring(3)
+                : methodName).toCharArray();
+
+        for (int i = 0; i < chrs.length; i++) {
+            final char ch = chrs[i];
+            
+            if (Character.isUpperCase(ch) && builder.length() > 0 &&
+                    (!lastCap || (i < chrs.length - 1 && !Character.isUpperCase(chrs[i + 1])))) {
+                builder.append(' ');
+            }
+
+            builder.append(Character.toLowerCase(ch));
+
+            lastCap = Character.isUpperCase(ch);
+        }
+
+        System.out.println(methodName + " ==> " + builder.toString());
+        return builder.toString();
     }
 
     public Set<String> getRetrievableNames() {
