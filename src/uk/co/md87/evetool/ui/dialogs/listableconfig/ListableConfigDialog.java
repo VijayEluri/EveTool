@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.ui.dialogs.listableconfig;
 
 import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,8 +64,7 @@ import uk.co.md87.evetool.ui.listable.ListableParser;
  * TODO: Document ListableConfigDialog
  * @author chris
  */
-public class ListableConfigDialog extends JDialog implements ActionListener,
-        ItemListener, KeyListener {
+public class ListableConfigDialog extends JDialog implements ItemListener, KeyListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -129,37 +129,40 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         configPanel.removeAll();
         
         JButton addButton = new JButton("+");
-        addButton.addActionListener(this);
-
+        addButton.addActionListener(new ButtonActionListener("tl"));
+        addButton.setMaximumSize(new Dimension(35, 100));
         configPanel.add(new JLabel("Top left:", JLabel.RIGHT));
         addComponents("tl");
-        configPanel.add(addButton);
+        configPanel.add(addButton, "span, al right");
 
         addButton = new JButton("+");
-        addButton.addActionListener(this);
+        addButton.addActionListener(new ButtonActionListener("bl"));
+        addButton.setMaximumSize(new Dimension(35, 100));
         configPanel.add(new JLabel("Bottom left:", JLabel.RIGHT), "newline");
         addComponents("bl");
-        configPanel.add(addButton);
+        configPanel.add(addButton, "span, al right");
 
         addButton = new JButton("+");
-        addButton.addActionListener(this);
+        addButton.addActionListener(new ButtonActionListener("tr"));
+        addButton.setMaximumSize(new Dimension(35, 100));
         configPanel.add(new JLabel("Top right:", JLabel.RIGHT), "newline");
         addComponents("tr");
-        configPanel.add(addButton);
+        configPanel.add(addButton, "span, al right");
 
         addButton = new JButton("+");
-        addButton.addActionListener(this);
+        addButton.addActionListener(new ButtonActionListener("br"));
+        addButton.setMaximumSize(new Dimension(35, 100));
         configPanel.add(new JLabel("Bottom right:", JLabel.RIGHT), "newline");
         addComponents("br");
-        configPanel.add(addButton);
+        configPanel.add(addButton, "span, al right");
+
+        configPanel.revalidate();
+        pack();
     }
 
     protected void addComponents(final String location) {
-        String firstText = ", split " + components.get(location).size();
         for (JComponent component : components.get(location)) {
-            final int compWidth = component instanceof JComboBox ? 150 : 100;
-            configPanel.add(component, "growy, width " + compWidth + "!" + firstText);
-            firstText = "";
+            configPanel.add(component, "growy, width 100!");
         }
     }
 
@@ -182,27 +185,6 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         }
 
         return res;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-        if (e.getSource() instanceof JButton) {
-            final JPopupMenu menu = new JPopupMenu();
-
-            JMenuItem mi = new JMenuItem("New string");
-            mi.addActionListener(this);
-            menu.add(mi);
-
-            mi = new JMenuItem("New variable");
-            mi.addActionListener(this);
-            menu.add(mi);
-
-            menu.show((JComponent) e.getSource(), 0,
-                    ((JComponent) e.getSource()).getHeight());
-        } else if (e.getSource() instanceof JMenuItem) {
-            
-        }
     }
 
     protected void rebuildConfig() {
@@ -247,8 +229,7 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
     /** {@inheritDoc} */
     @Override
     public void keyTyped(final KeyEvent e) {
-        rebuildConfig();
-        panel.listableUpdated(sample);
+        // Do nothing
     }
 
     /** {@inheritDoc} */
@@ -260,7 +241,60 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
     /** {@inheritDoc} */
     @Override
     public void keyReleased(final KeyEvent e) {
-        // Do nothing
+        rebuildConfig();
+        panel.listableUpdated(sample);
+    }
+
+    private class ButtonActionListener implements ActionListener {
+
+        private final String location;
+
+        public ButtonActionListener(final String location) {
+            this.location = location;
+        }
+
+        public void actionPerformed(final ActionEvent e) {
+            final JPopupMenu menu = new JPopupMenu();
+
+            JMenuItem mi = new JMenuItem("New string");
+            mi.addActionListener(new MenuActionListener(location, true));
+            menu.add(mi);
+
+            mi = new JMenuItem("New variable");
+            mi.addActionListener(new MenuActionListener(location, false));
+            menu.add(mi);
+
+            menu.show((JComponent) e.getSource(), 0,
+                    ((JComponent) e.getSource()).getHeight());
+        }
+    }
+
+    private class MenuActionListener implements ActionListener {
+
+        private final String location;
+
+        private final boolean isString;
+
+        public MenuActionListener(final String location, final boolean isString) {
+            this.location = location;
+            this.isString = isString;
+        }
+
+        public void actionPerformed(final ActionEvent e) {
+            if (isString) {
+                final JTextField tf = new JTextField();
+                tf.addKeyListener(ListableConfigDialog.this);
+                components.get(location).add(tf);
+            } else {
+                final JComboBox box = new JComboBox(retrievables.toArray());
+                box.addItemListener(ListableConfigDialog.this);
+                components.get(location).add(box);
+            }
+
+            layoutConfigPanel();
+            rebuildConfig();
+            panel.listableUpdated(sample);
+        }
     }
 
 }

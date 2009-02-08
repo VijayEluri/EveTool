@@ -70,6 +70,11 @@ public class SkillInfo {
         return name;
     }
 
+    @Retrievable
+    public int getRank() {
+        return rank;
+    }
+
     @Retrievable(formatWith=NumberFormatter.class)
     public int getMaxSkillpoints() {
         return getSkillpointsForLevel(5);
