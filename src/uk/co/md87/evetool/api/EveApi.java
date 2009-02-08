@@ -85,7 +85,7 @@ public class EveApi implements Cloneable {
         this.conn = sqlConnection;
 
         if (!checkedTables) {
-            new TableCreator(conn, "../db/", TABLES).checkTables();
+            new TableCreator(conn, "/uk/co/md87/evetool/api/db/", TABLES).checkTables();
             checkedTables = true;
         }
 

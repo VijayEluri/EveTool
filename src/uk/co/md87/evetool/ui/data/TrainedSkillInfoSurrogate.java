@@ -27,16 +27,16 @@ public class TrainedSkillInfoSurrogate extends ListableImpl {
     static {
         try {
             completeImage = ImageIO.read(TrainedSkillInfoSurrogate.class
-                    .getResource("../res/icon50_14.png"))
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_14.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
             trainingImage = ImageIO.read(TrainedSkillInfoSurrogate.class
-                    .getResource("../res/icon50_12.png"))
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_12.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
             normalImage = ImageIO.read(TrainedSkillInfoSurrogate.class
-                    .getResource("../res/icon50_13.png"))
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_13.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
             untrainedImage = ImageIO.read(TrainedSkillInfoSurrogate.class
-                    .getResource("../res/icon50_11.png"))
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_11.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             // Do nothing

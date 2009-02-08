@@ -57,7 +57,8 @@ public class FilterButton extends JButton {
         setForeground(Color.WHITE);
 
         try {
-            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/filter.png"))));
+            setIcon(new ImageIcon(ImageIO.read(getClass()
+                    .getResource("/uk/co/md87/evetool/ui/res/filter.png"))));
         } catch (IOException ex) {
             // TODO: Do something with ex
         }

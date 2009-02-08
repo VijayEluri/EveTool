@@ -54,13 +54,17 @@ public class SkillPanel extends JPanel {
 
     static {
         try {
-            completeImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_14.png"))
+            completeImage = ImageIO.read(SkillPanel.class
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_14.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-            trainingImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_12.png"))
+            trainingImage = ImageIO.read(SkillPanel.class
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_12.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-            normalImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_13.png"))
+            normalImage = ImageIO.read(SkillPanel.class
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_13.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-            untrainedImage = ImageIO.read(SkillPanel.class.getResource("../res/icon50_11.png"))
+            untrainedImage = ImageIO.read(SkillPanel.class
+                    .getResource("/uk/co/md87/evetool/ui/res/icon50_11.png"))
                     .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
         } catch (IOException ex) {
             // Do nothing

@@ -55,6 +55,7 @@ import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.AddButton;
 import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.data.AccountChar;
+import uk.co.md87.evetool.ui.dialogs.addaccount.AddAccountDialog;
 import uk.co.md87.evetool.ui.workers.AccountUpdateWorker;
 
 /**
@@ -74,6 +75,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
 
     private final MainWindow window;
     private final ApiFactory factory;
+    private final AccountManager manager;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
     private final List<AccountChar> chars = new ArrayList<AccountChar>();
@@ -82,6 +84,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
             final ApiFactory factory) {
         this.window = window;
         this.factory = factory;
+        this.manager = manager;
 
         setLayout(new MigLayout("fillx"));
 
@@ -118,18 +121,18 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         headerP.add(header, "growx");
 
         try {
-            final JButton editButton = new JButton(new ImageIcon(ImageIO
-                    .read(getClass().getResource("../res/edit-inactive.png"))));
+            final JButton editButton = new JButton(new ImageIcon(ImageIO.read(
+                    getClass().getResource("/uk/co/md87/evetool/ui/res/edit-inactive.png"))));
             editButton.setRolloverIcon(new ImageIcon(ImageIO
-                    .read(getClass().getResource("../res/edit.png"))));
+                    .read(getClass().getResource("/uk/co/md87/evetool/ui/res/edit.png"))));
             editButton.setBorder(BorderFactory.createEmptyBorder());
             editButton.setOpaque(false);
             editButton.setContentAreaFilled(false);
 
-            final JButton delButton = new JButton(new ImageIcon(ImageIO
-                    .read(getClass().getResource("../res/close-inactive.png"))));
-            delButton.setRolloverIcon(new ImageIcon(ImageIO
-                    .read(getClass().getResource("../res/close-active.png"))));
+            final JButton delButton = new JButton(new ImageIcon(ImageIO.read(
+                    getClass().getResource("/uk/co/md87/evetool/ui/res/close-inactive.png"))));
+            delButton.setRolloverIcon(new ImageIcon(ImageIO.read(
+                    getClass().getResource("/uk/co/md87/evetool/ui/res/close-active.png"))));
             delButton.setBorder(BorderFactory.createEmptyBorder());
             delButton.setOpaque(false);
             delButton.setContentAreaFilled(false);
@@ -169,7 +172,11 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     /** {@inheritDoc} */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        updateCharacters();
+        if (e.getSource() instanceof AddButton) {
+            new AddAccountDialog(window, manager).setVisible(true);
+        } else {
+            updateCharacters();
+        }
     }
 
     @Override
@@ -179,7 +186,10 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
 
     @Override
     public void activated(final ContextPanel context) {
-        context.add(new AddButton("Add account"), "growy");
+        final AddButton addButton = new AddButton("Add account");
+        addButton.addActionListener(this);
+        
+        context.add(addButton, "growy");
         context.add(new FilterButton(), "growy, al right");
     }
 

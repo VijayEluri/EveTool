@@ -79,7 +79,8 @@ public class AccountChar extends ListableImpl {
             this.balance.setText(String.format("%,.2f", sheet.getResult().getBalance()));
 
             if (sheet.getResult().getSkillPoints() > sheet.getResult().getClone().getSpLimit()) {
-                name.setIcon(new ImageIcon(getClass().getResource("../res/error.png")));
+                name.setIcon(new ImageIcon(getClass()
+                        .getResource("/uk/co/md87/evetool/ui/res/error.png")));
                 name.setToolTipText(
                         String.format("Character's clone is %,d SP too low",
                         sheet.getResult().getSkillPoints()

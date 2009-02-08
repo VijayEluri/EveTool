@@ -57,7 +57,8 @@ public class AddButton extends JButton {
         setForeground(Color.WHITE);
 
         try {
-            setIcon(new ImageIcon(ImageIO.read(getClass().getResource("../res/plus.png"))));
+            setIcon(new ImageIcon(ImageIO.read(getClass()
+                    .getResource("/uk/co/md87/evetool/ui/res/plus.png"))));
         } catch (IOException ex) {
             // TODO: Do something with ex
         }
