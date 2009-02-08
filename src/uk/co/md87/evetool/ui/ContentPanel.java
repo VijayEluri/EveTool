@@ -53,6 +53,7 @@ public class ContentPanel extends JPanel {
         for (Map.Entry<String, Page> page : pages.entrySet()) {
             final JScrollPane scrollPane = new JScrollPane(page.getValue());
             scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            scrollPane.getVerticalScrollBar().setUnitIncrement(20);
             add(scrollPane, page.getKey());
         }
     }

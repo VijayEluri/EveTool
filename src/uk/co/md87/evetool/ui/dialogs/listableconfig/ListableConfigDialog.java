@@ -39,6 +39,7 @@ import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
+ * TODO: Document ListableConfigDialog
  * @author chris
  */
 public class ListableConfigDialog extends JDialog {
