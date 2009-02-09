@@ -20,49 +20,18 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api.wrappers.data;
+package uk.co.md87.evetool.api.wrappers;
+
+import uk.co.md87.evetool.api.parser.ApiElement;
 
 /**
- * Represents a skill that is required to be trained to a certain level for
- * some purpose.
  *
  * @author chris
  */
-public class SkillRequirement {
+public class ShipList {
 
-    /** The ID of the required skill. */
-    private final int skillId;
+    public ShipList(final ApiElement resultElement) {
 
-    /** The required level of the skill. */
-    private final int requiredLevel;
-
-    /**
-     * Creates a new skill requirement with the specified details.
-     *
-     * @param skillId The ID of the required skill
-     * @param requiredLevel The required level of that skill
-     */
-    public SkillRequirement(final int skillId, final int requiredLevel) {
-        this.skillId = skillId;
-        this.requiredLevel = requiredLevel;
-    }
-
-    /**
-     * Retrieves the required level of the skill.
-     *
-     * @return The skill's required level
-     */
-    public int getRequiredLevel() {
-        return requiredLevel;
-    }
-
-    /**
-     * Retrieves the ID of the required skill.
-     *
-     * @return The skill's ID
-     */
-    public int getSkillId() {
-        return skillId;
     }
 
 }

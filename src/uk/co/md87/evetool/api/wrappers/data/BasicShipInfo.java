@@ -22,47 +22,34 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import java.util.List;
+
 /**
- * Represents a skill that is required to be trained to a certain level for
- * some purpose.
  *
+ * TODO: Document BasicShipInfo
  * @author chris
  */
-public class SkillRequirement {
+public class BasicShipInfo extends BasicType {
 
-    /** The ID of the required skill. */
-    private final int skillId;
+    private final int graphicID;
+    private final List<SkillRequirement> requirements;
 
-    /** The required level of the skill. */
-    private final int requiredLevel;
+    public BasicShipInfo(final int id, final String name, final int graphicID,
+            final List<SkillRequirement> requirements) {
+        super(id, name);
 
-    /**
-     * Creates a new skill requirement with the specified details.
-     *
-     * @param skillId The ID of the required skill
-     * @param requiredLevel The required level of that skill
-     */
-    public SkillRequirement(final int skillId, final int requiredLevel) {
-        this.skillId = skillId;
-        this.requiredLevel = requiredLevel;
+        this.graphicID = graphicID;
+        this.requirements = requirements;
     }
 
-    /**
-     * Retrieves the required level of the skill.
-     *
-     * @return The skill's required level
-     */
-    public int getRequiredLevel() {
-        return requiredLevel;
+    public int getGraphicID() {
+        return graphicID;
     }
 
-    /**
-     * Retrieves the ID of the required skill.
-     *
-     * @return The skill's ID
-     */
-    public int getSkillId() {
-        return skillId;
+
+    public List<SkillRequirement> getRequirements() {
+        return requirements;
     }
+
 
 }

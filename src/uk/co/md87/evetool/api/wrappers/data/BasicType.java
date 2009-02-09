@@ -22,47 +22,32 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import uk.co.md87.evetool.ui.listable.Retrievable;
+
 /**
- * Represents a skill that is required to be trained to a certain level for
- * some purpose.
  *
+ * TODO: Document BasicType
  * @author chris
  */
-public class SkillRequirement {
+public class BasicType {
 
-    /** The ID of the required skill. */
-    private final int skillId;
+    private final int id;
 
-    /** The required level of the skill. */
-    private final int requiredLevel;
+    private final String name;
 
-    /**
-     * Creates a new skill requirement with the specified details.
-     *
-     * @param skillId The ID of the required skill
-     * @param requiredLevel The required level of that skill
-     */
-    public SkillRequirement(final int skillId, final int requiredLevel) {
-        this.skillId = skillId;
-        this.requiredLevel = requiredLevel;
+    public BasicType(final int id, final String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    /**
-     * Retrieves the required level of the skill.
-     *
-     * @return The skill's required level
-     */
-    public int getRequiredLevel() {
-        return requiredLevel;
+    @Retrievable
+    public int getID() {
+        return id;
     }
 
-    /**
-     * Retrieves the ID of the required skill.
-     *
-     * @return The skill's ID
-     */
-    public int getSkillId() {
-        return skillId;
+    @Retrievable
+    public String getName() {
+        return name;
     }
 
 }
