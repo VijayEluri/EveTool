@@ -138,7 +138,7 @@ public class ApiDownloader {
     }
 
     protected static String getUrl(final String method) {
-        return API_HOST + method;
+        return method.startsWith("http") ? method : API_HOST + method;
     }
 
 }
