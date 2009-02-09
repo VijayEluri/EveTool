@@ -46,6 +46,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -95,11 +96,11 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         this.parser = new ListableParser(sample.getClass());
         
         this.retrievables = parser.getRetrievableNames();
-        
+
         this.configPanel = new JPanel(new MigLayout("fill", "[fill]"));
         this.previewPanel = new JPanel(new MigLayout("fill", "[fill]", "[fill]"));
-        
-        configPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
+
+        configPanel.setBorder(BorderFactory.createTitledBorder("Information"));
         previewPanel.setBorder(BorderFactory.createTitledBorder("Preview"));
 
         this.panel = new ListablePanel(sample, parser, config);
@@ -123,12 +124,26 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         components.put("tr", getComponents(config.topRight));
         components.put("bl", getComponents(config.bottomLeft));
         components.put("br", getComponents(config.bottomRight));
+        components.put("group", getComponents(config.group));
+        
+        for (int i = 0; i < config.sortOrder.length; i++) {
+            components.put("sort_" + i, getComponents(config.sortOrder[i]));
+        }
     }
 
     protected void layoutConfigPanel() {
         configPanel.removeAll();
         
         JButton addButton = new JButton("+");
+        addButton.addActionListener(new ButtonActionListener("tl"));
+        addButton.setMaximumSize(new Dimension(35, 100));
+        configPanel.add(new JLabel("Group by:", JLabel.RIGHT));
+        addComponents("group");
+        configPanel.add(addButton, "span, al right");
+        
+        configPanel.add(new JSeparator(), "gaptop 10, gapbottom 10, newline, span, growx");
+
+        addButton = new JButton("+");
         addButton.addActionListener(new ButtonActionListener("tl"));
         addButton.setMaximumSize(new Dimension(35, 100));
         configPanel.add(new JLabel("Top left:", JLabel.RIGHT));
@@ -155,7 +170,7 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         configPanel.add(new JLabel("Bottom right:", JLabel.RIGHT), "newline");
         addComponents("br");
         configPanel.add(addButton, "span, al right");
-
+        
         configPanel.revalidate();
         pack();
     }
