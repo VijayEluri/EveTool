@@ -30,7 +30,7 @@ public class ListableConfig {
 
     public ConfigElement topLeft, topRight, bottomLeft, bottomRight;
     public String[] sortOrder;
-    public String group;
+    public ConfigElement group;
 
     public static interface ConfigElement {
 

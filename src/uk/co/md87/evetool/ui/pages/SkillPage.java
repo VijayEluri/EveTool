@@ -38,9 +38,11 @@ import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
+import uk.co.md87.evetool.ui.components.HeaderPanel;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
+import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
 
@@ -78,6 +80,7 @@ public class SkillPage extends Page implements ActionListener {
                 new ListableConfig.BasicConfigElement("max skillpoints"));
         config.bottomLeft = new ListableConfig.BasicConfigElement("group name");
         config.bottomRight = new ListableConfig.BasicConfigElement("time to next level");
+        config.group = new ListableConfig.BasicConfigElement("group name");
     }
 
     /** {@inheritDoc} */
@@ -100,16 +103,30 @@ public class SkillPage extends Page implements ActionListener {
                 new TrainingTimeComparator(true));
 
         final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
-        
+
+        String lastGroup = null;
         boolean first = true;
+        
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
+            final Listable wrapper = new TrainedSkillInfoSurrogate(skill);
+
+            if (config.group != null) {
+                final String thisGroup = config.group.getValue(wrapper, parser);
+
+                if (lastGroup == null || !thisGroup.equals(lastGroup)) {
+                    first = true;
+                    lastGroup = thisGroup;
+                    add(new HeaderPanel(lastGroup), "growx, pushx");
+                }
+            }
+
             if (first) {
                 first = false;
             } else {
                 add(new JSeparator(), "growx, pushx");
             }
 
-            add(new ListablePanel(new TrainedSkillInfoSurrogate(skill), parser, config),
+            add(new ListablePanel(wrapper, parser, config),
                     "growx, pushx");
         }
     }
