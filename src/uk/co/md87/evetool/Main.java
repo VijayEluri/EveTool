@@ -44,7 +44,8 @@ public class Main {
     public static String version;
 
     /** Tables that are needed by the application. */
-    private static final String[] TABLES = new String[]{"Accounts"};
+    private static final String[] TABLES
+            = new String[]{"Accounts", "PageConfigElements", "PageConfigs"};
 
     /**
      * Main program entry point.
