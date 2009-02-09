@@ -180,7 +180,6 @@ public class TrainedSkillInfo {
      * @param level The level to reach
      * @return The reamining time in seconds to that level
      */
-    @Retrievable(formatWith=DurationFormatter.class)
     public int getTimeToLevel(final int level) {
         final int remsp = skill.getSkillpointsForLevel(level) - getSP();
         final double sppm = getSkillpointsPerMinute();
