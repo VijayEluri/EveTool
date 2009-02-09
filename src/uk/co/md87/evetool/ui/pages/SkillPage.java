@@ -24,8 +24,10 @@ package uk.co.md87.evetool.ui.pages;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 
+import java.util.List;
 import javax.swing.JSeparator;
 
 import net.miginfocom.swing.MigLayout;
@@ -43,6 +45,7 @@ import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
 import uk.co.md87.evetool.ui.listable.Listable;
+import uk.co.md87.evetool.ui.listable.ListableComparator;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 import uk.co.md87.evetool.ui.listable.ListableParser;
 
@@ -81,6 +84,12 @@ public class SkillPage extends Page implements ActionListener {
         config.bottomLeft = new ListableConfig.BasicConfigElement("group name");
         config.bottomRight = new ListableConfig.BasicConfigElement("time to next level");
         config.group = new ListableConfig.BasicConfigElement("group name");
+
+        config.sortOrder = new ListableConfig.ConfigElement[]{
+            new ListableConfig.BasicConfigElement("group name"),
+            new ListableConfig.BasicConfigElement("current level"),
+            new ListableConfig.BasicConfigElement("trained skillpoints"),
+        };
     }
 
     /** {@inheritDoc} */
@@ -99,19 +108,23 @@ public class SkillPage extends Page implements ActionListener {
 
         removeAll();
 
-        Collections.sort(character.getSheet().getResult().getSkills(),
-                new TrainingTimeComparator(true));
-
         final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
+        final List<TrainedSkillInfoSurrogate> list = new ArrayList<TrainedSkillInfoSurrogate>();
+
+        for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
+            list.add(new TrainedSkillInfoSurrogate(skill));
+        }
+
+        if (config.sortOrder != null) {
+            Collections.sort(list, new ListableComparator(config.sortOrder, parser));
+        }
 
         String lastGroup = null;
         boolean first = true;
         
-        for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills()) {
-            final Listable wrapper = new TrainedSkillInfoSurrogate(skill);
-
+        for (TrainedSkillInfoSurrogate skill : list) {
             if (config.group != null) {
-                final String thisGroup = config.group.getValue(wrapper, parser);
+                final String thisGroup = config.group.getValue(skill, parser);
 
                 if (lastGroup == null || !thisGroup.equals(lastGroup)) {
                     first = true;
@@ -126,7 +139,7 @@ public class SkillPage extends Page implements ActionListener {
                 add(new JSeparator(), "growx, pushx");
             }
 
-            add(new ListablePanel(wrapper, parser, config),
+            add(new ListablePanel(skill, parser, config),
                     "growx, pushx");
         }
     }

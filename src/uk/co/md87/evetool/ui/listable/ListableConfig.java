@@ -29,7 +29,7 @@ package uk.co.md87.evetool.ui.listable;
 public class ListableConfig {
 
     public ConfigElement topLeft, topRight, bottomLeft, bottomRight;
-    public String[] sortOrder;
+    public ConfigElement[] sortOrder;
     public ConfigElement group;
 
     public static interface ConfigElement {
