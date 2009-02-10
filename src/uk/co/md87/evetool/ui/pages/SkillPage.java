@@ -64,7 +64,7 @@ public class SkillPage extends Page implements ActionListener {
     private final MainWindow window;
     private final ApiFactory factory;
 
-    private final ListableConfig config;
+    private ListableConfig config;
 
     public SkillPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
@@ -103,7 +103,12 @@ public class SkillPage extends Page implements ActionListener {
         final FilterButton button = new FilterButton();
         button.addActionListener(this);
         context.add(button, "growy, al right");
+        
+        updatePage();
+    }
 
+
+    protected void updatePage() {
         removeAll();
 
         final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
@@ -140,12 +145,20 @@ public class SkillPage extends Page implements ActionListener {
             add(new ListablePanel(skill, parser, config),
                     "growx, pushx");
         }
+
+        revalidate();
+    }
+
+    public void setConfig(final ListableConfig config) {
+        this.config = config;
+        
+        updatePage();
     }
 
     /** {@inheritDoc} */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        new ListableConfigDialog(window, config, new TrainedSkillInfoSurrogate(
+        new ListableConfigDialog(window, this, config, new TrainedSkillInfoSurrogate(
                 character.getSheet().getResult().getSkills().get(0))).setVisible(true);
     }
 

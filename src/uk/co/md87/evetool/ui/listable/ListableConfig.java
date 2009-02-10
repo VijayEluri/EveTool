@@ -22,11 +22,14 @@
 
 package uk.co.md87.evetool.ui.listable;
 
+import java.util.Arrays;
+
 /**
  *
+ * TODO: Document ListableConfig
  * @author chris
  */
-public class ListableConfig {
+public class ListableConfig implements Cloneable {
 
     public ConfigElement topLeft, topRight, bottomLeft, bottomRight;
     public ConfigElement[] sortOrder;
@@ -93,6 +96,21 @@ public class ListableConfig {
         public ConfigElement[] getElements() {
             return elements;
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ListableConfig clone() {
+        final ListableConfig clone = new ListableConfig();
+
+        clone.bottomLeft = bottomLeft;
+        clone.bottomRight = bottomRight;
+        clone.topLeft = topLeft;
+        clone.topRight = topRight;
+        clone.group = group;
+        clone.sortOrder = Arrays.copyOf(sortOrder, sortOrder.length);
+
+        return clone;
     }
 
 }

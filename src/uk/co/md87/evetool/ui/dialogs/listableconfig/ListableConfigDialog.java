@@ -52,6 +52,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
@@ -60,13 +61,15 @@ import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableConfig.LiteralConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableParser;
+import uk.co.md87.evetool.ui.pages.SkillPage;
 
 /**
  *
  * TODO: Document ListableConfigDialog
  * @author chris
  */
-public class ListableConfigDialog extends JDialog implements ItemListener, KeyListener {
+public class ListableConfigDialog extends JDialog implements ActionListener,
+        ItemListener, KeyListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -83,16 +86,21 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
     private final Map<String, List<JComponent>> components
             = new HashMap<String, List<JComponent>>();
 
+    private volatile boolean complete = false;
+
     private final JPanel configPanel, previewPanel;
     private final ListablePanel panel;
 
-    public ListableConfigDialog(final Window owner, final ListableConfig config,
-            final Listable sample) {
-        super(owner, "Display Configuration", ModalityType.APPLICATION_MODAL);
+    private final SkillPage page;
+
+    public ListableConfigDialog(final Window window, final SkillPage page,
+            final ListableConfig config, final Listable sample) {
+        super(window, "Display Configuration", ModalityType.APPLICATION_MODAL);
 
         setLayout(new MigLayout("wrap 1, fill", "[fill]", "[|fill|fill]"));
 
-        this.config = config;
+        this.page = page;
+        this.config = config.clone();
         this.sample = sample;
         this.parser = new ListableParser(sample.getClass());
         
@@ -101,22 +109,30 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         this.configPanel = new JPanel(new MigLayout("fill", "[fill]"));
         this.previewPanel = new JPanel(new MigLayout("fill", "[fill]", "[fill]"));
 
-        configPanel.setBorder(BorderFactory.createTitledBorder("Information"));
+        configPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
         previewPanel.setBorder(BorderFactory.createTitledBorder("Preview"));
 
         this.panel = new ListablePanel(sample, parser, config);
         
         previewPanel.add(panel);
 
+        final JButton cancelButton = new JButton("Cancel");
+        final JButton okButton = new JButton("OK");
+
+        cancelButton.addActionListener(this);
+        okButton.addActionListener(this);
+
         add(configPanel);
         add(previewPanel);
+        add(cancelButton, "split");
+        add(okButton, "split");
 
         initConfigPanel();
         layoutConfigPanel();
 
         pack();
 
-        setLocationRelativeTo(owner);
+        setLocationRelativeTo(window);
         setResizable(false);
     }
 
@@ -130,6 +146,8 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         for (int i = 0; i < config.sortOrder.length; i++) {
             components.put("+sort_" + i, getComponents(config.sortOrder[i]));
         }
+
+        complete = true;
     }
 
     protected void layoutConfigPanel() {
@@ -208,12 +226,10 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
     }
 
     protected void rebuildConfig() {
-        for (String loc : new String[]{"tl", "tr", "bl", "br"}) {
+        config.sortOrder = new ConfigElement[components.size() - 5];
+        
+        for (String loc : components.keySet()) {
             final List<ConfigElement> elements = new ArrayList<ConfigElement>();
-
-            if (!components.containsKey(loc)) {
-                continue;
-            }
 
             for (JComponent component : components.get(loc)) {
                 if (component instanceof JTextField) {
@@ -235,6 +251,11 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
                 config.bottomRight = res;
             } else if (loc.equals("bl")) {
                 config.bottomLeft = res;
+            } else if (loc.equals("+group")) {
+                config.group = res;
+            } else if (loc.startsWith("+sort_")) {
+                final int line = Integer.parseInt(loc.substring(6));
+                config.sortOrder[line] = res;
             }
         }
     }
@@ -242,8 +263,10 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
     /** {@inheritDoc} */
     @Override
     public void itemStateChanged(final ItemEvent e) {
-        rebuildConfig();
-        panel.listableUpdated(sample);
+        if (complete) {
+            rebuildConfig();
+            panel.listableUpdated(sample);
+        }
     }
 
     /** {@inheritDoc} */
@@ -263,6 +286,16 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
     public void keyReleased(final KeyEvent e) {
         rebuildConfig();
         panel.listableUpdated(sample);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        if (((JButton) e.getSource()).getText().equals("OK")) {
+            page.setConfig(config);
+        }
+
+        dispose();
     }
 
     private class ButtonActionListener implements ActionListener {
