@@ -158,7 +158,8 @@ public class SkillPage extends ListablePage implements ActionListener {
     @Override
     public void actionPerformed(final ActionEvent e) {
         new ListableConfigDialog(window, this, config, new TrainedSkillInfoSurrogate(
-                character.getSheet().getResult().getSkills().get(0))).setVisible(true);
+                character.getSheet().getResult().getSkills().values().iterator().next()))
+                .setVisible(true);
     }
 
 }
