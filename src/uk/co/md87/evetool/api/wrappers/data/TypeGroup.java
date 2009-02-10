@@ -22,34 +22,39 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
-import java.util.List;
+import java.util.ArrayList;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
- * TODO: Document BasicShipInfo
+ * TODO: Document TypeGroup
  * @author chris
  */
-public class BasicShipInfo extends BasicType {
+public class TypeGroup extends ArrayList<BasicType> {
 
-    private final int graphicID;
-    private final List<SkillRequirement> requirements;
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
 
-    public BasicShipInfo(final int id, final String name, final TypeGroup group,
-            final int graphicID, final List<SkillRequirement> requirements) {
-        super(id, name, group);
+    private final int id;
+    private final String name;
 
-        this.graphicID = graphicID;
-        this.requirements = requirements;
+    public TypeGroup(final int id, final String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getGraphicID() {
-        return graphicID;
+    @Retrievable
+    public int getId() {
+        return id;
     }
 
-
-    public List<SkillRequirement> getRequirements() {
-        return requirements;
+    @Retrievable
+    public String getName() {
+        return name;
     }
-
 
 }

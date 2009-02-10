@@ -58,7 +58,7 @@ public class Main {
         initTables();
 
         final AccountManager manager = new AccountManager(ApiFactory.getConnection());
-        
+
         new MainWindow(manager, new ApiFactory()).setVisible(true);
     }
 

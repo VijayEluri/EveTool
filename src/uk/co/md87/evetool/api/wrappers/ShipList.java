@@ -22,16 +22,79 @@
 
 package uk.co.md87.evetool.api.wrappers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
+import uk.co.md87.evetool.api.wrappers.data.TypeGroup;
 
 /**
  *
+ * TODO: Document ShipList
  * @author chris
  */
 public class ShipList {
 
-    public ShipList(final ApiElement resultElement) {
+    private final Map<Integer, TypeGroup> groups = new HashMap<Integer, TypeGroup>();
+    private final Map<Integer, BasicShipInfo> ships = new HashMap<Integer, BasicShipInfo>();
 
+    public ShipList(final ApiElement resultElement) {
+        for (ApiElement grouprow : resultElement.getRowset("groups")) {
+            final int groupID = grouprow.getNumericAttribute("groupID");
+            final String groupName = grouprow.getStringAttribute("groupName");
+
+            final TypeGroup group = new TypeGroup(groupID, groupName);
+            groups.put(groupID, group);
+
+            for (ApiElement ship : grouprow.getRowset("types")) {
+                final int typeID = ship.getNumericAttribute("typeID");
+                final String typeName = ship.getStringAttribute("typeName");
+                final int graphicID = ship.getNumericAttribute("graphicID");
+                final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
+                
+                final int[][] values = new int[ship.getRowset("attributes").size()][2];
+                for (ApiElement req : ship.getRowset("attributes")) {
+                    String atName = req.getStringAttribute("attributeName").substring(13);
+
+                    int index = 0;
+
+                    if (atName.endsWith("Level")) {
+                        index = 1;
+                        
+                        atName = atName.substring(0, atName.length() - 5);
+                    }
+
+                    int number = Integer.parseInt(atName);
+                    values[number][index] = req.getNumericAttribute("value");
+                }
+
+                for (int[] value : values) {
+                    reqs.add(new SkillRequirement(value[0], value[1]));
+                }
+
+                final BasicShipInfo info = new BasicShipInfo(typeID, typeName,
+                        group, graphicID, reqs);
+                group.add(info);
+                ships.put(typeID, info);
+            }
+        }
+    }
+
+    public Map<Integer, TypeGroup> getGroups() {
+        return groups;
+    }
+
+    public Map<Integer, BasicShipInfo> getShips() {
+        return ships;
+    }
+
+    @Override
+    public String toString() {
+        return groups.toString();
     }
 
 }

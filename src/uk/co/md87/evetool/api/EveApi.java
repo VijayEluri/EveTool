@@ -38,6 +38,7 @@ import uk.co.md87.evetool.api.wrappers.CertificateTree;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.MarketOrders;
+import uk.co.md87.evetool.api.wrappers.ShipList;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
 
@@ -177,6 +178,17 @@ public class EveApi implements Cloneable {
      */
     public ApiResponse<CertificateTree> getCertificateTree() {
         return getResponse("/eve/CertificateTree.xml.aspx", CertificateTree.class, false, false);
+    }
+
+    /**
+     * Retrieves a list of ships in EVE.
+     * Does not require an API key.
+     *
+     * @return A list of ships in EVE
+     */
+    public ApiResponse<ShipList> getShipList() {
+        return getResponse("http://evetool.md87.co.uk/api/types.php?category=6"
+                + "&published&attributes=requiredSkill%&groups", ShipList.class, false, false);
     }
 
     /**

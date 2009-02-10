@@ -35,9 +35,17 @@ public class BasicType {
 
     private final String name;
 
-    public BasicType(final int id, final String name) {
+    private final TypeGroup group;
+
+    public BasicType(final int id, final String name, final TypeGroup group) {
         this.id = id;
         this.name = name;
+        this.group = group;
+    }
+
+    @Retrievable(deferred=true,name="group")
+    public TypeGroup getGroup() {
+        return group;
     }
 
     @Retrievable
