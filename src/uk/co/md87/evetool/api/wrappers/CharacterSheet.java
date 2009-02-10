@@ -34,6 +34,7 @@ import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCloneInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
 import uk.co.md87.evetool.api.wrappers.data.Implant;
+import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 
 /**
@@ -51,7 +52,7 @@ public class CharacterSheet {
     private final List<Implant> implants;
     private final Map<Attribute, Integer> baseAttributes;
     private final Map<Attribute, Double> attributes;
-    private final List<TrainedSkillInfo> skills;
+    private final Map<Integer, TrainedSkillInfo> skills;
     private final List<Integer> certificates;
 
     private final BasicCharInfo charInfo;
@@ -73,7 +74,7 @@ public class CharacterSheet {
         this.baseAttributes = new HashMap<Attribute, Integer>();
         parseAttributes(resultElement.getChild("attributes"));
 
-        this.skills = new ArrayList<TrainedSkillInfo>();
+        this.skills = new HashMap<Integer, TrainedSkillInfo>();
         parseSkills(resultElement.getRowset("skills"));
 
         this.certificates = new ArrayList<Integer>();
@@ -93,7 +94,7 @@ public class CharacterSheet {
     public long getSkillPoints() {
         long res = 0;
 
-        for (TrainedSkillInfo skill : getSkills()) {
+        for (TrainedSkillInfo skill : getSkills().values()) {
             res += skill.getSP();
         }
 
@@ -101,7 +102,7 @@ public class CharacterSheet {
     }
 
     public void associateSkills(final SkillList skilltree) {
-        for (TrainedSkillInfo skill : skills) {
+        for (TrainedSkillInfo skill : skills.values()) {
             skill.setSkill(skilltree.getSkillById(skill.getId()));
         }
 
@@ -139,7 +140,7 @@ public class CharacterSheet {
             final int id = row.getNumericAttribute("typeID");
             final int level = row.getNumericAttribute("level");
             final int sp = row.getNumericAttribute("skillpoints");
-            skills.add(new TrainedSkillInfo(this, id, level, sp));
+            skills.put(id, new TrainedSkillInfo(this, id, level, sp));
         }
     }
 
@@ -169,7 +170,7 @@ public class CharacterSheet {
     protected int getSkillBonus(final String name) {
         int count = 0;
 
-        for (TrainedSkillInfo skill : skills) {
+        for (TrainedSkillInfo skill : skills.values()) {
             if (skill.getSkillInfo() != null) {
                 for (Map.Entry<String, String> bonus : skill.getSkillInfo()
                         .getBonuses().entrySet()) {
@@ -239,8 +240,19 @@ public class CharacterSheet {
         return race;
     }
 
-    public List<TrainedSkillInfo> getSkills() {
+    public Map<Integer, TrainedSkillInfo> getSkills() {
         return skills;
+    }
+
+    public boolean hasSkills(final List<SkillRequirement> reqs) {
+        for (SkillRequirement req : reqs) {
+            if (!skills.containsKey(req.getSkillId()) ||
+                    skills.get(req.getSkillId()).getLevel() < req.getRequiredLevel()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** {@inheritDoc} */

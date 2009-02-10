@@ -44,6 +44,7 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
+import uk.co.md87.evetool.ui.pages.ShipsPage;
 import uk.co.md87.evetool.ui.pages.SkillPage;
 
 /**
@@ -80,6 +81,7 @@ public class MainWindow extends JFrame {
         pages = new TreeMap<String, ContentPanel.Page>();
         pages.put("Overview", new OverviewPage(this, manager, factory));
         pages.put("Skills", new SkillPage(this, manager, factory));
+        pages.put("Ships", new ShipsPage(this, manager, factory));
 
         this.menuPanel = new MenuPanel(this, pages);
         this.contentPanel = new ContentPanel(this, manager, factory, pages);

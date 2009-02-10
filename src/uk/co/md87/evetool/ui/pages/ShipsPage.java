@@ -34,12 +34,14 @@ import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.HeaderPanel;
 import uk.co.md87.evetool.ui.components.ListablePanel;
+import uk.co.md87.evetool.ui.data.BasicShipInfoSurrogate;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
 import uk.co.md87.evetool.ui.listable.ListableComparator;
@@ -48,10 +50,10 @@ import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
- * TODO: Document SkillPage
+ * TODO: Document ShipsPage
  * @author chris
  */
-public class SkillPage extends ListablePage implements ActionListener {
+public class ShipsPage extends ListablePage implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -65,7 +67,7 @@ public class SkillPage extends ListablePage implements ActionListener {
 
     private ListableConfig config;
 
-    public SkillPage(final MainWindow window, final AccountManager manager,
+    public ShipsPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
         this.window = window;
         this.factory = factory;
@@ -74,18 +76,14 @@ public class SkillPage extends ListablePage implements ActionListener {
 
         config = new ListableConfig();
         config.topLeft = new ListableConfig.BasicConfigElement("name");
-        config.topRight = new ListableConfig.CompoundConfigElement(
-                new ListableConfig.BasicConfigElement("trained skillpoints"),
-                new ListableConfig.LiteralConfigElement("/"),
-                new ListableConfig.BasicConfigElement("max skillpoints"));
-        config.bottomLeft = new ListableConfig.BasicConfigElement("group name");
-        config.bottomRight = new ListableConfig.BasicConfigElement("time to next level");
+        config.topRight = new ListableConfig.CompoundConfigElement();
+        config.bottomLeft = new ListableConfig.BasicConfigElement("can fly");
+        config.bottomRight = new ListableConfig.CompoundConfigElement();
         config.group = new ListableConfig.BasicConfigElement("group name");
 
         config.sortOrder = new ListableConfig.ConfigElement[]{
             new ListableConfig.BasicConfigElement("group name"),
-            new ListableConfig.BasicConfigElement("current level"),
-            new ListableConfig.BasicConfigElement("trained skillpoints"),
+            new ListableConfig.BasicConfigElement("name"),
         };
     }
 
@@ -110,11 +108,12 @@ public class SkillPage extends ListablePage implements ActionListener {
     protected void updatePage() {
         removeAll();
 
-        final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
-        final List<TrainedSkillInfoSurrogate> list = new ArrayList<TrainedSkillInfoSurrogate>();
+        final ListableParser parser = new ListableParser(BasicShipInfoSurrogate.class);
+        final List<BasicShipInfoSurrogate> list = new ArrayList<BasicShipInfoSurrogate>();
 
-        for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills().values()) {
-            list.add(new TrainedSkillInfoSurrogate(skill));
+        for (BasicShipInfo ship : factory.getApi().getShipList().getResult()
+                .getShips().values()) {
+            list.add(new BasicShipInfoSurrogate(ship, character.getSheet().getResult()));
         }
 
         if (config.sortOrder != null) {
@@ -124,9 +123,9 @@ public class SkillPage extends ListablePage implements ActionListener {
         String lastGroup = null;
         boolean first = true;
         
-        for (TrainedSkillInfoSurrogate skill : list) {
+        for (BasicShipInfoSurrogate ship : list) {
             if (config.group != null) {
-                final String thisGroup = config.group.getValue(skill, parser);
+                final String thisGroup = config.group.getValue(ship, parser);
 
                 if (lastGroup == null || !thisGroup.equals(lastGroup)) {
                     first = true;
@@ -141,7 +140,7 @@ public class SkillPage extends ListablePage implements ActionListener {
                 add(new JSeparator(), "growx, pushx");
             }
 
-            add(new ListablePanel(skill, parser, config),
+            add(new ListablePanel(ship, parser, config),
                     "growx, pushx");
         }
 
@@ -157,8 +156,10 @@ public class SkillPage extends ListablePage implements ActionListener {
     /** {@inheritDoc} */
     @Override
     public void actionPerformed(final ActionEvent e) {
-        new ListableConfigDialog(window, this, config, new TrainedSkillInfoSurrogate(
-                character.getSheet().getResult().getSkills().get(0))).setVisible(true);
+        new ListableConfigDialog(window, this, config,
+                new BasicShipInfoSurrogate(factory.getApi().getShipList()
+                .getResult().getShips().values().iterator().next(),
+                character.getSheet().getResult())).setVisible(true);
     }
 
 }

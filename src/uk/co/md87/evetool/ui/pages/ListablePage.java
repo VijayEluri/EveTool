@@ -20,55 +20,25 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api.wrappers.data;
+package uk.co.md87.evetool.ui.pages;
+
+import uk.co.md87.evetool.ui.ContentPanel.Page;
+import uk.co.md87.evetool.ui.listable.ListableConfig;
 
 /**
- * Represents a skill that is required to be trained to a certain level for
- * some purpose.
  *
+ * TODO: Document ListablePage
  * @author chris
  */
-public class SkillRequirement {
-
-    /** The ID of the required skill. */
-    private final int skillId;
-
-    /** The required level of the skill. */
-    private final int requiredLevel;
+public class ListablePage extends Page {
 
     /**
-     * Creates a new skill requirement with the specified details.
-     *
-     * @param skillId The ID of the required skill
-     * @param requiredLevel The required level of that skill
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
      */
-    public SkillRequirement(final int skillId, final int requiredLevel) {
-        this.skillId = skillId;
-        this.requiredLevel = requiredLevel;
-    }
+    private static final long serialVersionUID = 10;
 
-    /**
-     * Retrieves the required level of the skill.
-     *
-     * @return The skill's required level
-     */
-    public int getRequiredLevel() {
-        return requiredLevel;
-    }
-
-    /**
-     * Retrieves the ID of the required skill.
-     *
-     * @return The skill's ID
-     */
-    public int getSkillId() {
-        return skillId;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return "[" + skillId + "@" + requiredLevel + "]";
-    }
+    public void setConfig(final ListableConfig config) {}
 
 }

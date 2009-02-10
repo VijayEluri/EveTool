@@ -56,7 +56,7 @@ public class ShipList {
                 final int graphicID = ship.getNumericAttribute("graphicID");
                 final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
                 
-                final int[][] values = new int[ship.getRowset("attributes").size()][2];
+                final int[][] values = new int[ship.getRowset("attributes").size() / 2][2];
                 for (ApiElement req : ship.getRowset("attributes")) {
                     String atName = req.getStringAttribute("attributeName").substring(13);
 
@@ -68,7 +68,7 @@ public class ShipList {
                         atName = atName.substring(0, atName.length() - 5);
                     }
 
-                    int number = Integer.parseInt(atName);
+                    int number = Integer.parseInt(atName) - 1;
                     values[number][index] = req.getNumericAttribute("value");
                 }
 

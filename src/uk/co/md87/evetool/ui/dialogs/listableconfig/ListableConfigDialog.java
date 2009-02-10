@@ -65,7 +65,7 @@ import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableConfig.LiteralConfigElement;
 import uk.co.md87.evetool.ui.listable.ListableParser;
-import uk.co.md87.evetool.ui.pages.SkillPage;
+import uk.co.md87.evetool.ui.pages.ListablePage;
 
 /**
  *
@@ -95,7 +95,7 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
     private final JPanel configPanel, previewPanel;
     private final ListablePanel panel;
 
-    private final SkillPage page;
+    private final ListablePage page;
 
     private static ImageIcon editInactiveIcon, editActiveIcon;
 
@@ -111,7 +111,7 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         }
     }
 
-    public ListableConfigDialog(final Window window, final SkillPage page,
+    public ListableConfigDialog(final Window window, final ListablePage page,
             final ListableConfig config, final Listable sample) {
         super(window, "Display Configuration", ModalityType.APPLICATION_MODAL);
 
