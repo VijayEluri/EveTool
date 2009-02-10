@@ -32,6 +32,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,55 +125,59 @@ public class ListableConfigDialog extends JDialog implements ItemListener, KeyLi
         components.put("tr", getComponents(config.topRight));
         components.put("bl", getComponents(config.bottomLeft));
         components.put("br", getComponents(config.bottomRight));
-        components.put("group", getComponents(config.group));
+        components.put("+group", getComponents(config.group));
         
         for (int i = 0; i < config.sortOrder.length; i++) {
-            components.put("sort_" + i, getComponents(config.sortOrder[i]));
+            components.put("+sort_" + i, getComponents(config.sortOrder[i]));
         }
     }
 
     protected void layoutConfigPanel() {
         configPanel.removeAll();
         
-        JButton addButton = new JButton("+");
-        addButton.addActionListener(new ButtonActionListener("tl"));
-        addButton.setMaximumSize(new Dimension(35, 100));
-        configPanel.add(new JLabel("Group by:", JLabel.RIGHT));
-        addComponents("group");
-        configPanel.add(addButton, "span, al right");
-        
-        configPanel.add(new JSeparator(), "gaptop 10, gapbottom 10, newline, span, growx");
+        JButton addButton;
 
-        addButton = new JButton("+");
-        addButton.addActionListener(new ButtonActionListener("tl"));
-        addButton.setMaximumSize(new Dimension(35, 100));
-        configPanel.add(new JLabel("Top left:", JLabel.RIGHT));
-        addComponents("tl");
-        configPanel.add(addButton, "span, al right");
+        final List<String> keyset = new ArrayList<String>(components.keySet());
+        Collections.sort(keyset);
 
-        addButton = new JButton("+");
-        addButton.addActionListener(new ButtonActionListener("bl"));
-        addButton.setMaximumSize(new Dimension(35, 100));
-        configPanel.add(new JLabel("Bottom left:", JLabel.RIGHT), "newline");
-        addComponents("bl");
-        configPanel.add(addButton, "span, al right");
+        for (int i = 0; i < keyset.size(); i++) {
+            final String key = keyset.get(i);
+            
+            addButton = new JButton("+");
+            addButton.addActionListener(new ButtonActionListener(key));
+            addButton.setMaximumSize(new Dimension(35, 100));
+            configPanel.add(new JLabel(getText(key), JLabel.RIGHT));
+            addComponents(key);
+            configPanel.add(addButton, "span, al right");
 
-        addButton = new JButton("+");
-        addButton.addActionListener(new ButtonActionListener("tr"));
-        addButton.setMaximumSize(new Dimension(35, 100));
-        configPanel.add(new JLabel("Top right:", JLabel.RIGHT), "newline");
-        addComponents("tr");
-        configPanel.add(addButton, "span, al right");
-
-        addButton = new JButton("+");
-        addButton.addActionListener(new ButtonActionListener("br"));
-        addButton.setMaximumSize(new Dimension(35, 100));
-        configPanel.add(new JLabel("Bottom right:", JLabel.RIGHT), "newline");
-        addComponents("br");
-        configPanel.add(addButton, "span, al right");
+            if (key.length() > 2 && i < keyset.size() - 1
+                    && !keyset.get(i + 1).startsWith(key.substring(0, 4))) {
+                configPanel.add(new JSeparator(),
+                        "gaptop 10, gapbottom 10, newline, span, growx");
+            }
+        }
         
         configPanel.revalidate();
         pack();
+    }
+
+    protected String getText(final String key) {
+        if (key.equals("+group")) {
+            return "Group by:";
+        }
+
+        if (key.startsWith("+sort")) {
+            return key.equals("+sort_0") ? "Sort by:" : "... then:";
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        
+        builder.append(key.startsWith("t") ? "Top" : "Bottom");
+        builder.append(' ');
+        builder.append(key.endsWith("r") ? "right" : "left");
+        builder.append(':');
+
+        return builder.toString();
     }
 
     protected void addComponents(final String location) {
