@@ -22,7 +22,16 @@
 
 package uk.co.md87.evetool.ui.pages;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
+
+import uk.co.md87.evetool.AccountManager;
+import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
+import uk.co.md87.evetool.ui.ContextPanel;
+import uk.co.md87.evetool.ui.MainWindow;
+import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
 
 /**
@@ -30,7 +39,7 @@ import uk.co.md87.evetool.ui.listable.ListableConfig;
  * TODO: Document ListablePage
  * @author chris
  */
-public class ListablePage extends Page {
+public class ListablePage extends Page implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -39,6 +48,35 @@ public class ListablePage extends Page {
      */
     private static final long serialVersionUID = 10;
 
+    protected final MainWindow window;
+    protected final ApiFactory factory;
+    protected final AccountManager manager;
+
+    protected ListableConfig config;
+
+    public ListablePage(final MainWindow window, final AccountManager manager,
+            final ApiFactory factory) {
+        this.window = window;
+        this.factory = factory;
+        this.manager = manager;
+
+        setLayout(new MigLayout("fillx, wrap 1"));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void activated(final ContextPanel context) {
+        final FilterButton button = new FilterButton();
+        button.addActionListener(this);
+        context.add(button, "growy, al right");
+
+        updatePage();
+    }
+
     public void setConfig(final ListableConfig config) {}
+
+    protected void updatePage() {}
+
+    public void actionPerformed(final ActionEvent e) {}
 
 }

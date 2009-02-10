@@ -26,18 +26,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.List;
-import javax.swing.JSeparator;
 
-import net.miginfocom.swing.MigLayout;
+import javax.swing.JSeparator;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
-import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
-import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.HeaderPanel;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
@@ -60,17 +56,9 @@ public class SkillPage extends ListablePage implements ActionListener {
      */
     private static final long serialVersionUID = 10;
 
-    private final MainWindow window;
-    private final ApiFactory factory;
-
-    private ListableConfig config;
-
     public SkillPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
-        this.window = window;
-        this.factory = factory;
-
-        setLayout(new MigLayout("fillx, wrap 1"));
+        super(window, manager, factory);
 
         config = new ListableConfig();
         config.topLeft = new ListableConfig.BasicConfigElement("name");
@@ -95,17 +83,6 @@ public class SkillPage extends ListablePage implements ActionListener {
         return character != null && character.getSheet() != null
                 && character.getSheet().wasSuccessful();
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public void activated(final ContextPanel context) {
-        final FilterButton button = new FilterButton();
-        button.addActionListener(this);
-        context.add(button, "growy, al right");
-        
-        updatePage();
-    }
-
 
     protected void updatePage() {
         removeAll();

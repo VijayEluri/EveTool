@@ -30,19 +30,13 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.JSeparator;
 
-import net.miginfocom.swing.MigLayout;
-
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
-import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
-import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
-import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.HeaderPanel;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.BasicShipInfoSurrogate;
-import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
 import uk.co.md87.evetool.ui.listable.ListableComparator;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
@@ -62,17 +56,9 @@ public class ShipsPage extends ListablePage implements ActionListener {
      */
     private static final long serialVersionUID = 10;
 
-    private final MainWindow window;
-    private final ApiFactory factory;
-
-    private ListableConfig config;
-
     public ShipsPage(final MainWindow window, final AccountManager manager,
             final ApiFactory factory) {
-        this.window = window;
-        this.factory = factory;
-
-        setLayout(new MigLayout("fillx, wrap 1"));
+        super(window, manager, factory);
 
         config = new ListableConfig();
         config.topLeft = new ListableConfig.BasicConfigElement("name");
@@ -93,17 +79,6 @@ public class ShipsPage extends ListablePage implements ActionListener {
         return character != null && character.getSheet() != null
                 && character.getSheet().wasSuccessful();
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public void activated(final ContextPanel context) {
-        final FilterButton button = new FilterButton();
-        button.addActionListener(this);
-        context.add(button, "growy, al right");
-        
-        updatePage();
-    }
-
 
     protected void updatePage() {
         removeAll();
