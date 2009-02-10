@@ -52,7 +52,6 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.listable.Listable;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
@@ -112,7 +111,7 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         configPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
         previewPanel.setBorder(BorderFactory.createTitledBorder("Preview"));
 
-        this.panel = new ListablePanel(sample, parser, config);
+        this.panel = new ListablePanel(sample, parser, this.config);
         
         previewPanel.add(panel);
 
