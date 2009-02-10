@@ -31,6 +31,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +39,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -91,6 +96,20 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
     private final ListablePanel panel;
 
     private final SkillPage page;
+
+    private static ImageIcon editInactiveIcon, editActiveIcon;
+
+    static {
+        try {
+            editInactiveIcon = new ImageIcon(ImageIO.read(ListableConfigDialog
+                    .class.getResource("/uk/co/md87/evetool/ui/res/edit-inactive.png")));
+            editActiveIcon = new ImageIcon(ImageIO.read(ListableConfigDialog
+                    .class.getResource("/uk/co/md87/evetool/ui/res/edit.png")));
+        } catch (IOException ex) {
+            Logger.getLogger(ListableConfigDialog.class.getName())
+                    .log(Level.WARNING, "Unable to load images", ex);
+        }
+    }
 
     public ListableConfigDialog(final Window window, final SkillPage page,
             final ListableConfig config, final Listable sample) {
@@ -152,20 +171,25 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
     protected void layoutConfigPanel() {
         configPanel.removeAll();
         
-        JButton addButton;
+        JButton editButton;
 
         final List<String> keyset = new ArrayList<String>(components.keySet());
         Collections.sort(keyset);
 
         for (int i = 0; i < keyset.size(); i++) {
             final String key = keyset.get(i);
+
+            editButton = new JButton(editInactiveIcon);
+            editButton.setRolloverIcon(editActiveIcon);
+            editButton.setBorder(BorderFactory.createEmptyBorder());
+            editButton.setOpaque(false);
+            editButton.setContentAreaFilled(false);
+            editButton.setMaximumSize(new Dimension(20, 20));
             
-            addButton = new JButton("+");
-            addButton.addActionListener(new ButtonActionListener(key));
-            addButton.setMaximumSize(new Dimension(35, 100));
+            editButton.addActionListener(new ButtonActionListener(key));
             configPanel.add(new JLabel(getText(key), JLabel.RIGHT));
             addComponents(key);
-            configPanel.add(addButton, "span, al right");
+            configPanel.add(editButton, "span, al right, gapleft 10");
 
             if (key.length() > 2 && i < keyset.size() - 1
                     && !keyset.get(i + 1).startsWith(key.substring(0, 4))) {
@@ -305,6 +329,8 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
             this.location = location;
         }
 
+        /** {@inheritDoc} */
+        @Override
         public void actionPerformed(final ActionEvent e) {
             final JPopupMenu menu = new JPopupMenu();
 
@@ -316,9 +342,44 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
             mi.addActionListener(new MenuActionListener(location, false));
             menu.add(mi);
 
+            if (!components.get(location).isEmpty()) {
+                menu.add(new JSeparator());
+            }
+
+            for (JComponent component : components.get(location)) {
+                final String text = component instanceof JTextField ?
+                    ((JTextField) component).getText() :
+                    String.valueOf(((JComboBox) component).getSelectedItem());
+                mi = new JMenuItem("Remove '" + text + "'");
+                mi.addActionListener(new MenuRemoveActionListener(location, component));
+                menu.add(mi);
+            }
+
             menu.show((JComponent) e.getSource(), 0,
                     ((JComponent) e.getSource()).getHeight());
         }
+    }
+
+    private class MenuRemoveActionListener implements ActionListener {
+
+        private final String location;
+
+        private final JComponent component;
+
+        public MenuRemoveActionListener(String location, JComponent component) {
+            this.location = location;
+            this.component = component;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            components.get(location).remove(component);
+            layoutConfigPanel();
+            rebuildConfig();
+            panel.listableUpdated(sample);
+        }
+
     }
 
     private class MenuActionListener implements ActionListener {
@@ -332,6 +393,8 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
             this.isString = isString;
         }
 
+        /** {@inheritDoc} */
+        @Override
         public void actionPerformed(final ActionEvent e) {
             if (isString) {
                 final JTextField tf = new JTextField();
