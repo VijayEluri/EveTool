@@ -24,6 +24,11 @@ package uk.co.md87.evetool.ui.pages;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.JSeparator;
+
 import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
@@ -32,14 +37,21 @@ import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.components.FilterButton;
+import uk.co.md87.evetool.ui.components.HeaderPanel;
+import uk.co.md87.evetool.ui.components.ListablePanel;
+import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
+import uk.co.md87.evetool.ui.listable.Listable;
+import uk.co.md87.evetool.ui.listable.ListableComparator;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
  * TODO: Document ListablePage
  * @author chris
  */
-public class ListablePage extends Page implements ActionListener {
+public abstract class ListablePage<T extends Listable> extends Page implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -73,10 +85,56 @@ public class ListablePage extends Page implements ActionListener {
         updatePage();
     }
 
-    public void setConfig(final ListableConfig config) {}
+    public void setConfig(final ListableConfig config) {
+        this.config = config;
 
-    protected void updatePage() {}
+        updatePage();
+    }
 
-    public void actionPerformed(final ActionEvent e) {}
+    protected void updatePage() {
+        removeAll();
+
+        final List<T> list = getListables();
+        final ListableParser parser = new ListableParser(list.get(0).getClass());
+
+        if (config.sortOrder != null) {
+            Collections.sort(list, new ListableComparator(config.sortOrder, parser));
+        }
+
+        String lastGroup = null;
+        boolean first = true;
+
+        for (T listable : list) {
+            if (config.group != null &&
+                    (!(config.group instanceof CompoundConfigElement)
+                    || ((CompoundConfigElement) config.group).getElements().length > 0)) {
+                final String thisGroup = config.group.getValue(listable, parser);
+
+                if (lastGroup == null || !thisGroup.equals(lastGroup)) {
+                    first = true;
+                    lastGroup = thisGroup;
+                    add(new HeaderPanel(lastGroup), "growx, pushx");
+                }
+            }
+
+            if (first) {
+                first = false;
+            } else {
+                add(new JSeparator(), "growx, pushx");
+            }
+
+            add(new ListablePanel(listable, parser, config), "growx, pushx");
+        }
+
+        revalidate();
+    }
+
+    protected abstract List<T> getListables();
+
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        new ListableConfigDialog(window, this, config, getListables().get(0)).setVisible(true);
+    }
 
 }

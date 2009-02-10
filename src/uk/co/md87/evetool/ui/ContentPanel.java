@@ -66,7 +66,6 @@ public class ContentPanel extends JPanel {
 
         protected AccountChar character;
 
-        // TODO: Add method for activation
         public boolean isReady() {
             return false;
         }

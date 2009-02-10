@@ -22,32 +22,24 @@
 
 package uk.co.md87.evetool.ui.pages;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import javax.swing.JSeparator;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 import uk.co.md87.evetool.ui.MainWindow;
-import uk.co.md87.evetool.ui.components.HeaderPanel;
-import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
-import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
-import uk.co.md87.evetool.ui.listable.ListableComparator;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
-import uk.co.md87.evetool.ui.listable.ListableParser;
 
 /**
  *
  * TODO: Document SkillPage
  * @author chris
  */
-public class SkillPage extends ListablePage implements ActionListener {
+public class SkillPage extends ListablePage<TrainedSkillInfoSurrogate>
+        implements ActionListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -84,59 +76,16 @@ public class SkillPage extends ListablePage implements ActionListener {
                 && character.getSheet().wasSuccessful();
     }
 
-    protected void updatePage() {
-        removeAll();
-
-        final ListableParser parser = new ListableParser(TrainedSkillInfoSurrogate.class);
+    /** {@inheritDoc} */
+    @Override
+    protected List<TrainedSkillInfoSurrogate> getListables() {
         final List<TrainedSkillInfoSurrogate> list = new ArrayList<TrainedSkillInfoSurrogate>();
 
         for (TrainedSkillInfo skill : character.getSheet().getResult().getSkills().values()) {
             list.add(new TrainedSkillInfoSurrogate(skill));
         }
 
-        if (config.sortOrder != null) {
-            Collections.sort(list, new ListableComparator(config.sortOrder, parser));
-        }
-
-        String lastGroup = null;
-        boolean first = true;
-        
-        for (TrainedSkillInfoSurrogate skill : list) {
-            if (config.group != null) {
-                final String thisGroup = config.group.getValue(skill, parser);
-
-                if (lastGroup == null || !thisGroup.equals(lastGroup)) {
-                    first = true;
-                    lastGroup = thisGroup;
-                    add(new HeaderPanel(lastGroup), "growx, pushx");
-                }
-            }
-
-            if (first) {
-                first = false;
-            } else {
-                add(new JSeparator(), "growx, pushx");
-            }
-
-            add(new ListablePanel(skill, parser, config),
-                    "growx, pushx");
-        }
-
-        revalidate();
-    }
-
-    public void setConfig(final ListableConfig config) {
-        this.config = config;
-        
-        updatePage();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-        new ListableConfigDialog(window, this, config, new TrainedSkillInfoSurrogate(
-                character.getSheet().getResult().getSkills().values().iterator().next()))
-                .setVisible(true);
+        return list;
     }
 
 }
