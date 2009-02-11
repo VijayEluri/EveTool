@@ -33,24 +33,22 @@ import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
  */
 public class ListableComparator implements Comparator<Object> {
 
-    private final ListableConfig.ConfigElement[] order;
+    private final ListableConfig.ConfigElement order;
     private final ListableParser parser;
 
-    public ListableComparator(ConfigElement[] order, ListableParser parser) {
+    public ListableComparator(ConfigElement order, ListableParser parser) {
         this.order = order;
         this.parser = parser;
     }
 
     public int compare(final Object o1, final Object o2) {
-        for (ConfigElement element : order) {
-            final Object op1 = element.getUnformattedValue(o1, parser);
-            final Object op2 = element.getUnformattedValue(o2, parser);
+        final Object op1 = order.getUnformattedValue(o1, parser);
+        final Object op2 = order.getUnformattedValue(o2, parser);
 
-            int res = doCompare(op1, op2);
+        int res = doCompare(op1, op2);
 
-            if (res != 0) {
-                return res;
-            }
+        if (res != 0) {
+            return res;
         }
 
         return 0;

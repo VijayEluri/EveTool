@@ -32,6 +32,9 @@ import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableConfig.BasicConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.LiteralConfigElement;
 
 /**
  *
@@ -53,20 +56,20 @@ public class SkillPage extends ListablePage<TrainedSkillInfoSurrogate>
         super(window, manager, factory);
 
         config = new ListableConfig();
-        config.topLeft = new ListableConfig.BasicConfigElement("name");
-        config.topRight = new ListableConfig.CompoundConfigElement(
-                new ListableConfig.BasicConfigElement("trained skillpoints"),
-                new ListableConfig.LiteralConfigElement("/"),
-                new ListableConfig.BasicConfigElement("max skillpoints"));
-        config.bottomLeft = new ListableConfig.BasicConfigElement("group name");
-        config.bottomRight = new ListableConfig.BasicConfigElement("time to next level");
-        config.group = new ListableConfig.BasicConfigElement("group name");
+        config.topLeft = new BasicConfigElement("name");
+        config.topRight = new CompoundConfigElement(
+                new BasicConfigElement("trained skillpoints"),
+                new LiteralConfigElement("/"),
+                new BasicConfigElement("max skillpoints"));
+        config.bottomLeft = new BasicConfigElement("group name");
+        config.bottomRight = new BasicConfigElement("time to next level");
+        config.group = new BasicConfigElement("group name");
 
-        config.sortOrder = new ListableConfig.ConfigElement[]{
-            new ListableConfig.BasicConfigElement("group name"),
-            new ListableConfig.BasicConfigElement("current level"),
-            new ListableConfig.BasicConfigElement("trained skillpoints"),
-        };
+        config.sortOrder = new CompoundConfigElement(
+            new BasicConfigElement("group name"),
+            new BasicConfigElement("current level"),
+            new BasicConfigElement("trained skillpoints")
+        );
     }
 
     /** {@inheritDoc} */

@@ -160,11 +160,8 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         components.put("bl", getComponents(config.bottomLeft));
         components.put("br", getComponents(config.bottomRight));
         components.put("+group", getComponents(config.group));
+        components.put("+sort", getComponents(config.sortOrder));
         
-        for (int i = 0; i < config.sortOrder.length; i++) {
-            components.put("+sort_" + i, getComponents(config.sortOrder[i]));
-        }
-
         complete = true;
     }
 
@@ -207,8 +204,8 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
             return "Group by:";
         }
 
-        if (key.startsWith("+sort")) {
-            return key.equals("+sort_0") ? "Sort by:" : "... then:";
+        if (key.equals("+sort")) {
+            return "Sort by:";
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -248,9 +245,7 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
         return res;
     }
 
-    protected void rebuildConfig() {
-        config.sortOrder = new ConfigElement[components.size() - 5];
-        
+    protected void rebuildConfig() {        
         for (String loc : components.keySet()) {
             final List<ConfigElement> elements = new ArrayList<ConfigElement>();
 
@@ -276,9 +271,8 @@ public class ListableConfigDialog extends JDialog implements ActionListener,
                 config.bottomLeft = res;
             } else if (loc.equals("+group")) {
                 config.group = res;
-            } else if (loc.startsWith("+sort_")) {
-                final int line = Integer.parseInt(loc.substring(6));
-                config.sortOrder[line] = res;
+            } else if (loc.equals("+sort")) {
+                config.sortOrder = res;
             }
         }
     }

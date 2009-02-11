@@ -32,6 +32,8 @@ import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.data.BasicShipInfoSurrogate;
 import uk.co.md87.evetool.ui.listable.ListableConfig;
+import uk.co.md87.evetool.ui.listable.ListableConfig.BasicConfigElement;
+import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
 
 /**
  *
@@ -52,16 +54,16 @@ public class ShipsPage extends ListablePage<BasicShipInfoSurrogate> implements A
         super(window, manager, factory);
 
         config = new ListableConfig();
-        config.topLeft = new ListableConfig.BasicConfigElement("name");
-        config.topRight = new ListableConfig.CompoundConfigElement();
-        config.bottomLeft = new ListableConfig.BasicConfigElement("can fly");
-        config.bottomRight = new ListableConfig.CompoundConfigElement();
-        config.group = new ListableConfig.BasicConfigElement("group name");
+        config.topLeft = new BasicConfigElement("name");
+        config.topRight = new CompoundConfigElement();
+        config.bottomLeft = new BasicConfigElement("can fly");
+        config.bottomRight = new CompoundConfigElement();
+        config.group = new BasicConfigElement("group name");
 
-        config.sortOrder = new ListableConfig.ConfigElement[]{
-            new ListableConfig.BasicConfigElement("group name"),
-            new ListableConfig.BasicConfigElement("name"),
-        };
+        config.sortOrder = new CompoundConfigElement(
+            new BasicConfigElement("group name"),
+            new BasicConfigElement("name")
+        );
     }
 
     /** {@inheritDoc} */

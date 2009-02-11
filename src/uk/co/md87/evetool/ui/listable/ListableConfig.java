@@ -34,7 +34,7 @@ import java.util.List;
 public class ListableConfig implements Cloneable {
 
     public ConfigElement topLeft, topRight, bottomLeft, bottomRight;
-    public ConfigElement[] sortOrder;
+    public ConfigElement sortOrder;
     public ConfigElement group;
 
     public static interface ConfigElement {
@@ -130,7 +130,7 @@ public class ListableConfig implements Cloneable {
         clone.topLeft = topLeft;
         clone.topRight = topRight;
         clone.group = group;
-        clone.sortOrder = Arrays.copyOf(sortOrder, sortOrder.length);
+        clone.sortOrder = sortOrder;
 
         return clone;
     }
