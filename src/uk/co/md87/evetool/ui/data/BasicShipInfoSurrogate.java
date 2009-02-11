@@ -23,14 +23,15 @@
 package uk.co.md87.evetool.ui.data;
 
 import java.awt.Image;
-import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
+
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.ui.listable.ListableImpl;

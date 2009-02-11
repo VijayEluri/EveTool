@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.ui.listable;
 
 import java.util.Comparator;
+import java.util.List;
 import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
 
 /**
@@ -42,7 +43,10 @@ public class ListableComparator implements Comparator<Object> {
 
     public int compare(final Object o1, final Object o2) {
         for (ConfigElement element : order) {
-            final int res = element.getValue(o1, parser).compareTo(element.getValue(o2, parser));
+            final Object op1 = element.getUnformattedValue(o1, parser);
+            final Object op2 = element.getUnformattedValue(o2, parser);
+
+            int res = doCompare(op1, op2);
 
             if (res != 0) {
                 return res;
@@ -50,6 +54,30 @@ public class ListableComparator implements Comparator<Object> {
         }
 
         return 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected int doCompare(Object op1, Object op2) {
+        int res = 0;
+
+        if (op1 instanceof Comparable) {
+            res = ((Comparable) op1).compareTo(op2);
+        } else if (op1 instanceof List) {
+            final List<?> objs1 = (List<?>) op1;
+            final List<?> objs2 = (List<?>) op2;
+
+            for (int i = 0; i < objs1.size(); i++) {
+                res = doCompare(objs1.get(i), objs2.get(i));
+
+                if (res != 0) {
+                    break;
+                }
+            }
+        } else {
+            res = String.valueOf(op1).compareTo(String.valueOf(op2));
+        }
+
+        return res;
     }
 
 }

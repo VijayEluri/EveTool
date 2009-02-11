@@ -22,7 +22,9 @@
 
 package uk.co.md87.evetool.ui.listable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -39,6 +41,8 @@ public class ListableConfig implements Cloneable {
 
         String getValue(final Object target, final ListableParser parser);
 
+        Object getUnformattedValue(final Object target, final ListableParser parser);
+
     }
 
     public static class BasicConfigElement implements ConfigElement {
@@ -51,6 +55,10 @@ public class ListableConfig implements Cloneable {
 
         public String getValue(final Object target, ListableParser parser) {
             return parser.getValue(target, name);
+        }
+
+        public Object getUnformattedValue(final Object target, ListableParser parser) {
+            return parser.getUnformattedValue(target, name);
         }
 
         public String getName() {
@@ -67,6 +75,10 @@ public class ListableConfig implements Cloneable {
         }
 
         public String getValue(Object target, ListableParser parser) {
+            return text;
+        }
+
+        public Object getUnformattedValue(Object target, ListableParser parser) {
             return text;
         }
 
@@ -91,6 +103,16 @@ public class ListableConfig implements Cloneable {
             }
 
             return builder.toString();
+        }
+
+        public List<Object> getUnformattedValue(Object target, ListableParser parser) {
+            final List<Object> res = new ArrayList<Object>();
+
+            for (ConfigElement element : elements) {
+                res.add(element.getUnformattedValue(target, parser));
+            }
+
+            return res;
         }
 
         public ConfigElement[] getElements() {

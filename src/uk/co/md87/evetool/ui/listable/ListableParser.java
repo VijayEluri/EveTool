@@ -102,7 +102,7 @@ public class ListableParser {
         return methods.keySet();
     }
 
-    public String getValue(final Object target, final String name) {
+    public Object getUnformattedValue(final Object target, final String name) {
         if (methods.containsKey(name)) {
             Object result = target;
 
@@ -111,21 +111,35 @@ public class ListableParser {
                     result = method.invoke(result);
                 }
 
-                final Class<?> formatter = methods.get(name)
-                        .get(methods.get(name).size() - 1)
-                        .getAnnotation(Retrievable.class).formatWith();
-
-                return (String) formatter.getMethod("getValue", Object.class)
-                        .invoke(null, result);
+                return result;
             } catch (IllegalAccessException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             } catch (IllegalArgumentException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             } catch (InvocationTargetException ex) {
                 LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
-            } catch (NoSuchMethodException ex) {
-                LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
             }
+        }
+
+        return "Unknown";
+    }
+
+    public String getValue(final Object target, final String name) {
+        try {
+            final Class<?> formatter = methods.get(name)
+                    .get(methods.get(name).size() - 1)
+                    .getAnnotation(Retrievable.class).formatWith();
+
+            return (String) formatter.getMethod("getValue", Object.class)
+                    .invoke(null, getUnformattedValue(target, name));
+        } catch (IllegalAccessException ex) {
+            LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
+        } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
+        } catch (InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
+        } catch (NoSuchMethodException ex) {
+            LOGGER.log(Level.SEVERE, "Unable to retrieve value", ex);
         }
 
         return "Unknown";
