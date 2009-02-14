@@ -63,7 +63,7 @@ public class Main {
 
         final AccountManager manager = new AccountManager(factory.getConnection());
 
-        new MainWindow(manager, new ApiFactory(config)).setVisible(true);
+        new MainWindow(manager, factory, config).setVisible(true);
     }
 
     /**

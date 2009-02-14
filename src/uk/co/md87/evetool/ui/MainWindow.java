@@ -41,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ConfigManager;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
@@ -65,17 +66,20 @@ public class MainWindow extends JFrame {
     private final AccountManager manager;
     private final ApiFactory factory;
     private final MenuPanel menuPanel;
+    private final ConfigManager config;
     private final ContentPanel contentPanel;
     private final ContextPanel contextPanel;
     private final Map<String, ContentPanel.Page> pages;
 
-    public MainWindow(final AccountManager manager, final ApiFactory factory) {
+    public MainWindow(final AccountManager manager,
+            final ApiFactory factory, final ConfigManager config) {
         super("EVE Tool - No character selected");
 
         UIManager.put("swing.boldMetal", false);
 
         this.factory = factory;
         this.manager = manager;
+        this.config = config;
         this.contextPanel = new ContextPanel();
 
         pages = new TreeMap<String, ContentPanel.Page>();
