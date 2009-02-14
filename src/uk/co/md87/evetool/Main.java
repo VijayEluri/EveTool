@@ -58,6 +58,8 @@ public class Main {
         final ConfigManager config = new ConfigManager();
         final ApiFactory factory = new ApiFactory(config);
 
+        config.checkDatabase(factory.getConnection());
+
         readVersion();
         initTables(factory);
 

@@ -26,6 +26,8 @@ import com.dmdirc.util.ConfigFile;
 import com.dmdirc.util.InvalidConfigFileException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +40,8 @@ public class ConfigManager {
 
     /** Logger to use for this class. */
     private static final Logger LOGGER = Logger.getLogger(ConfigManager.class.getName());
+
+    private static final int DBVERSION = 2;
 
     private final ConfigFile configFile;
  
@@ -59,13 +63,22 @@ public class ConfigManager {
             LOGGER.log(Level.WARNING, "Error parsing config file", ex);
         }
 
-        initDefaults();
-
         Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
     }
 
-    protected void initDefaults() {
-        setGeneralSetting("dbVersion", getGeneralSettingInt("dbVersion", 1));
+    public void checkDatabase(final Connection conn) {
+        final DBMigrator migrator = new DBMigrator(conn);
+        for (int i = getGeneralSettingInt("dbVersion", DBVERSION) + 1; i <= DBVERSION; i++) {
+            LOGGER.log(Level.INFO, "Running database migration method #" + i);
+            
+            try {
+                DBMigrator.class.getMethod("migrateTo" + i).invoke(migrator);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, "Unable to run database migration", ex);
+            }
+        }
+
+        setGeneralSetting("dbVersion", DBVERSION);
     }
 
     public String getGeneralSetting(final String key) {
