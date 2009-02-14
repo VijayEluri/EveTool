@@ -34,4 +34,6 @@ public interface Listable {
 
     void addUpdateListener(final UpdateListener listener);
 
+    void removeUpdateListener(final UpdateListener listener);
+
 }

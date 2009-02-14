@@ -66,4 +66,12 @@ public class ListableImpl implements Listable {
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void removeUpdateListener(final UpdateListener listener) {
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
+    }
+
 }
