@@ -57,7 +57,7 @@ public class ShipsPage extends ListablePage<BasicShipInfoSurrogate> implements A
         config.topLeft = new BasicConfigElement("name");
         config.topRight = new CompoundConfigElement();
         config.bottomLeft = new BasicConfigElement("can fly");
-        config.bottomRight = new CompoundConfigElement();
+        config.bottomRight = new BasicConfigElement("race id");
         config.group = new BasicConfigElement("group name");
 
         config.sortOrder = new CompoundConfigElement(
