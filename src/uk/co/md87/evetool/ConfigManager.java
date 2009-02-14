@@ -59,7 +59,13 @@ public class ConfigManager {
             LOGGER.log(Level.WARNING, "Error parsing config file", ex);
         }
 
+        initDefaults();
+
         Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
+    }
+
+    protected void initDefaults() {
+        setGeneralSetting("dbVersion", getGeneralSettingInt("dbVersion", 1));
     }
 
     public String getGeneralSetting(final String key) {
