@@ -54,12 +54,16 @@ public class Main {
      */
     public static void main(final String[] args) {
         initLogging();
+
+        final ConfigManager config = new ConfigManager();
+        final ApiFactory factory = new ApiFactory(config);
+
         readVersion();
-        initTables();
+        initTables(factory);
 
-        final AccountManager manager = new AccountManager(ApiFactory.getConnection());
+        final AccountManager manager = new AccountManager(factory.getConnection());
 
-        new MainWindow(manager, new ApiFactory()).setVisible(true);
+        new MainWindow(manager, new ApiFactory(config)).setVisible(true);
     }
 
     /**
@@ -75,9 +79,11 @@ public class Main {
 
     /**
      * Initialises tables used by the program.
+     *
+     * @param factory The ApiFactory to use for the database connection
      */
-    protected static void initTables() {
-        new TableCreator(ApiFactory.getConnection(), "/uk/co/md87/evetool/sql/",
+    protected static void initTables(final ApiFactory factory) {
+        new TableCreator(factory.getConnection(), "/uk/co/md87/evetool/sql/",
                 TABLES).checkTables();
     }
 

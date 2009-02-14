@@ -70,7 +70,7 @@ public class MainWindow extends JFrame {
     private final Map<String, ContentPanel.Page> pages;
 
     public MainWindow(final AccountManager manager, final ApiFactory factory) {
-        super("EVE Tool - Initialising...");
+        super("EVE Tool - No character selected");
 
         UIManager.put("swing.boldMetal", false);
 

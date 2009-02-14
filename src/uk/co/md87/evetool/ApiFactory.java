@@ -34,22 +34,31 @@ import uk.co.md87.evetool.api.EveApi;
  * Factory class to create instances of the {@link EveApi} class. Uses an
  * embedded Derby database server by default.
  *
- * TODO: Make non-static
  * @author chris
  */
 public class ApiFactory {
 
     /** The URL of the database. */
-    private static String dbURL = "jdbc:derby:db/eveApi;create=true";
+    private final String dbURL;
 
+    /** The cached connection. */
     private static Connection dbConn;
+
+    /**
+     * Creates a new API Factory which will use the specified config manager.
+     *
+     * @param manager The config manager to use
+     */
+    public ApiFactory(final ConfigManager manager) {
+        dbURL = "jdbc:derby:" + manager.getConfigDir() + "/db;create=true";
+    }
 
     /**
      * Creates a database connection for use by the API.
      *
      * @return A Database Connection
      */
-    public static synchronized Connection getConnection() {
+    public synchronized Connection getConnection() {
         try {
             return dbConn == null ? dbConn = DriverManager.getConnection(dbURL) : dbConn;
         } catch (SQLException ex) {
@@ -64,7 +73,7 @@ public class ApiFactory {
      *
      * @return An instance of the EVE API.
      */
-    public static EveApi getApi() {
+    public EveApi getApi() {
         return new EveApi(getConnection());
     }
 
