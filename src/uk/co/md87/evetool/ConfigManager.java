@@ -24,9 +24,9 @@ package uk.co.md87.evetool;
 
 import com.dmdirc.util.ConfigFile;
 import com.dmdirc.util.InvalidConfigFileException;
+
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
