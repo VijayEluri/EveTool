@@ -22,35 +22,25 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
-import java.util.List;
+import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
- * TODO: Document BasicShipInfo
+ * TODO: Document BasicRaceInfo
+ * TODO: Add ability to resolve race
  * @author chris
  */
-public class BasicShipInfo extends BasicType {
+public class BasicRaceInfo {
 
-    private final int graphicID;
-    private final List<SkillRequirement> requirements;
+    private final int id;
 
-    public BasicShipInfo(final int id, final String name, final BasicRaceInfo race,
-            final TypeGroup group, final int graphicID,
-            final List<SkillRequirement> requirements) {
-        super(id, name, race, group);
-
-        this.graphicID = graphicID;
-        this.requirements = requirements;
+    public BasicRaceInfo(final int id) {
+        this.id = id;
     }
 
-    public int getGraphicID() {
-        return graphicID;
+    @Retrievable
+    public int getId() {
+        return id;
     }
-
-
-    public List<SkillRequirement> getRequirements() {
-        return requirements;
-    }
-
 
 }

@@ -35,11 +35,15 @@ public class BasicType {
 
     private final String name;
 
+    private final BasicRaceInfo race;
+
     private final TypeGroup group;
 
-    public BasicType(final int id, final String name, final TypeGroup group) {
+    public BasicType(final int id, final String name, final BasicRaceInfo race,
+            final TypeGroup group) {
         this.id = id;
         this.name = name;
+        this.race = race;
         this.group = group;
     }
 
@@ -56,6 +60,11 @@ public class BasicType {
     @Retrievable
     public String getName() {
         return name;
+    }
+
+    @Retrievable(deferred=true,name="race")
+    public BasicRaceInfo getRace() {
+        return race;
     }
 
 }

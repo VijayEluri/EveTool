@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.BasicRaceInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 import uk.co.md87.evetool.api.wrappers.data.TypeGroup;
@@ -54,6 +55,7 @@ public class ShipList {
                 final int typeID = ship.getNumericAttribute("typeID");
                 final String typeName = ship.getStringAttribute("typeName");
                 final int graphicID = ship.getNumericAttribute("graphicID");
+                final int raceID = ship.getNumericAttribute("raceID");
                 final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
                 
                 final int[][] values = new int[ship.getRowset("attributes").size() / 2][2];
@@ -77,7 +79,7 @@ public class ShipList {
                 }
 
                 final BasicShipInfo info = new BasicShipInfo(typeID, typeName,
-                        group, graphicID, reqs);
+                        new BasicRaceInfo(raceID), group, graphicID, reqs);
                 group.add(info);
                 ships.put(typeID, info);
             }
