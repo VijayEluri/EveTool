@@ -195,7 +195,7 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
         addButton.addActionListener(this);
         
         context.add(addButton, "growy");
-        context.add(new FilterButton(), "growy, al right");
+        //context.add(new FilterButton(), "growy, al right");
     }
 
 }
