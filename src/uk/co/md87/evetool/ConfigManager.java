@@ -66,8 +66,12 @@ public class ConfigManager {
         return configFile.getKeyDomain("general").get(key);
     }
 
-    public int getGeneralSettingInt(final String key) {
-        return Integer.parseInt(configFile.getKeyDomain("general-int").get(key));
+    public int getGeneralSettingInt(final String key, final int fallback) {
+        try {
+            return Integer.parseInt(configFile.getKeyDomain("general-int").get(key));
+        } catch (NumberFormatException ex) {
+            return fallback;
+        }
     }
 
     public void setGeneralSetting(final String key, final String value) {

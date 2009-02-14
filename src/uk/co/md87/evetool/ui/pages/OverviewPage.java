@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.Account;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
+import uk.co.md87.evetool.ConfigManager;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.ContextPanel;
@@ -76,15 +77,17 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
     private final MainWindow window;
     private final ApiFactory factory;
     private final AccountManager manager;
+    private final ConfigManager config;
     private final Map<Account, EveApi> apis = new HashMap<Account, EveApi>();
     private final Map<Account, JPanel> panels = new HashMap<Account, JPanel>();
     private final List<AccountChar> chars = new ArrayList<AccountChar>();
 
     public OverviewPage(final MainWindow window, final AccountManager manager,
-            final ApiFactory factory) {
+            final ApiFactory factory, final ConfigManager config) {
         this.window = window;
         this.factory = factory;
         this.manager = manager;
+        this.config = config;
 
         setLayout(new MigLayout("fillx"));
 
@@ -152,8 +155,10 @@ public class OverviewPage extends Page implements AccountManager.AccountListener
 
         panels.put(account, panel);
         apis.put(account, account.getApi(factory));
+
+        int selectChar = config.getGeneralSettingInt("selectedChar", -1);
         
-        new AccountUpdateWorker(this, apis.get(account), panel).execute();
+        new AccountUpdateWorker(this, window, apis.get(account), panel, selectChar).execute();
     }
 
     /** {@inheritDoc} */

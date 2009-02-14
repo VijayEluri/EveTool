@@ -83,7 +83,7 @@ public class MainWindow extends JFrame {
         this.contextPanel = new ContextPanel();
 
         pages = new TreeMap<String, ContentPanel.Page>();
-        pages.put("Overview", new OverviewPage(this, manager, factory));
+        pages.put("Overview", new OverviewPage(this, manager, factory, config));
         pages.put("Skills", new SkillPage(this, manager, factory));
         pages.put("Ships", new ShipsPage(this, manager, factory));
 
@@ -134,6 +134,8 @@ public class MainWindow extends JFrame {
 
         menuPanel.setSelectedChar(newChar);
         setTitle("EVE Tool - " + newChar.getCharInfo().getName());
+
+        config.setGeneralSetting("selectedChar", newChar.getCharInfo().getId());
     }
 
     public ContextPanel getContextPanel() {

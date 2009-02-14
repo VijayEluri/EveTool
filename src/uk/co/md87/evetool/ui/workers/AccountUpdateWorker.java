@@ -37,6 +37,7 @@ import uk.co.md87.evetool.api.ApiResponse;
 import uk.co.md87.evetool.api.EveApi;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
+import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
 
@@ -57,13 +58,18 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
     private final OverviewPage page;
     private final EveApi api;
     private final JPanel target;
+    private final MainWindow window;
+    private final int selectChar;
 
-    public AccountUpdateWorker(final OverviewPage page, final EveApi api, final JPanel panel) {
+    public AccountUpdateWorker(final OverviewPage page, final MainWindow window,
+            final EveApi api, final JPanel panel, final int selectChar) {
         super();
 
         this.page = page;
         this.api = api;
+        this.window = window;
         this.target = panel;
+        this.selectChar = selectChar;
     }
 
     /** {@inheritDoc} */
@@ -112,6 +118,10 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     new CharacterSkillUpdateWorker(newApi, ac).execute();
 
                     portrait.addMouseListener(new PortraitMouseListener(page, ac));
+
+                    if (character.getId() == selectChar) {
+                        window.setSelectedChar(ac);
+                    }
                 }
             } else {
                 target.removeAll();
