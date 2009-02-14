@@ -44,6 +44,8 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ConfigManager;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.data.AccountChar;
+import uk.co.md87.evetool.ui.listable.Listable;
+import uk.co.md87.evetool.ui.listable.UpdateListener;
 import uk.co.md87.evetool.ui.pages.OverviewPage;
 import uk.co.md87.evetool.ui.pages.ShipsPage;
 import uk.co.md87.evetool.ui.pages.SkillPage;
@@ -53,7 +55,7 @@ import uk.co.md87.evetool.ui.pages.SkillPage;
  * TODO: Document MainWindow
  * @author chris
  */
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements UpdateListener {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -126,7 +128,13 @@ public class MainWindow extends JFrame {
     }
 
     public void setSelectedChar(final AccountChar newChar) {
+        if (selectedChar != null) {
+            selectedChar.removeUpdateListener(this);
+        }
+
         selectedChar = newChar;
+
+        selectedChar.addUpdateListener(this);
 
         for (Page page : pages.values()) {
             page.setActiveChar(newChar);
@@ -147,6 +155,10 @@ public class MainWindow extends JFrame {
         add(contentPanel);
         add(contextPanel, "growx, height 30!");
         add(new StatusPanel(this), "growx, span, height 30!");
+    }
+
+    public void listableUpdated(Listable listable) {
+        menuPanel.setSelectedChar(selectedChar);
     }
 
 }

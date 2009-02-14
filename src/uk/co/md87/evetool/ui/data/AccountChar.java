@@ -86,6 +86,8 @@ public class AccountChar extends ListableImpl {
                         sheet.getResult().getSkillPoints()
                         - sheet.getResult().getClone().getSpLimit()));
             }
+
+            fireUpdateListener();
         } else {
             this.balance.setText("(Error)");
         }
@@ -95,6 +97,8 @@ public class AccountChar extends ListableImpl {
         this.training = training;
 
         updateSkillInfo(true);
+
+        fireUpdateListener();
     }
 
     public synchronized void updateSkillInfo(final boolean initial) {
