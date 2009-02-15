@@ -31,6 +31,7 @@ import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.CertCategory;
 import uk.co.md87.evetool.api.wrappers.data.CertClass;
 import uk.co.md87.evetool.api.wrappers.data.CertInfo;
+import uk.co.md87.evetool.api.wrappers.data.RequirementsList;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 
 /**
@@ -84,7 +85,7 @@ public class CertificateTree extends ArrayList<CertCategory> {
         final int grade = row.getNumericAttribute("grade");
         final int corp = row.getNumericAttribute("corporationID");
         final String desc = row.getStringAttribute("description");
-        final List<SkillRequirement> skillReqs = new ArrayList<SkillRequirement>();
+        final RequirementsList skillReqs = new RequirementsList();
         final List<Integer> certReqs = new ArrayList<Integer>();
 
         for (ApiElement srow : row.getRowset("requiredSkills")) {

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.Attribute;
+import uk.co.md87.evetool.api.wrappers.data.RequirementsList;
 import uk.co.md87.evetool.api.wrappers.data.SkillGroup;
 import uk.co.md87.evetool.api.wrappers.data.SkillInfo;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
@@ -79,7 +80,7 @@ public class SkillList extends ArrayList<SkillGroup> {
         final int typeId = row.getNumericAttribute("typeID");
         final String desc = row.getChildContent("description");
         final int rank = row.getNumericChildContent("rank");
-        final List<SkillRequirement> reqs = getReqs(row.getRowset("requiredSkills"));
+        final RequirementsList reqs = getReqs(row.getRowset("requiredSkills"));
         final Attribute primaryAttribute = Attribute.valueOf(row.getChild("requiredAttributes")
                 .getChildContent("primaryAttribute").toUpperCase());
         final Attribute secondaryAttribute = Attribute.valueOf(row.getChild("requiredAttributes")
@@ -90,8 +91,8 @@ public class SkillList extends ArrayList<SkillGroup> {
                 secondaryAttribute, bonuses);
     }
 
-    protected List<SkillRequirement> getReqs(final List<ApiElement> rowset) {
-        final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
+    protected RequirementsList getReqs(final List<ApiElement> rowset) {
+        final RequirementsList reqs = new RequirementsList();
 
         for (ApiElement row : rowset) {
             reqs.add(new SkillRequirement(row.getNumericAttribute("typeID"),

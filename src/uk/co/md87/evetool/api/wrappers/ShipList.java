@@ -22,14 +22,13 @@
 
 package uk.co.md87.evetool.api.wrappers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.wrappers.data.BasicRaceInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
+import uk.co.md87.evetool.api.wrappers.data.RequirementsList;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 import uk.co.md87.evetool.api.wrappers.data.TypeGroup;
 
@@ -56,7 +55,7 @@ public class ShipList {
                 final String typeName = ship.getStringAttribute("typeName");
                 final int graphicID = ship.getNumericAttribute("graphicID");
                 final int raceID = ship.getNumericAttribute("raceID");
-                final List<SkillRequirement> reqs = new ArrayList<SkillRequirement>();
+                final RequirementsList reqs = new RequirementsList();
                 
                 final int[][] values = new int[ship.getRowset("attributes").size() / 2][2];
                 for (ApiElement req : ship.getRowset("attributes")) {

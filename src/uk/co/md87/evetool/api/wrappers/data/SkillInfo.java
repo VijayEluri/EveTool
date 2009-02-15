@@ -22,8 +22,8 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
-import java.util.List;
 import java.util.Map;
+
 import uk.co.md87.evetool.ui.listable.Retrievable;
 import uk.co.md87.evetool.ui.listable.formatters.NumberFormatter;
 
@@ -39,14 +39,14 @@ public class SkillInfo {
     protected final int id;
     protected final String description;
     protected final int rank;
-    protected final List<SkillRequirement> requirements;
+    protected final RequirementsList requirements;
     protected final Attribute primaryAttribute;
     protected final Attribute secondaryAttribute;
     protected final Map<String, String> bonuses;
 
     public SkillInfo(final SkillGroup group, final String name, final int id,
             final String description, final int rank,
-            final List<SkillRequirement> requirements,
+            final RequirementsList requirements,
             final Attribute primaryAttribute, final Attribute secondaryAttribute,
             final Map<String, String> bonuses) {
         this.group = group;
@@ -95,6 +95,11 @@ public class SkillInfo {
     @Retrievable(deferred=true,name="Group")
     public SkillGroup getGroup() {
         return group;
+    }
+
+    @Retrievable(deferred=true,name="Requirements:")
+    public RequirementsList getRequirements() {
+        return requirements;
     }
 
     @Override

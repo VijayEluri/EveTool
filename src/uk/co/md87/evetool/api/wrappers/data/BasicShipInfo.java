@@ -22,8 +22,6 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
-import java.util.List;
-
 /**
  *
  * TODO: Document BasicShipInfo
@@ -32,11 +30,11 @@ import java.util.List;
 public class BasicShipInfo extends BasicType {
 
     private final int graphicID;
-    private final List<SkillRequirement> requirements;
+    private final RequirementsList requirements;
 
     public BasicShipInfo(final int id, final String name, final BasicRaceInfo race,
             final TypeGroup group, final int graphicID,
-            final List<SkillRequirement> requirements) {
+            final RequirementsList requirements) {
         super(id, name, race, group);
 
         this.graphicID = graphicID;
@@ -48,7 +46,7 @@ public class BasicShipInfo extends BasicType {
     }
 
 
-    public List<SkillRequirement> getRequirements() {
+    public RequirementsList getRequirements() {
         return requirements;
     }
 

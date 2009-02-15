@@ -23,6 +23,7 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.List;
+
 import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
@@ -36,11 +37,11 @@ public class CertInfo {
     private final int grade;
     private final int corp;
     private final String desc;
-    private final List<SkillRequirement> skillReqs;
+    private final RequirementsList skillReqs;
     private final List<Integer> certReqs;
 
     public CertInfo(final int id, final int grade, final int corp,
-            final String desc, final List<SkillRequirement> skillReqs,
+            final String desc, final RequirementsList skillReqs,
             final List<Integer> certReqs) {
         this.id = id;
         this.grade = grade;
@@ -74,7 +75,7 @@ public class CertInfo {
         return id;
     }
 
-    public List<SkillRequirement> getSkillReqs() {
+    public RequirementsList getSkillReqs() {
         return skillReqs;
     }
 

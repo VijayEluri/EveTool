@@ -34,6 +34,7 @@ import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCloneInfo;
 import uk.co.md87.evetool.api.wrappers.data.BasicCorpInfo;
 import uk.co.md87.evetool.api.wrappers.data.Implant;
+import uk.co.md87.evetool.api.wrappers.data.RequirementsList;
 import uk.co.md87.evetool.api.wrappers.data.SkillRequirement;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 
@@ -244,10 +245,14 @@ public class CharacterSheet {
         return skills;
     }
 
-    public boolean hasSkills(final List<SkillRequirement> reqs) {
+    public boolean hasSkill(final SkillRequirement req) {
+        return skills.containsKey(req.getSkillId()) ||
+                skills.get(req.getSkillId()).getLevel() < req.getRequiredLevel();
+    }
+
+    public boolean hasSkills(final RequirementsList reqs) {
         for (SkillRequirement req : reqs) {
-            if (!skills.containsKey(req.getSkillId()) ||
-                    skills.get(req.getSkillId()).getLevel() < req.getRequiredLevel()) {
+            if (!hasSkill(req)) {
                 return false;
             }
         }
