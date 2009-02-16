@@ -246,8 +246,8 @@ public class CharacterSheet {
     }
 
     public boolean hasSkill(final SkillRequirement req) {
-        return skills.containsKey(req.getSkillId()) ||
-                skills.get(req.getSkillId()).getLevel() < req.getRequiredLevel();
+        return skills.containsKey(req.getSkillId()) &&
+                skills.get(req.getSkillId()).getLevel() >= req.getRequiredLevel();
     }
 
     public boolean hasSkills(final RequirementsList reqs) {
