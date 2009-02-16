@@ -22,25 +22,47 @@
 
 package uk.co.md87.evetool.api.wrappers.data;
 
+import java.util.HashMap;
+import java.util.Map;
 import uk.co.md87.evetool.ui.listable.Retrievable;
 
 /**
  *
  * TODO: Document BasicRaceInfo
- * TODO: Add ability to resolve race
  * @author chris
  */
 public class BasicRaceInfo {
 
-    private final int id;
+    private static final Map<Integer, BasicRaceInfo> instances
+            = new HashMap<Integer, BasicRaceInfo>();
 
-    public BasicRaceInfo(final int id) {
+    private final int id;
+    private String name;
+
+    private BasicRaceInfo(final int id) {
         this.id = id;
     }
 
     @Retrievable
     public int getId() {
         return id;
+    }
+
+    @Retrievable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public synchronized static BasicRaceInfo forID(final int id) {
+        if (!instances.containsKey(id)) {
+            instances.put(id, new BasicRaceInfo(id));
+        }
+
+        return instances.get(id);
     }
 
 }

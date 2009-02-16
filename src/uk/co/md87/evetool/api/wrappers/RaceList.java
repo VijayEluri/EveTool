@@ -20,38 +20,37 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.api.wrappers.data;
+package uk.co.md87.evetool.api.wrappers;
 
-import uk.co.md87.evetool.ui.listable.Retrievable;
+import java.util.HashMap;
+
+import uk.co.md87.evetool.api.parser.ApiElement;
+import uk.co.md87.evetool.api.wrappers.data.BasicRaceInfo;
 
 /**
  *
- * TODO: Document BasicShipInfo
+ * TODO: Document RaceList
  * @author chris
  */
-public class BasicShipInfo extends BasicType {
+public class RaceList extends HashMap<Integer, String> {
 
-    private final int graphicID;
-    private final RequirementsList requirements;
+    /**
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
+     */
+    private static final long serialVersionUID = 10;
 
-    public BasicShipInfo(final int id, final String name, final BasicRaceInfo race,
-            final TypeGroup group, final int graphicID,
-            final RequirementsList requirements) {
-        super(id, name, race, group);
-
-        this.graphicID = graphicID;
-        this.requirements = requirements;
+    public RaceList(final ApiElement resultElement) {
+        for (ApiElement race : resultElement.getRowset("races")) {
+            put(race.getNumericAttribute("raceID"), race.getStringAttribute("raceName"));
+        }
     }
 
-    public int getGraphicID() {
-        return graphicID;
+    public void updateRaceNames() {
+        for (int id : keySet()) {
+            BasicRaceInfo.forID(id).setName(get(id));
+        }
     }
-
-
-    @Retrievable(deferred=true, name="Requirements:")
-    public RequirementsList getRequirements() {
-        return requirements;
-    }
-
 
 }

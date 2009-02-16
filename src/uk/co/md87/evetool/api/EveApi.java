@@ -38,6 +38,7 @@ import uk.co.md87.evetool.api.wrappers.CertificateTree;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.MarketOrders;
+import uk.co.md87.evetool.api.wrappers.RaceList;
 import uk.co.md87.evetool.api.wrappers.ShipList;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
@@ -189,6 +190,17 @@ public class EveApi implements Cloneable {
     public ApiResponse<ShipList> getShipList() {
         return getResponse("http://evetool.md87.co.uk/api/types.php?category=6"
                 + "&published&attributes=requiredSkill%&groups", ShipList.class, false, false);
+    }
+
+    /**
+     * Retrieves a list of races in EVE.
+     * Does not require an API key.
+     *
+     * @return A list of races in EVE
+     */
+    public ApiResponse<RaceList> getRaceList() {
+        return getResponse("http://evetool.md87.co.uk/api/races.php",
+                RaceList.class, false, false);
     }
 
     /**
