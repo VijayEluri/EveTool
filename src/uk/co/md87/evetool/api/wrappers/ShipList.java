@@ -78,7 +78,7 @@ public class ShipList {
                 }
 
                 final BasicShipInfo info = new BasicShipInfo(typeID, typeName,
-                        new BasicRaceInfo(raceID), group, graphicID, reqs);
+                        BasicRaceInfo.forID(raceID), group, graphicID, reqs);
                 group.add(info);
                 ships.put(typeID, info);
             }
