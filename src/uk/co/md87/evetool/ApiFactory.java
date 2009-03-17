@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import uk.co.md87.evetool.api.EveApi;
+import uk.co.md87.evetool.api.io.DBCache;
 
 /**
  * Factory class to create instances of the {@link EveApi} class. Uses an
@@ -74,7 +75,7 @@ public class ApiFactory {
      * @return An instance of the EVE API.
      */
     public EveApi getApi() {
-        return new EveApi(getConnection());
+        return new EveApi(new DBCache(getConnection()));
     }
 
 }
