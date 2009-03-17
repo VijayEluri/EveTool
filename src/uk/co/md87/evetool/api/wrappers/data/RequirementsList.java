@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.evetool.api.wrappers.SkillList;
-import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.api.listable.Retrievable;
 
 /**
  *

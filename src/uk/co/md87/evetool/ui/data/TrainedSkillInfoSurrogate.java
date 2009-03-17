@@ -27,8 +27,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
-import uk.co.md87.evetool.ui.listable.ListableImpl;
-import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.api.listable.ListableImpl;
+import uk.co.md87.evetool.api.listable.Retrievable;
 
 /**
  *

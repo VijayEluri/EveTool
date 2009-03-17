@@ -20,20 +20,23 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
+package uk.co.md87.evetool.api.listable.formatters;
 
 /**
- * Interface to be implemented by objects that wish to be notified when a
- * {@link Listable} has been updated in some way.
- * 
+ * Formats a number nicely by adding a separator between groups of thousands.
+ *
  * @author chris
  */
-public interface UpdateListener {
+public class NumberFormatter {
 
     /**
-     * Called when a {@link Listable} has been updated.
+     * Retrieves the formatted value from this formatter.
      *
-     * @param listable The object that was updated
+     * @param input The object to be formatted
+     * @return The corresponding formatted string
      */
-    void listableUpdated(final Listable listable);
+    public static String getValue(final Object input) {
+        return String.format("%,d", input);
+    }
+
 }

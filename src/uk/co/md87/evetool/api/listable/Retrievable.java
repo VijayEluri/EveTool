@@ -20,14 +20,14 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
+package uk.co.md87.evetool.api.listable;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import uk.co.md87.evetool.ui.listable.formatters.NullFormatter;
+import uk.co.md87.evetool.api.listable.formatters.NullFormatter;
 
 /**
  * Designates that the return type of the method is retrievable for use in a

@@ -31,9 +31,9 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.data.BasicShipInfoSurrogate;
-import uk.co.md87.evetool.ui.listable.ListableConfig;
-import uk.co.md87.evetool.ui.listable.ListableConfig.BasicConfigElement;
-import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig;
+import uk.co.md87.evetool.api.listable.ListableConfig.BasicConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig.CompoundConfigElement;
 
 /**
  *

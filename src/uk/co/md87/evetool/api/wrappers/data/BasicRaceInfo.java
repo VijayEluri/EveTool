@@ -24,7 +24,7 @@ package uk.co.md87.evetool.api.wrappers.data;
 
 import java.util.HashMap;
 import java.util.Map;
-import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.api.listable.Retrievable;
 
 /**
  *

@@ -23,9 +23,9 @@
 package uk.co.md87.evetool.api.wrappers.data;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
-import uk.co.md87.evetool.ui.listable.Retrievable;
-import uk.co.md87.evetool.ui.listable.formatters.DurationFormatter;
-import uk.co.md87.evetool.ui.listable.formatters.NumberFormatter;
+import uk.co.md87.evetool.api.listable.Retrievable;
+import uk.co.md87.evetool.api.listable.formatters.DurationFormatter;
+import uk.co.md87.evetool.api.listable.formatters.NumberFormatter;
 
 /**
  * Represents a skill that has been trained by a player.

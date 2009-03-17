@@ -34,8 +34,8 @@ import javax.swing.SwingWorker;
 
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
-import uk.co.md87.evetool.ui.listable.ListableImpl;
-import uk.co.md87.evetool.ui.listable.Retrievable;
+import uk.co.md87.evetool.api.listable.ListableImpl;
+import uk.co.md87.evetool.api.listable.Retrievable;
 
 /**
  *

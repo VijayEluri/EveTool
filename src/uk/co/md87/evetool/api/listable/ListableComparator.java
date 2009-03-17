@@ -20,11 +20,11 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
+package uk.co.md87.evetool.api.listable;
 
 import java.util.Comparator;
 import java.util.List;
-import uk.co.md87.evetool.ui.listable.ListableConfig.ConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig.ConfigElement;
 
 /**
  *

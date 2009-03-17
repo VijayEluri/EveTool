@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
+package uk.co.md87.evetool.api.listable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

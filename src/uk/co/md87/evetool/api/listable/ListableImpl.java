@@ -20,23 +20,58 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable.formatters;
+package uk.co.md87.evetool.api.listable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
 
 /**
- * Formats a number nicely by adding a separator between groups of thousands.
  *
+ * TODO: Document ListableImpl
  * @author chris
  */
-public class NumberFormatter {
+public class ListableImpl implements Listable {
 
-    /**
-     * Retrieves the formatted value from this formatter.
-     *
-     * @param input The object to be formatted
-     * @return The corresponding formatted string
-     */
-    public static String getValue(final Object input) {
-        return String.format("%,d", input);
+    protected ImageIcon icon;
+
+    protected final List<UpdateListener> listeners = new ArrayList<UpdateListener>();
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageIcon getImage() {
+        return icon;
+    }
+
+    protected void updateImage(final ImageIcon newImage) {
+        icon = newImage;
+        
+        fireUpdateListener();
+    }
+
+    protected void fireUpdateListener() {
+        synchronized (listeners) {
+            for (UpdateListener listener : listeners) {
+                listener.listableUpdated(this);
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addUpdateListener(final UpdateListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void removeUpdateListener(final UpdateListener listener) {
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
 }

@@ -31,10 +31,10 @@ import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
 import uk.co.md87.evetool.ui.MainWindow;
 import uk.co.md87.evetool.ui.data.TrainedSkillInfoSurrogate;
-import uk.co.md87.evetool.ui.listable.ListableConfig;
-import uk.co.md87.evetool.ui.listable.ListableConfig.BasicConfigElement;
-import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
-import uk.co.md87.evetool.ui.listable.ListableConfig.LiteralConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig;
+import uk.co.md87.evetool.api.listable.ListableConfig.BasicConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.api.listable.ListableConfig.LiteralConfigElement;
 
 /**
  *

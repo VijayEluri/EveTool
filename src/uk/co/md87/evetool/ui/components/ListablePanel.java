@@ -26,10 +26,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import uk.co.md87.evetool.ui.listable.Listable;
-import uk.co.md87.evetool.ui.listable.ListableConfig;
-import uk.co.md87.evetool.ui.listable.ListableParser;
-import uk.co.md87.evetool.ui.listable.UpdateListener;
+import uk.co.md87.evetool.api.listable.Listable;
+import uk.co.md87.evetool.api.listable.ListableConfig;
+import uk.co.md87.evetool.api.listable.ListableParser;
+import uk.co.md87.evetool.api.listable.UpdateListener;
 
 /**
  *

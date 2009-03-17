@@ -20,24 +20,20 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable.formatters;
-
-import uk.co.md87.evetool.ui.util.Formatter;
+package uk.co.md87.evetool.api.listable;
 
 /**
- *
+ * Interface to be implemented by objects that wish to be notified when a
+ * {@link Listable} has been updated in some way.
+ * 
  * @author chris
  */
-public class DurationFormatter {
+public interface UpdateListener {
 
     /**
-     * Retrieves the formatted value from this formatter.
+     * Called when a {@link Listable} has been updated.
      *
-     * @param input The object to be formatted
-     * @return The corresponding formatted string
+     * @param listable The object that was updated
      */
-    public static String getValue(final Object input) {
-        return Formatter.formatDuration((Integer) input);
-    }
-
+    void listableUpdated(final Listable listable);
 }

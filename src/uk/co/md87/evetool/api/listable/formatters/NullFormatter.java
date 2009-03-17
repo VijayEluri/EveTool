@@ -20,20 +20,24 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
-
-import javax.swing.ImageIcon;
+package uk.co.md87.evetool.api.listable.formatters;
 
 /**
- *
+ * A formatter that just returns the String representation of the object without
+ * any formatting.
+ * 
  * @author chris
  */
-public interface Listable {
+public class NullFormatter {
 
-    ImageIcon getImage();
-
-    void addUpdateListener(final UpdateListener listener);
-
-    void removeUpdateListener(final UpdateListener listener);
+    /**
+     * Retrieves the formatted value from this formatter.
+     *
+     * @param input The object to be formatted
+     * @return The corresponding formatted string
+     */
+    public static String getValue(final Object input) {
+        return String.valueOf(input);
+    }
 
 }

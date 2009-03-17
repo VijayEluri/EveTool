@@ -20,58 +20,20 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
-
-import java.util.ArrayList;
-import java.util.List;
+package uk.co.md87.evetool.api.listable;
 
 import javax.swing.ImageIcon;
 
 /**
  *
- * TODO: Document ListableImpl
  * @author chris
  */
-public class ListableImpl implements Listable {
+public interface Listable {
 
-    protected ImageIcon icon;
+    ImageIcon getImage();
 
-    protected final List<UpdateListener> listeners = new ArrayList<UpdateListener>();
+    void addUpdateListener(final UpdateListener listener);
 
-    /** {@inheritDoc} */
-    @Override
-    public ImageIcon getImage() {
-        return icon;
-    }
-
-    protected void updateImage(final ImageIcon newImage) {
-        icon = newImage;
-        
-        fireUpdateListener();
-    }
-
-    protected void fireUpdateListener() {
-        synchronized (listeners) {
-            for (UpdateListener listener : listeners) {
-                listener.listableUpdated(this);
-            }
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void addUpdateListener(final UpdateListener listener) {
-        synchronized (listeners) {
-            listeners.add(listener);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void removeUpdateListener(final UpdateListener listener) {
-        synchronized (listeners) {
-            listeners.remove(listener);
-        }
-    }
+    void removeUpdateListener(final UpdateListener listener);
 
 }

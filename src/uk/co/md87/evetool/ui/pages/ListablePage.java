@@ -44,11 +44,11 @@ import uk.co.md87.evetool.ui.components.FilterButton;
 import uk.co.md87.evetool.ui.components.HeaderPanel;
 import uk.co.md87.evetool.ui.components.ListablePanel;
 import uk.co.md87.evetool.ui.dialogs.listableconfig.ListableConfigDialog;
-import uk.co.md87.evetool.ui.listable.Listable;
-import uk.co.md87.evetool.ui.listable.ListableComparator;
-import uk.co.md87.evetool.ui.listable.ListableConfig;
-import uk.co.md87.evetool.ui.listable.ListableConfig.CompoundConfigElement;
-import uk.co.md87.evetool.ui.listable.ListableParser;
+import uk.co.md87.evetool.api.listable.Listable;
+import uk.co.md87.evetool.api.listable.ListableComparator;
+import uk.co.md87.evetool.api.listable.ListableConfig;
+import uk.co.md87.evetool.api.listable.ListableConfig.CompoundConfigElement;
+import uk.co.md87.evetool.api.listable.ListableParser;
 
 /**
  *

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable;
+package uk.co.md87.evetool.api.listable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

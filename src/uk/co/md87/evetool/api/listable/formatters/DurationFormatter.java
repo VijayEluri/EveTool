@@ -20,15 +20,15 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.listable.formatters;
+package uk.co.md87.evetool.api.listable.formatters;
+
+import uk.co.md87.evetool.ui.util.Formatter;
 
 /**
- * A formatter that just returns the String representation of the object without
- * any formatting.
- * 
+ *
  * @author chris
  */
-public class NullFormatter {
+public class DurationFormatter {
 
     /**
      * Retrieves the formatted value from this formatter.
@@ -37,7 +37,7 @@ public class NullFormatter {
      * @return The corresponding formatted string
      */
     public static String getValue(final Object input) {
-        return String.valueOf(input);
+        return Formatter.formatDuration((Integer) input);
     }
 
 }
