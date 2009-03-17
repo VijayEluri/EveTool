@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package uk.co.md87.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

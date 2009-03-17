@@ -22,8 +22,8 @@
 
 package uk.co.md87.evetool;
 
-import com.dmdirc.util.ConfigFile;
-import com.dmdirc.util.InvalidConfigFileException;
+import uk.co.md87.util.ConfigFile;
+import uk.co.md87.util.InvalidConfigFileException;
 
 import java.io.File;
 import java.io.IOException;

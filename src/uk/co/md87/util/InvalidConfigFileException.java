@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package uk.co.md87.util;
 
 /**
  * Thrown to indicate that a config file is invalid.
