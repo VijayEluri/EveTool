@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.rowset.serial.SerialClob;
+import uk.co.md87.evetool.api.util.TableCreator;
 
 /**
  * Implements a cache for the API using a SQL database.
@@ -43,6 +44,12 @@ public class DBCache implements ApiCache {
 
     /** A logger for this class. */
     private static final Logger LOGGER = Logger.getLogger(DBCache.class.getName());
+
+    /** SQL tables required by the API. */
+    private static final String[] TABLES = {"PageCache"};
+
+    /** Whether or not tables have been checked. */
+    private static boolean checkedTables = false;
 
     /** The database connection to use. */
     private final Connection conn;
@@ -64,6 +71,11 @@ public class DBCache implements ApiCache {
      */
     public DBCache(final Connection conn) {
         this.conn = conn;
+
+        if (!checkedTables) {
+            new TableCreator(conn, "/uk/co/md87/evetool/api/db/", TABLES).checkTables();
+            checkedTables = true;
+        }
         
         try {
             conn.setAutoCommit(false);

@@ -22,18 +22,16 @@
 
 package uk.co.md87.evetool.api;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import uk.co.md87.evetool.api.io.ApiCache;
 import uk.co.md87.evetool.api.io.ApiDownloader;
-import uk.co.md87.evetool.api.io.DBCache;
 import uk.co.md87.evetool.api.parser.ApiElement;
 import uk.co.md87.evetool.api.parser.ApiParser;
 import uk.co.md87.evetool.api.parser.ApiResult;
-import uk.co.md87.evetool.api.util.TableCreator;
 import uk.co.md87.evetool.api.wrappers.CertificateTree;
 import uk.co.md87.evetool.api.wrappers.CharacterList;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
@@ -50,23 +48,17 @@ import uk.co.md87.evetool.api.wrappers.SkillList;
  */
 public class EveApi implements Cloneable {
 
-    /** SQL tables required by the API. */
-    private static final String[] TABLES = {"PageCache"};
-
-    /** Whether or not tables have been checked. */
-    private static boolean checkedTables = false;
-
     /** Logger to use for this class. */
     private static final Logger LOGGER = Logger.getLogger(EveApi.class.getName());
 
     /** Date format for dates returned by the API. */
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    /** The database connection to use. */
-    private final Connection conn;
-
     /** The downloader to use. */
     private final ApiDownloader downloader;
+
+    /** The cache to use. */
+    private final ApiCache cache;
     
     /** The client's user ID, if specified. */
     private int userID;
@@ -81,17 +73,11 @@ public class EveApi implements Cloneable {
      * Creates a new instance of the EVE API client using the specified database
      * connection.
      *
-     * @param sqlConnection A connection to a database to use
+     * @param cache The Cache implementation to use.
      */
-    public EveApi(final Connection sqlConnection) {
-        this.conn = sqlConnection;
-
-        if (!checkedTables) {
-            new TableCreator(conn, "/uk/co/md87/evetool/api/db/", TABLES).checkTables();
-            checkedTables = true;
-        }
-
-        this.downloader = new ApiDownloader(new DBCache(conn), new ApiParser());
+    public EveApi(final ApiCache cache) {
+        this.cache = cache;
+        this.downloader = new ApiDownloader(cache, new ApiParser());
     }
 
     /**
@@ -247,7 +233,7 @@ public class EveApi implements Cloneable {
     /** {@inheritDoc} */
     @Override
     public EveApi clone() {
-        final EveApi copy = new EveApi(conn);
+        final EveApi copy = new EveApi(cache);
         copy.setApiKey(apiKey);
         copy.setUserID(userID);
         copy.setCharID(charID);
