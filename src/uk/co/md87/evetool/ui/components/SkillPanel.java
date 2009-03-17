@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.api.wrappers.data.TrainedSkillInfo;
-import uk.co.md87.evetool.ui.util.Formatter;
+import uk.co.md87.evetool.api.util.Formatter;
 
 /**
  *

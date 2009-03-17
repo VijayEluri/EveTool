@@ -31,7 +31,7 @@ import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.data.BasicCharInfo;
 import uk.co.md87.evetool.api.listable.ListableImpl;
 import uk.co.md87.evetool.api.listable.Retrievable;
-import uk.co.md87.evetool.ui.util.Formatter;
+import uk.co.md87.evetool.api.util.Formatter;
 
 /**
  *

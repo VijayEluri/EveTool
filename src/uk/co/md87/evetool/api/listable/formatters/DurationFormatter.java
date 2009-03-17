@@ -22,7 +22,7 @@
 
 package uk.co.md87.evetool.api.listable.formatters;
 
-import uk.co.md87.evetool.ui.util.Formatter;
+import uk.co.md87.evetool.api.util.Formatter;
 
 /**
  *

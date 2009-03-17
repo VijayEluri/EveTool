@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.evetool.ui.util;
+package uk.co.md87.evetool.api.util;
 
 /**
  *
