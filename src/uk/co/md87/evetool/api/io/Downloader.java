@@ -24,7 +24,10 @@ package uk.co.md87.evetool.api.io;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -112,6 +115,35 @@ public final class Downloader {
         }
 
         return data.length() == 0 ? "" : data.substring(1);
+    }
+
+    /**
+     * Downloads the specified page to disk.
+     *
+     * @param url The URL to retrieve
+     * @param file The file to save the page to
+     * @throws java.io.IOException If there's an I/O error while downloading
+     */
+    public static void downloadPage(final String url, final File file) throws IOException {
+
+        final URLConnection urlConn = getConnection(url, "");
+
+        final FileOutputStream output = new FileOutputStream(file);
+        final InputStream input = urlConn.getInputStream();
+
+        final byte[] buffer = new byte[512];
+        int count;
+
+        do {
+            count = input.read(buffer);
+
+            if (count > 0) {
+                output.write(buffer, 0, count);
+            }
+        } while (count > 0);
+
+        input.close();
+        output.close();
     }
         
     /**

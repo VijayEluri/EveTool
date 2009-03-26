@@ -25,7 +25,6 @@ package uk.co.md87.evetool;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,6 +33,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import uk.co.md87.evetool.api.io.Downloader;
 import uk.co.md87.evetool.api.io.QueueSizeListener;
 
 /**
@@ -44,6 +44,8 @@ import uk.co.md87.evetool.api.io.QueueSizeListener;
 public class ImageManager {
 
     protected static final List<String> REQUESTS = new ArrayList<String>();
+
+    protected static final String ILLEGAL_CHARS = "[\\\\\"/:\\*\\?\"<>\\|]";
 
     private static final List<QueueSizeListener> listeners = new ArrayList<QueueSizeListener>();
 
@@ -63,6 +65,7 @@ public class ImageManager {
 
     public Image getImage(final ImageType type, final Object ... arguments) throws IOException {
         final String url = type.getUrl(arguments);
+        final String cacheUrl = url.replaceAll(ILLEGAL_CHARS, "_");
 
         synchronized (REQUESTS) {
             fireQueueSizeChange(queueSize.incrementAndGet());
@@ -79,8 +82,13 @@ public class ImageManager {
         }
 
         try {
-            final Image res = ImageIO.read(new URL(url));
-            return res;
+            final File file = new File(cacheDir, cacheUrl);
+            
+            if (!file.exists()) {
+                Downloader.downloadPage(url, file);
+            }
+
+            return ImageIO.read(file);
         } finally {
             synchronized (REQUESTS) {
                 fireQueueSizeChange(queueSize.decrementAndGet());
