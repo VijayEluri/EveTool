@@ -113,7 +113,8 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
                     final EveApi newApi = api.clone();
                     newApi.setCharID(character.getId());
 
-                    new PortraitLoaderWorker(character.getId(), portrait, 64).execute();
+                    new PortraitLoaderWorker(window.getImageManager(), character.getId(),
+                            portrait, 64).execute();
                     new CharacterBalanceUpdateWorker(newApi, ac).execute();
                     new CharacterSkillUpdateWorker(newApi, ac).execute();
 

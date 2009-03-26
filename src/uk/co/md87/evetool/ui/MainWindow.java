@@ -42,6 +42,7 @@ import net.miginfocom.swing.MigLayout;
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ConfigManager;
+import uk.co.md87.evetool.ImageManager;
 import uk.co.md87.evetool.ui.ContentPanel.Page;
 import uk.co.md87.evetool.ui.data.AccountChar;
 import uk.co.md87.evetool.api.listable.Listable;
@@ -66,6 +67,7 @@ public class MainWindow extends JFrame implements UpdateListener {
 
     private AccountChar selectedChar = null;
     private final AccountManager manager;
+    private final ImageManager imageman;
     private final ApiFactory factory;
     private final MenuPanel menuPanel;
     private final ConfigManager config;
@@ -73,8 +75,8 @@ public class MainWindow extends JFrame implements UpdateListener {
     private final ContextPanel contextPanel;
     private final Map<String, ContentPanel.Page> pages;
 
-    public MainWindow(final AccountManager manager,
-            final ApiFactory factory, final ConfigManager config) {
+    public MainWindow(final AccountManager manager, final ApiFactory factory,
+            final ConfigManager config, final ImageManager imageman) {
         super("EVE Tool - No character selected");
 
         UIManager.put("swing.boldMetal", false);
@@ -82,6 +84,7 @@ public class MainWindow extends JFrame implements UpdateListener {
         this.factory = factory;
         this.manager = manager;
         this.config = config;
+        this.imageman = imageman;
         this.contextPanel = new ContextPanel();
 
         pages = new TreeMap<String, ContentPanel.Page>();
@@ -117,6 +120,10 @@ public class MainWindow extends JFrame implements UpdateListener {
         } catch (AWTException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ImageManager getImageManager() {
+        return imageman;
     }
 
     public void setPage(final String page) {

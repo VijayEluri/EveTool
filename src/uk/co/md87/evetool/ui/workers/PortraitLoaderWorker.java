@@ -31,6 +31,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
+import uk.co.md87.evetool.ImageManager;
+import uk.co.md87.evetool.ImageType;
 
 /**
  *
@@ -40,11 +42,14 @@ import javax.swing.SwingWorker;
  */
 public class PortraitLoaderWorker extends SwingWorker<ImageIcon, Object> {
 
+    private final ImageManager manager;
     private final int charId;
     private final JLabel target;
     private final int size;
 
-    public PortraitLoaderWorker(final int charId, final JLabel target, final int size) {
+    public PortraitLoaderWorker(final ImageManager manager, final int charId,
+            final JLabel target, final int size) {
+        this.manager = manager;
         this.charId = charId;
         this.target = target;
         this.size = size;
@@ -52,8 +57,7 @@ public class PortraitLoaderWorker extends SwingWorker<ImageIcon, Object> {
 
     @Override
     protected ImageIcon doInBackground() throws Exception {
-        return new ImageIcon(ImageIO.read(
-                    new URL("http://img.eve.is/serv.asp?s=256&c=" + charId))
+        return new ImageIcon(manager.getImage(ImageType.PORTRAIT, charId)
                     .getScaledInstance(size, size, Image.SCALE_SMOOTH));
     }
 

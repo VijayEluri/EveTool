@@ -57,6 +57,7 @@ public class Main {
 
         final ConfigManager config = new ConfigManager();
         final ApiFactory factory = new ApiFactory(config);
+        final ImageManager imagem = new ImageManager(config.getConfigDir() + "images");
 
         config.checkDatabase(factory.getConnection());
 
@@ -65,7 +66,7 @@ public class Main {
 
         final AccountManager manager = new AccountManager(factory.getConnection());
 
-        new MainWindow(manager, factory, config).setVisible(true);
+        new MainWindow(manager, factory, config, imagem).setVisible(true);
     }
 
     /**

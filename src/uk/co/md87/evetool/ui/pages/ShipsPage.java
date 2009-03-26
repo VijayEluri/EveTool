@@ -80,7 +80,8 @@ public class ShipsPage extends ListablePage<BasicShipInfoSurrogate> implements A
 
         for (BasicShipInfo ship : factory.getApi().getShipList().getResult()
                 .getShips().values()) {
-            list.add(new BasicShipInfoSurrogate(ship, character.getSheet().getResult()));
+            list.add(new BasicShipInfoSurrogate(window.getImageManager(), ship,
+                    character.getSheet().getResult()));
         }
 
         return list;

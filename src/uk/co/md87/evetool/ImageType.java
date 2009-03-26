@@ -24,9 +24,22 @@ package uk.co.md87.evetool;
 
 /**
  *
+ * TODO: Document ImageType
  * @author chris
  */
-public class PortraitManager {
+public enum ImageType {
 
-    
+    PORTRAIT("http://img.eve.is/serv.asp?s=256&c=%s"),
+    SHIP("http://evetool.md87.co.uk/api/dx9/types/shiptypes_png/64_64/%s.png");
+
+    private final String url;
+
+    private ImageType(final String url) {
+        this.url = url;
+    }
+
+    public String getUrl(final Object ... arguments) {
+        return String.format(url, arguments);
+    }
+
 }

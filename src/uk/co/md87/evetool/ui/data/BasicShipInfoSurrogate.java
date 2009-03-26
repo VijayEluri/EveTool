@@ -23,15 +23,15 @@
 package uk.co.md87.evetool.ui.data;
 
 import java.awt.Image;
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
+import uk.co.md87.evetool.ImageManager;
+import uk.co.md87.evetool.ImageType;
 import uk.co.md87.evetool.api.wrappers.CharacterSheet;
 import uk.co.md87.evetool.api.wrappers.data.BasicShipInfo;
 import uk.co.md87.evetool.api.listable.ListableImpl;
@@ -46,8 +46,11 @@ public class BasicShipInfoSurrogate extends ListableImpl {
 
     private final BasicShipInfo info;
     private final CharacterSheet sheet;
+    private final ImageManager manager;
 
-    public BasicShipInfoSurrogate(final BasicShipInfo info, final CharacterSheet sheet) {
+    public BasicShipInfoSurrogate(final ImageManager manager,
+            final BasicShipInfo info, final CharacterSheet sheet) {
+        this.manager = manager;
         this.info = info;
         this.sheet = sheet;
 
@@ -68,9 +71,8 @@ public class BasicShipInfoSurrogate extends ListableImpl {
 
         @Override
         protected Image doInBackground() throws Exception {
-            return ImageIO.read(
-                    new URL("http://evetool.md87.co.uk/api/dx9/types/shiptypes_png/64_64/"
-                    + info.getID() + ".png")).getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+            return manager.getImage(ImageType.SHIP, info.getID())
+                    .getScaledInstance(48, 48, Image.SCALE_SMOOTH);
         }
 
         @Override

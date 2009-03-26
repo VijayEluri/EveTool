@@ -89,8 +89,8 @@ public class MenuPanel extends JPanel implements ActionListener {
     public void setSelectedChar(final AccountChar newChar) {
         portrait.setIcon(null);
         portrait.setText("Loading...");
-        new PortraitLoaderWorker(newChar.getCharInfo().getId(),
-                portrait, 192).execute();
+        new PortraitLoaderWorker(window.getImageManager(),
+                newChar.getCharInfo().getId(), portrait, 192).execute();
 
         for (MenuButton button : buttons.values()) {
             button.checkEnabled();
