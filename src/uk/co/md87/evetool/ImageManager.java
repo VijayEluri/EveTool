@@ -23,9 +23,18 @@
 package uk.co.md87.evetool;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
+
+import uk.co.md87.evetool.api.io.QueueSizeListener;
 
 /**
  *
@@ -34,16 +43,67 @@ import javax.imageio.ImageIO;
  */
 public class ImageManager {
 
+    protected static final List<String> REQUESTS = new ArrayList<String>();
+
+    private static final List<QueueSizeListener> listeners = new ArrayList<QueueSizeListener>();
+
+    private static final AtomicInteger queueSize = new AtomicInteger(0);
+
     protected final String cacheDir;
 
     public ImageManager(final String cacheDir) {
         this.cacheDir = cacheDir;
+
+        final File dir = new File(cacheDir);
+        if (!dir.isDirectory() && !dir.mkdirs()) {
+            Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE,
+                    "Unable to create image cache directory");
+        }
     }
 
     public Image getImage(final ImageType type, final Object ... arguments) throws IOException {
         final String url = type.getUrl(arguments);
-        return ImageIO.read(new URL(url));
+
+        synchronized (REQUESTS) {
+            fireQueueSizeChange(queueSize.incrementAndGet());
+
+            while (REQUESTS.contains(url)) {
+                try {
+                    REQUESTS.wait();
+                } catch (InterruptedException ex) {
+                    // Ignore
+                }
+            }
+
+            REQUESTS.add(url);
+        }
+
+        try {
+            final Image res = ImageIO.read(new URL(url));
+            return res;
+        } finally {
+            synchronized (REQUESTS) {
+                fireQueueSizeChange(queueSize.decrementAndGet());
+                
+                REQUESTS.remove(url);
+                REQUESTS.notifyAll();
+            }
+        }
     }
 
+    public static void addQueueSizeListener(final QueueSizeListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+            listener.queueSizeUpdate(queueSize.get());
+        }
+    }
+
+    protected static void fireQueueSizeChange(final int queueSize) {
+        synchronized (listeners) {
+            for (QueueSizeListener listener : listeners) {
+                listener.queueSizeUpdate(queueSize);
+            }
+        }
+    }
     
 }

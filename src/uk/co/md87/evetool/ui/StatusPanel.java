@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import uk.co.md87.evetool.ImageManager;
 import uk.co.md87.evetool.Main;
 import uk.co.md87.evetool.api.io.ApiDownloader;
 import uk.co.md87.evetool.api.io.QueueSizeListener;
@@ -39,7 +40,7 @@ import uk.co.md87.evetool.api.io.QueueSizeListener;
  * 
  * @author chris
  */
-public class StatusPanel extends JPanel implements QueueSizeListener {
+public class StatusPanel extends JPanel {
 
     /**
      * A version number for this class. It should be changed whenever the class
@@ -50,6 +51,8 @@ public class StatusPanel extends JPanel implements QueueSizeListener {
 
     /** Labels used to display various pieces of information. */
     private final JLabel leftLabel, centreLabel, rightLabel;
+
+    private int apiSize = 0, imageSize = 0;
 
     /**
      * Creates a new status panel for the specified window.
@@ -69,14 +72,36 @@ public class StatusPanel extends JPanel implements QueueSizeListener {
         add(centreLabel, "push, grow");
         add(rightLabel, "push, grow");
 
-        ApiDownloader.addQueueSizeListener(this);
+        ApiDownloader.addQueueSizeListener(new QueueSizeListener() {
+            /** {@inheritDoc} */
+            @Override
+            public void queueSizeUpdate(final int size) {
+                apiSize = size;
+                updateLabel();
+            }
+        });
+
+        ImageManager.addQueueSizeListener(new QueueSizeListener() {
+            /** {@inheritDoc} */
+            @Override
+            public void queueSizeUpdate(final int size) {
+                imageSize = size;
+                updateLabel();
+            }
+        });
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void queueSizeUpdate(final int size) {
-        centreLabel.setText(size == 0 ? "" : 
-            (size + " API quer" + (size == 1 ? "y" : "ies") + " pending"));
+    /**
+     * Updates the centre label to reflect the number of API and image requests
+     * pending.
+     */
+    protected void updateLabel() {
+        centreLabel.setText((apiSize == 0 ? "" :
+                (apiSize + " API quer" + (apiSize == 1 ? "y" : "ies")))
+                + (imageSize * apiSize > 0 ? " and " : "")
+                + (imageSize == 0 ? "" : (imageSize + " image request"
+                + (imageSize == 1 ? "" : "s")))
+                + (imageSize + apiSize > 0 ? " pending" : ""));
     }
 
 }
