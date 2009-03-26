@@ -130,7 +130,7 @@ public class AccountUpdateWorker extends SwingWorker<ApiResponse<CharacterList>,
             }
             target.revalidate();
         } catch (Exception ex) {
-            Logger.getLogger(OverviewPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountUpdateWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
