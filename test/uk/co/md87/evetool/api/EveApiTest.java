@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.junit.Test;
+import uk.co.md87.evetool.api.io.DBCache;
 import static org.junit.Assert.*;
 
 /**
@@ -47,7 +48,7 @@ public class EveApiTest {
             conn.createStatement().execute("DROP TABLE PAGECACHE");
         }
         
-        final EveApi api = new EveApi(conn);
+        final EveApi api = new EveApi(new DBCache(conn));
         assertTrue(conn.getMetaData().getTables(null, null, "PAGECACHE", null).next());
     }
 

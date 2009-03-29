@@ -45,8 +45,8 @@ public class DBCacheTest {
     public void testBasicInsert() throws SQLException {
         final Map<String, String> args = new HashMap<String, String>();
         final Connection conn = DriverManager.getConnection(dbURL);
-        new EveApi(conn); // To create tables
         final DBCache cache = new DBCache(conn);
+        new EveApi(cache); // To create tables
 
         args.put("foo", "bar");
         args.put("rand", String.valueOf(System.currentTimeMillis()));

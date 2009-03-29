@@ -24,10 +24,11 @@ package uk.co.md87.evetool.ui;
 
 import java.awt.CardLayout;
 import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-
 import javax.swing.JScrollPane;
+
 import uk.co.md87.evetool.AccountManager;
 import uk.co.md87.evetool.ApiFactory;
 import uk.co.md87.evetool.ui.data.AccountChar;
