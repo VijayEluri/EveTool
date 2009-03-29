@@ -82,15 +82,15 @@
     <target name="-post-jar">
         <jar destfile="dist/evetool.jar" compress="${jar.compress}" update="true">
 <!-- derby.jar  jaxen-core.jar  jaxen-jdom.jar  jdom.jar  miglayout-3.6.2.jar  saxpath.jar  xalan.jar  xerces.jar  xml-apis.jar -->
-            <zipfileset src="dist/lib/derby.jar" includes="**/*.class,META-INF/services/**,**/*.properties"/>
-            <zipfileset src="dist/lib/jaxen-core.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/jaxen-jdom.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/jdom.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/miglayout-3.6.2.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/saxpath.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/xalan.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/xerces.jar" includes="**/*.class,**/*.properties"/>
-            <zipfileset src="dist/lib/xml-apis.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/derby.jar" includes="**/*.class,META-INF/services/**,**/*.properties"/>
+            <zipfileset src="lib/jaxen-core.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/jaxen-jdom.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/jdom.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/miglayout-3.6.2.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/saxpath.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/xalan.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/xerces.jar" includes="**/*.class,**/*.properties"/>
+            <zipfileset src="lib/xml-apis.jar" includes="**/*.class,**/*.properties"/>
         </jar>
     </target>
 </project>
