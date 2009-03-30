@@ -40,6 +40,7 @@ import uk.co.md87.evetool.api.wrappers.RaceList;
 import uk.co.md87.evetool.api.wrappers.ShipList;
 import uk.co.md87.evetool.api.wrappers.SkillInTraining;
 import uk.co.md87.evetool.api.wrappers.SkillList;
+import uk.co.md87.evetool.api.wrappers.SkillQueue;
 
 /**
  * Allows access to the EVE Api (see http://api.eve-online.com/).
@@ -135,6 +136,16 @@ public class EveApi implements Cloneable {
      */
     public ApiResponse<SkillInTraining> getSkillInTraining() {
         return getResponse("/char/SkillInTraining.xml.aspx", SkillInTraining.class, true, true);
+    }
+
+    /**
+     * Retrieves the skill queue for the specified character.
+     * Requires a limited API key, user ID and character ID.
+     *
+     * @return The character's current skill queue
+     */
+    public ApiResponse<SkillQueue> getSkillQueue() {
+        return getResponse("/char/SkillQueue.xml.aspx", SkillQueue.class, true, true);
     }
 
     /**

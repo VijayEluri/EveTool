@@ -49,6 +49,17 @@ public class SkillInTraining {
     private int startSP, targetSP;
     private int targetLevel;
 
+    public SkillInTraining(Date startTime, Date endTime, int typeId, int startSP,
+            int targetSP, int targetLevel) {
+        this.inTraining = false;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.typeId = typeId;
+        this.startSP = startSP;
+        this.targetSP = targetSP;
+        this.targetLevel = targetLevel;
+    }
+
     public SkillInTraining(final ApiElement resultElement) {
         super();
 
