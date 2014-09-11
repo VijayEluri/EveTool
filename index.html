@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>EVE Tool</title>
+  <style type="text/css">
+   body {
+    margin: 50px 100px;
+    background-color: #ccc;
+   }
+
+   #page {
+    background-color: white;
+    border: 1px solid #999;
+   }
+
+   h1 {
+    margin: 0px;
+    padding: 5px;
+    border-bottom: 1px solid #999;
+    background-color: #BBB;
+   }
+
+   h1 img {
+    height: 1.0em;
+    vertical-align: middle;
+    padding-bottom: 2px;
+   }
+
+   h2 {
+    font-size: 1em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #BBB;
+    padding: 0px;
+    line-height: 0.9em;
+    margin: 15px 0px 0px 0px;
+   }
+
+   #content {
+    padding: 5px 10px;
+    margin-right: 170px;
+    border-right: 1px solid #999;
+    line-height: 1.9em;
+   }
+
+   #screenshots {
+    padding: 5px 10px;
+    float: right;
+    width: 150px;
+   }
+
+   #screenshots h2 {
+    margin-bottom: 15px;
+   }
+
+   #screenshots a {
+    display: block;
+    text-align: center;
+    margin: 10px 0px;
+   }
+
+   #screenshots img {
+    border: 0px;
+   }
+  </style>
+ </head>
+ <body>
+  <div id="page">
+   <h1><img src="icon.png" alt="EVE Tool logo"/> EVE Tool</h1>
+   <div id="screenshots">
+    <h2>Screenshots</h2>
+    <a href="et-5.png"><img src="thumbs/et-5.png" alt="Eve-tool screenshot"/></a>
+    <a href="et-14.png"><img src="thumbs/et-14.png" alt="Eve-tool screenshot"/></a>
+    <a href="et-16.png"><img src="thumbs/et-16.png" alt="Eve-tool screenshot"/></a>
+   </div>
+   <div id="content">
+    <h2>About EVE Tool</h2>
+    <p>
+     "EVE Tool" is an application for players of the MMORPG
+     <a href="http://www.eve-online.com/">EVE-Online</a>.
+     It allows players to access and analyse data while out of game.
+     It retrieves information from the official EVE API, as well as
+     from a custom API built around the database export provided by CCP.
+    </p> 
+    <h2>Changelog</h2>
+    <h3>v0.2 &rarr; v0.3</h3>
+    <ul>
+     <li>Added functionality to execute code to migrate between database versions</li>
+     <li>The API library now parses the race of ships</li>
+     <li>All images are now cached locally</li>
+     <li>Added API library support for skill queues</li>
+     <li>The number of pending image requests is now shown in the status bar</li>
+    </ul>
+    <h3>v0.1 &rarr; v0.2</h3>
+    <ul>
+     <li>'Listable' pages may now have their elements grouped</li>
+     <li>'Listable' pages may now be sorted</li>
+     <li>Removed 'time to level' retrievable that caused errors</li>
+     <li>Added a configuration dialog for 'listable' pages</li>
+     <li>Added a new ships page</li>
+     <li>Most heavy lifting is now done in the background, instead of blocking the UI</li>
+     <li>Added a configuration file manager</li>
+     <li>The previously selected character is now remembered across sessions</li>
+     <li>The database files created by ET are now stored in its config directory, not the CWD</li>
+     <li>Removed the non-functioning filter button from the overview page</li>
+     <li>The menu is now refreshed when new information is retrieved about the character, so pages are enabled without manually repicking the character</li>
+    </ul>
+   </div>
+  </div>
+ </body>
+</html>
